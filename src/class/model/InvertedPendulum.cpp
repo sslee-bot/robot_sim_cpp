@@ -1,4 +1,4 @@
-#include "InvertedPendulum.h"
+#include "model/InvertedPendulum.h"
 
 InvertedPendulum::InvertedPendulum(double timeStep, double initPosition, double initAngle)
     : m_timeStep(timeStep), m_cartPosition(initAngle), m_pendulumAngle(initAngle)
