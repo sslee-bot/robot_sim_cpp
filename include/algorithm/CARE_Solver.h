@@ -3,7 +3,7 @@
  * @author Sang Su Lee (physism@gmail.com)
  * @brief Continuous algebraic Riccati equation (CARE) solver implemented based on
  * https://en.wikipedia.org/wiki/Algebraic_Riccati_equation#Solution
- * @version 0.1
+ * @version 1.0
  * @date 2021-06-27
  *
  * @copyright Copyright (c) 2021

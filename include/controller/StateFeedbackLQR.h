@@ -1,12 +1,12 @@
 /**
  * @file StateFeedbackLQR.h
  * @author Sang Su Lee (physism@gmail.com)
- * @brief Infinite-horizon and continuous-time LQR control based on material:
+ * @brief Infinite-horizon and continuous-time LQR control based on
  * https://en.wikipedia.org/wiki/Linear%E2%80%93quadratic_regulator
  * For more advanced LQR control including output feedback LQR, see
  * https://lewisgroup.uta.edu/ee5321/2013%20notes/3%20OP%20feedback%20and%20OPFB%20design%20for%20F16%20lateral%20regulator.pdf
  * @version 1.0
- * @date 2021-06-17
+ * @date 2021-06-27
  *
  * @copyright Copyright (c) 2021
  *

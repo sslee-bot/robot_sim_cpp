@@ -4,7 +4,7 @@
  * @brief Inverted pendulum model based on following material.
  * https://ctms.engin.umich.edu/CTMS/index.php?example=InvertedPendulum&section=SystemModeling
  * @version 1.0
- * @date 2021-06-16
+ * @date 2021-06-28
  *
  * @copyright Copyright (c) 2021
  *

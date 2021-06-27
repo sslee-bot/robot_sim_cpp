@@ -1,3 +1,14 @@
+/**
+ * @file 02_CARE.cpp
+ * @author Sang Su Lee (physism@gmail.com)
+ * @brief Simple example solving a CARE.
+ * @version 1.0
+ * @date 2021-06-28
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
+
 #include "algorithm/CARE_Solver.h"
 
 int main(int argc, char* argv[])
