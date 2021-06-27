@@ -1,7 +1,9 @@
 /**
- * @file OutputFeedbackLQR.h
+ * @file StateFeedbackLQR.h
  * @author Sang Su Lee (physism@gmail.com)
- * @brief Output feedback LQR control based on following material.
+ * @brief Infinite-horizon and continuous-time LQR control based on material:
+ * https://en.wikipedia.org/wiki/Linear%E2%80%93quadratic_regulator
+ * For more advanced LQR control including output feedback LQR, see
  * https://lewisgroup.uta.edu/ee5321/2013%20notes/3%20OP%20feedback%20and%20OPFB%20design%20for%20F16%20lateral%20regulator.pdf
  * @version 1.0
  * @date 2021-06-17
@@ -17,14 +19,16 @@
 #include <cmath>
 #include <iostream>
 
-class OutputFeedbackLQR
+#include "algorithm/CARE_Solver.h"
+
+class StateFeedbackLQR
 {
 public:
-    OutputFeedbackLQR(Eigen::MatrixXd A, Eigen::MatrixXd B, Eigen::MatrixXd C);
-    virtual ~OutputFeedbackLQR();
-    virtual void setQ(Eigen::MatrixXd Q);
-    virtual void setR(Eigen::MatrixXd R);
-    virtual Eigen::VectorXd generateControlInput(Eigen::VectorXd output);
+    StateFeedbackLQR(Eigen::MatrixXd A, Eigen::MatrixXd B, Eigen::MatrixXd C);
+    StateFeedbackLQR(Eigen::MatrixXd A, Eigen::MatrixXd B, Eigen::MatrixXd C, Eigen::MatrixXd Q,
+                     Eigen::MatrixXd R);
+    virtual ~StateFeedbackLQR();
+    virtual Eigen::VectorXd generateControlInput(Eigen::VectorXd state);
 
 private:
     virtual void updateFeedbackGain();

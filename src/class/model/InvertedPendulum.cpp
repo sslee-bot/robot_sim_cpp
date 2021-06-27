@@ -3,6 +3,8 @@
 InvertedPendulum::InvertedPendulum(double timeStep, double initPosition, double initAngle)
     : m_timeStep(timeStep), m_cartPosition(initAngle), m_pendulumAngle(initAngle)
 {
+    m_state << m_cartPosition, m_cartVelocity, m_pendulumAngle, m_pendulumAngularVelocity;
+
     double p = m_massMomentInertia * (m_cartMass + m_pendulumMass) +
                m_cartMass * m_pendulumMass * std::pow(m_cartPendulumCenterDistance, 2);
 
@@ -40,6 +42,11 @@ Eigen::Vector2d InvertedPendulum::outputVector()
     return output;
 }
 
+Eigen::Vector4d InvertedPendulum::stateVector()
+{
+    return m_state;
+}
+
 Eigen::Matrix<double, 4, 4> InvertedPendulum::getMatrixA()
 {
     return m_A;
@@ -59,14 +66,10 @@ void InvertedPendulum::timeUpdate(double input)
 {
     m_forceToCart = input;
 
-    // Construct state vector
-    Eigen::Vector4d state;
-    state << m_cartPosition, m_cartVelocity, m_pendulumAngle, m_pendulumAngularVelocity;
-
     // Update state
-    state += m_timeStep * (m_A * state + m_B * m_forceToCart);
-    m_cartPosition = state(0, 0);
-    m_cartVelocity = state(1, 0);
-    m_pendulumAngle = state(2, 0);
-    m_pendulumAngularVelocity = state(3, 0);
+    m_state += m_timeStep * (m_A * m_state + m_B * m_forceToCart);
+    m_cartPosition = m_state(0, 0);
+    m_cartVelocity = m_state(1, 0);
+    m_pendulumAngle = m_state(2, 0);
+    m_pendulumAngularVelocity = m_state(3, 0);
 }

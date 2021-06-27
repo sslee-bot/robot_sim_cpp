@@ -9,7 +9,7 @@
  *
  */
 
-#include "controller/OutputFeedbackLQR.h"
+#include "controller/StateFeedbackLQR.h"
 #include "model/InvertedPendulum.h"
 
 int main(int argc, char* argv[])
@@ -21,18 +21,21 @@ int main(int argc, char* argv[])
 
     // Initialize pendulum and controller
     InvertedPendulum pendulum(timeStep, initPosition, initAngle);
-    OutputFeedbackLQR controlLQR(pendulum.getMatrixA(), pendulum.getMatrixB(),
-                                 pendulum.getMatrixC());
+    StateFeedbackLQR controlLQR(pendulum.getMatrixA(), pendulum.getMatrixB(),
+                                pendulum.getMatrixC());
 
-    std::cout << "Initial output of the pendulum" << std::endl;
-    std::cout << pendulum.outputVector() << std::endl << std::endl;
+    std::cout << "Initial state of the pendulum" << std::endl;
+    std::cout << pendulum.stateVector() << std::endl << std::endl;
 
-    for (int i = 0; i < 10; i++) {
-        pendulum.timeUpdate(-1.0);
+    for (int i = 0; i < 500; i++) {
+        auto state = pendulum.stateVector();
+        auto input = (controlLQR.generateControlInput(state))(0, 0);
+
+        pendulum.timeUpdate(input);
     }
 
-    std::cout << "Output after force applied" << std::endl;
-    std::cout << pendulum.outputVector() << std::endl;
+    std::cout << "State after force applied" << std::endl;
+    std::cout << pendulum.stateVector() << std::endl;
 
     return 0;
 }

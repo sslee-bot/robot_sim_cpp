@@ -25,6 +25,7 @@ public:
     InvertedPendulum(double timeStep, double initPosition = 0.0, double initAngle = 0.0);
     virtual ~InvertedPendulum();
     virtual Eigen::Vector2d outputVector();
+    virtual Eigen::Vector4d stateVector();
     virtual Eigen::Matrix<double, 4, 4> getMatrixA();
     virtual Eigen::Matrix<double, 4, 1> getMatrixB();
     virtual Eigen::Matrix<double, 2, 4> getMatrixC();
@@ -41,6 +42,7 @@ private:
     double m_forceToCart = 0.0;
 
     // System states
+    Eigen::Vector4d m_state;
     double m_cartPosition, m_pendulumAngle;
     double m_cartVelocity = 0.0, m_pendulumAngularVelocity = 0.0;
 

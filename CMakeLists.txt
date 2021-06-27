@@ -17,7 +17,8 @@ add_executable(02_CARE
 
 add_executable(03_inverted_pendulum
     src/class/model/InvertedPendulum.cpp
-    src/class/controller/OutputFeedbackLQR.cpp
+    src/class/algorithm/CARE_Solver.cpp
+    src/class/controller/StateFeedbackLQR.cpp
     src/03_inverted_pendulum.cpp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
