@@ -1,7 +1,7 @@
 #include "model/InvertedPendulum.h"
 
 InvertedPendulum::InvertedPendulum(double timeStep, double initPosition, double initAngle)
-    : m_timeStep(timeStep), m_cartPosition(initAngle), m_pendulumAngle(initAngle)
+    : m_cartPosition(initAngle), m_pendulumAngle(initAngle), m_timeStep(timeStep)
 {
     m_state << m_cartPosition, m_cartVelocity, m_pendulumAngle, m_pendulumAngularVelocity;
 

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package format="2">
+    <name>robot_sim_cpp</name>
+    <version>1.0.0</version>
+    <description>Robot simulations implemented in C++.</description>
+    <maintainer email="physism@gmail.com">Sang Su Lee</maintainer>
+    <license>TODO</license>
+    <url type="website">https://github.com/physism/robot_sim_cpp</url>
+    <url type="bugtracker">https://github.com/physism/robot_sim_cpp/issues</url>
+    <author email="physism@gmail.com">Sang Su Lee</author>
+
+    <buildtool_depend>catkin</buildtool_depend>
+
+    <build_depend>eigen</build_depend>
+    <build_depend>boost</build_depend>
+
+    <build_depend>roscpp</build_depend>
+    <build_depend>gazebo_ros</build_depend>
+    <build_depend>std_msgs</build_depend>
+    <build_depend>sensor_msgs</build_depend>
+
+    <exec_depend>roscpp</exec_depend>
+    <exec_depend>gazebo_ros</exec_depend>
+    <exec_depend>std_msgs</exec_depend>
+    <exec_depend>sensor_msgs</exec_depend>
+
+    <export>
+        <gazebo_ros plugin_path="${prefix}/lib" gazebo_media_path="${prefix}" />
+    </export>
+</package>
