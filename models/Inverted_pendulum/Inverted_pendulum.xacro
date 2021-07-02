@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<robot name="Inverted_pendulum" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- properties -->
+    <xacro:property name="PI" value="3.141593"/>
+
+    <xacro:property name="cart_mass" value="0.5"/>
+    <xacro:property name="pendulum_mass" value="0.2"/>
+    <xacro:property name="friction_coefficient" value="0.1"/>
+    <xacro:property name="length_to_COM" value="0.3"/>
+    <xacro:property name="pendulum_mass_moment" value="0.006"/>
+
+    <xacro:property name="cart_width" value="0.5"/>
+    <xacro:property name="cart_depth" value="1.0"/>
+    <xacro:property name="cart_height" value="0.5"/>
+
+    <xacro:property name="pendulum_length" value="0.6"/>
+    <xacro:property name="pendulum_radius" value="0.03"/>
+
+    <!-- include -->
+    <xacro:include filename="$(find robot_sim_cpp)/models/Inverted_pendulum/Inverted_pendulum.gazebo"/>
+
+    <!-- links and joints -->
+    <link name="base_link"/>
+
+    <joint name="base_joint" type="fixed">
+        <origin xyz="0.0 0.0 ${cart_height/2}" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="cart_link"/>
+    </joint>
+
+    <link name="cart_link">
+        <inertial>
+            <mass value="${cart_mass}"/>
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <box size="${cart_depth} ${cart_width} ${cart_height}"/>
+            </geometry>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${cart_depth} ${cart_width} ${cart_height}"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="pendulum_joint" type="revolute">
+        <origin xyz="0.0 0.0 ${cart_height + pendulum_radius}" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="pendulum_link"/>
+        <axis xyz="0.0 -1.0 0.0"/>
+        <limit lower="${-PI}" upper="${PI}" effort="0.0" velocity="0.0"/>
+    </joint>
+
+    <link name="pendulum_link">
+        <inertial>
+            <origin xyz="0.0 0.0 ${length_to_COM}" rpy="0.0 0.0 0.0"/>
+            <mass value="${pendulum_mass}"/>
+            <inertia ixx="${pendulum_mass_moment}" ixy="0.0" ixz="0.0"
+                    iyy="${pendulum_mass_moment}" iyz="0.0"
+                    izz="0.001"/>
+        </inertial>
+        <visual>
+            <origin xyz="0.0 0.0 ${pendulum_length/2}" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="${pendulum_radius}" length="${pendulum_length}"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 ${pendulum_length/2}" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="${pendulum_radius}" length="${pendulum_length}"/>
+            </geometry>
+        </collision>
+    </link>
+
+</robot>

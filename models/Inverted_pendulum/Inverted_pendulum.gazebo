@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<robot>
+
+    <gazebo reference="cart_link">
+        <material>Gazebo/RedBright</material>
+        <self_collide>1</self_collide>
+    </gazebo>
+
+    <gazebo reference="pendulum_link">
+        <self_collide>1</self_collide>
+    </gazebo>
+    
+</robot>
