@@ -17,6 +17,9 @@ find_package(catkin REQUIRED COMPONENTS
     gazebo_ros
     std_msgs
     sensor_msgs
+    controller_manager
+    joint_state_controller
+    robot_state_publisher
 )
 find_package(gazebo REQUIRED)
 
