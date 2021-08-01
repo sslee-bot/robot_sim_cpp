@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
     gazebo_ros
     std_msgs
     sensor_msgs
+    geometry_msgs
     controller_manager
     joint_state_controller
     robot_state_publisher
@@ -30,7 +31,7 @@ find_package(Boost REQUIRED)
 ## catkin specific configuration
 catkin_package(
     INCLUDE_DIRS include ${EIGEN3_INCLUDE_DIR}
-    CATKIN_DEPENDS roscpp gazebo_ros std_msgs sensor_msgs
+    CATKIN_DEPENDS roscpp gazebo_ros std_msgs sensor_msgs geometry_msgs message_runtime
 )
 
 link_directories(${GAZEBO_LIBRARY_DIRS})
@@ -60,3 +61,8 @@ add_executable(03_inverted_pendulum
 
 set_target_properties(01_matrix_basic 02_CARE 03_inverted_pendulum
     PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/bin)
+
+## Gazebo plugins and nodes
+add_library(link_effort src/class/gazebo_sim/LinkEffortPlugin.cc)
+target_link_libraries(link_effort ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+add_dependencies(link_effort ${catkin_EXPORTED_TARGETS})

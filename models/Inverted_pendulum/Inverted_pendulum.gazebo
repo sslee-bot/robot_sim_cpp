@@ -9,5 +9,12 @@
     <gazebo reference="pendulum_link">
         <self_collide>1</self_collide>
     </gazebo>
+
+    <gazebo>
+        <plugin name="cart_effort" filename="liblink_effort.so">
+            <linkName>cart_link</linkName>
+            <topicName>cart_effort</topicName>
+        </plugin>
+    </gazebo>
     
 </robot>

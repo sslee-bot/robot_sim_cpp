@@ -1,0 +1,4 @@
+#ifndef INVERTED_PENDULUM_LQR_H
+#define INVERTED_PENDULUM_LQR_H
+
+#endif

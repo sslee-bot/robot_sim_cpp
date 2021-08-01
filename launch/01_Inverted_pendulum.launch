@@ -11,10 +11,10 @@
     </include>
 
     <!-- model description -->
-    <param name="model_description" command="$(find xacro)/xacro
+    <param name="robot_description" command="$(find xacro)/xacro
                                             '$(find robot_sim_cpp)/models/Inverted_pendulum/Inverted_pendulum.xacro'"/>
 
     <!-- spawn model -->
     <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" output="screen"
-            args="-urdf -param model_description -model inverted_pendulum"/>
+            args="-urdf -param robot_description -model inverted_pendulum"/>
 </launch>
