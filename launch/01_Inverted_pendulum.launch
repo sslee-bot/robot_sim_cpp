@@ -10,7 +10,7 @@
         <arg name="gui" value="$(arg gui)"/>
     </include>
 
-    <!-- model description -->
+    <!-- parameters -->
     <param name="robot_description" command="$(find xacro)/xacro
                                             '$(find robot_sim_cpp)/models/Inverted_pendulum/Inverted_pendulum.xacro'"/>
 
