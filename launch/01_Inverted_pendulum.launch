@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
     <!-- arguments -->
+    <arg name="x" default="0.0"/>
     <arg name="gui" default="true"/>
     <arg name="world_name" default="$(find gazebo_ros)/worlds/empty.world"/>
 
@@ -16,5 +17,8 @@
 
     <!-- spawn model -->
     <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" output="screen"
-            args="-urdf -param robot_description -model inverted_pendulum"/>
+            args="-urdf -param robot_description -model inverted_pendulum -x $(arg x)"/>
+
+    <!-- run controller -->
+    <node name="inverted_pendulum_LQR_node" pkg="robot_sim_cpp" type="inverted_pendulum_LQR_node" output="screen"/>    
 </launch>

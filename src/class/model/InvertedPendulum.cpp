@@ -68,8 +68,9 @@ void InvertedPendulum::timeUpdate(double input)
 
     // Update state
     m_state += m_timeStep * (m_A * m_state + m_B * m_forceToCart);
-    m_cartPosition = m_state(0, 0);
-    m_cartVelocity = m_state(1, 0);
-    m_pendulumAngle = m_state(2, 0);
-    m_pendulumAngularVelocity = m_state(3, 0);
+
+    m_cartPosition = m_state[0];
+    m_cartVelocity = m_state[1];
+    m_pendulumAngle = m_state[2];
+    m_pendulumAngularVelocity = m_state[3];
 }

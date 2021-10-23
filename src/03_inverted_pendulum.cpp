@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
 
     for (int i = 0; i < 500; i++) {
         auto state = pendulum.stateVector();
-        auto input = (controlLQR.generateControlInput(state))(0, 0);
+        auto input = (controlLQR.generateControlInput(state))[0];
 
         pendulum.timeUpdate(input);
     }

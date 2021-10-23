@@ -66,3 +66,10 @@ set_target_properties(01_matrix_basic 02_CARE 03_inverted_pendulum
 add_library(link_effort src/class/gazebo_sim/LinkEffortPlugin.cc)
 target_link_libraries(link_effort ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 add_dependencies(link_effort ${catkin_EXPORTED_TARGETS})
+
+add_executable(inverted_pendulum_LQR_node src/class/algorithm/CARE_Solver.cpp
+                                        src/class/controller/StateFeedbackLQR.cpp
+                                        src/class/gazebo_sim/InvertedPendulumLQR.cpp
+                                        src/node/InvertedPendulumLQR_Node.cpp)
+target_link_libraries(inverted_pendulum_LQR_node ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+add_dependencies(inverted_pendulum_LQR_node ${catkin_EXPORTED_TARGETS})
