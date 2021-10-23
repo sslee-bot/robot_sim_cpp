@@ -13,6 +13,8 @@ InvertedPendulumLQR::InvertedPendulumLQR(const std::string& invertedPendulumName
       m_jointStateSub(),
       m_controlPub(),
       m_timer(),
+      m_isModelStateValid(false),
+      m_isJointStateValid(false),
       m_invertedPendulumName(invertedPendulumName),
       m_pendulumJointName(pendulumJointName),
       m_period(period),
@@ -69,6 +71,9 @@ void InvertedPendulumLQR::callbackModelState(const gazebo_msgs::ModelStatesConst
 {
     std::unique_lock<std::recursive_mutex> lock(m_mutex);
 
+    // Update model state validity
+    m_isModelStateValid = true;
+
     // Get index
     auto nameVec = msg->name;
     auto iter = std::find(nameVec.begin(), nameVec.end(), m_invertedPendulumName);
@@ -93,6 +98,9 @@ void InvertedPendulumLQR::callbackJointState(const sensor_msgs::JointStateConstP
 {
     std::unique_lock<std::recursive_mutex> lock(m_mutex);
 
+    // Update joint state validity
+    m_isJointStateValid = true;
+
     // Get index
     auto nameVec = msg->name;
     auto iter = std::find(nameVec.begin(), nameVec.end(), m_pendulumJointName);
@@ -115,6 +123,12 @@ void InvertedPendulumLQR::periodicTask(const ros::TimerEvent& timerEvent)
 {
     std::unique_lock<std::recursive_mutex> lock(m_mutex);
 
+    // Check model and joint state validities
+    if (m_isModelStateValid == false || m_isJointStateValid == false) {
+        ROS_WARN_STREAM_THROTTLE(5, "[robot_sim_cpp] Model or joint state was not received yet.");
+        return;
+    }
+
     // Get pendulum state
     Eigen::Vector4d pendulumState;
     pendulumState << m_cartPosition, m_cartVelocity, m_pendulumAngle, m_pendulumAngularVelocity;
@@ -122,7 +136,7 @@ void InvertedPendulumLQR::periodicTask(const ros::TimerEvent& timerEvent)
     // Calculate control input
     auto control = (m_LQR.generateControlInput(pendulumState))[0];
 
-    std::cout << "control input: " << control << std::endl;
+    // std::cout << "control input: " << control << std::endl;
 
     // Publish
     m_controlMsg.linear.x = control;

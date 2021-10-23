@@ -42,6 +42,9 @@ private:
     ros::Publisher m_controlPub;
     ros::Timer m_timer;
 
+    bool m_isModelStateValid;
+    bool m_isJointStateValid;
+
     std::string m_invertedPendulumName;
     std::string m_pendulumJointName;
     double m_period;
