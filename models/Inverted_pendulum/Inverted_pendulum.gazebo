@@ -4,6 +4,8 @@
     <gazebo reference="cart_link">
         <material>Gazebo/RedBright</material>
         <self_collide>1</self_collide>
+        <mu1>${friction_coefficient}</mu1>
+        <mu2>0</mu2>
     </gazebo>
 
     <gazebo reference="pendulum_link">

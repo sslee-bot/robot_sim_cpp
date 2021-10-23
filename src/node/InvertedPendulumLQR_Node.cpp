@@ -45,7 +45,7 @@ int main(int argc, char** argv)
     StateFeedbackLQR LQR(A, B, C);
 
     // Set Gazebo inverted pendulum LQR control object
-    InvertedPendulumLQR IPLQR("inverted_pendulum", "pendulum_joint", 0.01, LQR,
+    InvertedPendulumLQR IPLQR("inverted_pendulum", "pendulum_joint", 0.001, LQR,
                               "/gazebo/model_states", "/joint_states", "/cart_effort");
 
     // Start control

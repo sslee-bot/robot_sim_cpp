@@ -119,16 +119,10 @@ void InvertedPendulumLQR::periodicTask(const ros::TimerEvent& timerEvent)
     Eigen::Vector4d pendulumState;
     pendulumState << m_cartPosition, m_cartVelocity, m_pendulumAngle, m_pendulumAngularVelocity;
 
-    std::cout << "cartPosition: " << m_cartPosition << std::endl
-              << "cartVelocity: " << m_cartVelocity << std::endl
-              << "pendulumAngle: " << m_pendulumAngle << std::endl
-              << "pendulumAngularVelocity: " << m_pendulumAngularVelocity << std::endl
-              << std::endl;
-
     // Calculate control input
     auto control = (m_LQR.generateControlInput(pendulumState))[0];
 
-    std::cout << "control: " << control << std::endl << std::endl;
+    std::cout << "control input: " << control << std::endl;
 
     // Publish
     m_controlMsg.linear.x = control;

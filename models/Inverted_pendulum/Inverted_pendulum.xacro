@@ -36,14 +36,14 @@
             <geometry>
                 <box size="${cart_depth} ${cart_width} ${cart_height}"/>
             </geometry>
-            <surface>
+            <!-- <surface>
                 <friction>
                     <ode>
                         <mu>${friction_coefficient}</mu>
                         <mu2>${friction_coefficient}</mu2>
                     </ode>
                 </friction>
-            </surface>
+            </surface> -->
         </collision>
     </link>
 
