@@ -1,6 +1,7 @@
 #include "algorithm/CARE_Solver.h"
 
-CARE_Solver::CARE_Solver(Eigen::MatrixXd A, Eigen::MatrixXd B, Eigen::MatrixXd Q, Eigen::MatrixXd R)
+CARE_Solver::CARE_Solver(const Eigen::MatrixXd& A, const Eigen::MatrixXd& B,
+                         const Eigen::MatrixXd& Q, const Eigen::MatrixXd& R)
     : m_A(A), m_B(B), m_Q(Q), m_R(R)
 {
     // TODO: Check if dimensions of matrices are valid

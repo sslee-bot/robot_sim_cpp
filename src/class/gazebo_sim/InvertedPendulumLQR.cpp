@@ -1,9 +1,11 @@
 #include "gazebo_sim/InvertedPendulumLQR.h"
 
-InvertedPendulumLQR::InvertedPendulumLQR(std::string invertedPendulumName,
-                                         std::string pendulumJointName, double period,
-                                         StateFeedbackLQR LQR, std::string modelStateTopic,
-                                         std::string jointStateTopic, std::string controlTopic)
+InvertedPendulumLQR::InvertedPendulumLQR(const std::string& invertedPendulumName,
+                                         const std::string& pendulumJointName, double period,
+                                         const StateFeedbackLQR& LQR,
+                                         const std::string& modelStateTopic,
+                                         const std::string& jointStateTopic,
+                                         const std::string& controlTopic)
     : m_nodeHandler(""),
       m_customQueue(),
       m_asyncSpinner(0, &m_customQueue),

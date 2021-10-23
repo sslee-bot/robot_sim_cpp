@@ -19,7 +19,8 @@
 class CARE_Solver
 {
 public:
-    CARE_Solver(Eigen::MatrixXd A, Eigen::MatrixXd B, Eigen::MatrixXd Q, Eigen::MatrixXd R);
+    CARE_Solver(const Eigen::MatrixXd& A, const Eigen::MatrixXd& B, const Eigen::MatrixXd& Q,
+                const Eigen::MatrixXd& R);
     virtual ~CARE_Solver();
     virtual Eigen::MatrixXd solveCARE();
 

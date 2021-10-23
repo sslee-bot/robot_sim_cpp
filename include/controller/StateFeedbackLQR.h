@@ -24,11 +24,11 @@
 class StateFeedbackLQR
 {
 public:
-    StateFeedbackLQR(Eigen::MatrixXd A, Eigen::MatrixXd B, Eigen::MatrixXd C);
-    StateFeedbackLQR(Eigen::MatrixXd A, Eigen::MatrixXd B, Eigen::MatrixXd C, Eigen::MatrixXd Q,
-                     Eigen::MatrixXd R);
+    StateFeedbackLQR(const Eigen::MatrixXd& A, const Eigen::MatrixXd& B, const Eigen::MatrixXd& C);
+    StateFeedbackLQR(const Eigen::MatrixXd& A, const Eigen::MatrixXd& B, const Eigen::MatrixXd& C,
+                     const Eigen::MatrixXd& Q, const Eigen::MatrixXd& R);
     virtual ~StateFeedbackLQR();
-    virtual Eigen::VectorXd generateControlInput(Eigen::VectorXd state);
+    virtual Eigen::VectorXd generateControlInput(const Eigen::VectorXd& state);
 
 private:
     virtual void updateFeedbackGain();

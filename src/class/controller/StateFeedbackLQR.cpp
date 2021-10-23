@@ -1,6 +1,7 @@
 #include "controller/StateFeedbackLQR.h"
 
-StateFeedbackLQR::StateFeedbackLQR(Eigen::MatrixXd A, Eigen::MatrixXd B, Eigen::MatrixXd C)
+StateFeedbackLQR::StateFeedbackLQR(const Eigen::MatrixXd& A, const Eigen::MatrixXd& B,
+                                   const Eigen::MatrixXd& C)
     : m_A(A), m_B(B), m_C(C)
 {
     // TODO: Check if A is square
@@ -17,8 +18,9 @@ StateFeedbackLQR::StateFeedbackLQR(Eigen::MatrixXd A, Eigen::MatrixXd B, Eigen::
     updateFeedbackGain();
 }
 
-StateFeedbackLQR::StateFeedbackLQR(Eigen::MatrixXd A, Eigen::MatrixXd B, Eigen::MatrixXd C,
-                                   Eigen::MatrixXd Q, Eigen::MatrixXd R)
+StateFeedbackLQR::StateFeedbackLQR(const Eigen::MatrixXd& A, const Eigen::MatrixXd& B,
+                                   const Eigen::MatrixXd& C, const Eigen::MatrixXd& Q,
+                                   const Eigen::MatrixXd& R)
     : m_A(A), m_B(B), m_C(C), m_Q(Q), m_R(R)
 {
     // TODO: Check if A is square
@@ -35,7 +37,7 @@ StateFeedbackLQR::~StateFeedbackLQR()
 {
 }
 
-Eigen::VectorXd StateFeedbackLQR::generateControlInput(Eigen::VectorXd state)
+Eigen::VectorXd StateFeedbackLQR::generateControlInput(const Eigen::VectorXd& state)
 {
     return -m_feedbackGainMatrix * state;
 }
