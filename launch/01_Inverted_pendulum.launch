@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
     <!-- arguments -->
-    <arg name="x" default="0.0"/>
+    <arg name="x" default="1.0"/>
     <arg name="gui" default="true"/>
     <arg name="world_name" default="$(find gazebo_ros)/worlds/empty.world"/>
 

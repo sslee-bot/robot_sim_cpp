@@ -1,7 +1,16 @@
 #include "model/InvertedPendulum.h"
 
-InvertedPendulum::InvertedPendulum(double timeStep, double initPosition, double initAngle)
-    : m_cartPosition(initAngle), m_pendulumAngle(initAngle), m_timeStep(timeStep)
+InvertedPendulum::InvertedPendulum(double timeStep, double initPosition, double initAngle,
+                                   double cartMass, double pendulumMass, double frictionCoefficient,
+                                   double cartPendulumCenterDistance, double massMomentInertia)
+    : m_timeStep(timeStep),
+      m_cartPosition(initAngle),
+      m_pendulumAngle(initAngle),
+      m_cartMass(cartMass),
+      m_pendulumMass(pendulumMass),
+      m_frictionCoefficient(frictionCoefficient),
+      m_cartPendulumCenterDistance(cartPendulumCenterDistance),
+      m_massMomentInertia(massMomentInertia)
 {
     m_state << m_cartPosition, m_cartVelocity, m_pendulumAngle, m_pendulumAngularVelocity;
 

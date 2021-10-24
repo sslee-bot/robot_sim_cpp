@@ -22,7 +22,10 @@ const double gravitationalAcc = 9.8;
 class InvertedPendulum
 {
 public:
-    InvertedPendulum(double timeStep, double initPosition = 0.0, double initAngle = 0.0);
+    InvertedPendulum(double timeStep, double initPosition = 0.0, double initAngle = 0.0,
+                     double cartMass = 0.5, double pendulumMass = 0.2,
+                     double frictionCoefficient = 0.1, double cartPendulumCenterDistance = 0.3,
+                     double massMomentInertia = 0.006);
     virtual ~InvertedPendulum();
     virtual Eigen::Vector2d outputVector();
     virtual Eigen::Vector4d stateVector();
@@ -32,22 +35,22 @@ public:
     virtual void timeUpdate(double input);
 
 private:
-    // Intrinsic constants
-    double m_cartMass = 0.5, m_pendulumMass = 0.2;  // unit: kg
-    double m_frictionCoefficient = 0.1;             // unit: N/m/sec
-    double m_cartPendulumCenterDistance = 0.3;      // unit: m
-    double m_massMomentInertia = 0.006;             // unit: kg * m^2
-
-    // System input
-    double m_forceToCart = 0.0;
+    // Time step
+    double m_timeStep;
 
     // System states
     Eigen::Vector4d m_state;
     double m_cartPosition, m_pendulumAngle;
     double m_cartVelocity = 0.0, m_pendulumAngularVelocity = 0.0;
 
-    // Time step
-    double m_timeStep;
+    // Intrinsic constants
+    double m_cartMass, m_pendulumMass;    // unit: kg
+    double m_frictionCoefficient;         // unit: N/m/sec
+    double m_cartPendulumCenterDistance;  // unit: m
+    double m_massMomentInertia;           // unit: kg * m^2
+
+    // System input
+    double m_forceToCart = 0.0;
 
     // System matrices
     Eigen::Matrix<double, 4, 4> m_A;

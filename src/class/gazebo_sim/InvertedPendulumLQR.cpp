@@ -41,6 +41,14 @@ void InvertedPendulumLQR::startControl()
 {
     std::unique_lock<std::recursive_mutex> lock(m_mutex);
 
+    // Check model and joint state validities
+    if (!m_isModelStateValid || !m_isJointStateValid) {
+        ROS_ERROR_STREAM("[robot_sim_cpp] Model or joint state was not received yet.");
+        return;
+    }
+
+    ROS_INFO_STREAM("[robot_sim_cpp] Enable LQR controller for the inverted pendulum.");
+
     m_timer.start();
 }
 
@@ -65,14 +73,13 @@ void InvertedPendulumLQR::initialization()
     m_timer = m_nodeHandler.createTimer(ros::Duration(m_period), &InvertedPendulumLQR::periodicTask,
                                         this);
     m_timer.stop();
+
+    ROS_INFO_STREAM("[robot_sim_cpp] LQR controller for the inverted pendulum is initialized.");
 }
 
 void InvertedPendulumLQR::callbackModelState(const gazebo_msgs::ModelStatesConstPtr& msg)
 {
     std::unique_lock<std::recursive_mutex> lock(m_mutex);
-
-    // Update model state validity
-    m_isModelStateValid = true;
 
     // Get index
     auto nameVec = msg->name;
@@ -88,18 +95,26 @@ void InvertedPendulumLQR::callbackModelState(const gazebo_msgs::ModelStatesConst
         return;
     }
 
+    // Update model state validity
+    double cartPosition = msg->pose[index].position.x;
+    if (std::isnan(cartPosition)) {
+        m_isModelStateValid = false;
+        ROS_WARN_STREAM_THROTTLE(5, "[robot_sim_cpp] Cart position has invalid (nan) value.");
+        return;
+    }
+    else {
+        m_isModelStateValid = true;
+    }
+
     // Get position and velocity
     double cartPrevPosition = m_cartPosition;
-    m_cartPosition = msg->pose[index].position.x;
-    m_cartVelocity = (m_cartPosition - cartPrevPosition) / m_period;
+    m_cartPosition = cartPosition;
+    m_cartVelocity = (cartPosition - cartPrevPosition) / m_period;
 }
 
 void InvertedPendulumLQR::callbackJointState(const sensor_msgs::JointStateConstPtr& msg)
 {
     std::unique_lock<std::recursive_mutex> lock(m_mutex);
-
-    // Update joint state validity
-    m_isJointStateValid = true;
 
     // Get index
     auto nameVec = msg->name;
@@ -114,9 +129,22 @@ void InvertedPendulumLQR::callbackJointState(const sensor_msgs::JointStateConstP
         return;
     }
 
+    // Update joint state validity
+    double pendulumAngle = msg->position[index];
+    double pendulumAngularVelocity = msg->velocity[index];
+    if (std::isnan(pendulumAngle) || std::isnan(pendulumAngularVelocity)) {
+        m_isJointStateValid = false;
+        ROS_WARN_STREAM_THROTTLE(
+            5, "[robot_sim_cpp] Pendulum angle or angular velocity has invalid (nan) value.");
+        return;
+    }
+    else {
+        m_isJointStateValid = true;
+    }
+
     // Get angle and angular velocity
-    m_pendulumAngle = msg->position[index];
-    m_pendulumAngularVelocity = msg->velocity[index];
+    m_pendulumAngle = pendulumAngle;
+    m_pendulumAngularVelocity = pendulumAngularVelocity;
 }
 
 void InvertedPendulumLQR::periodicTask(const ros::TimerEvent& timerEvent)
