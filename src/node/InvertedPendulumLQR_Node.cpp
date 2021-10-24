@@ -1,54 +1,37 @@
 #include "gazebo_sim/InvertedPendulumLQR.h"
-
-const double gravitationalAcc = 9.8;
+#include "model/InvertedPendulum.h"
 
 int main(int argc, char** argv)
 {
     // Init node
     ros::init(argc, argv, "inverted_pendulum_LQR_node");
+    ros::NodeHandle nodeHandler("~");
 
     // Physical values of pendulum
-    double cartMass = 0.5;
-    double pendulumMass = 0.2;
-    double frictionCoefficient = 0.1;
-    double cartPendulumCenterDistance = 0.3;
-    double massMomentInertia = 0.006;
+    double cartMass, pendulumMass, frictionCoefficient, cartPendulumCenterDistance,
+        massMomentInertia;
 
-    // Set LQR controller
-    Eigen::Matrix<double, 4, 4> A;
-    Eigen::Matrix<double, 4, 1> B;
-    Eigen::Matrix<double, 2, 4> C;
+    nodeHandler.param("inverted_pendulum_LQR/cart_mass", cartMass, 0.5);
+    nodeHandler.param("inverted_pendulum_LQR/pendulum_mass", pendulumMass, 0.2);
+    nodeHandler.param("inverted_pendulum_LQR/friction_coefficient", frictionCoefficient, 0.1);
+    nodeHandler.param("inverted_pendulum_LQR/cart_pendulum_center_distance",
+                      cartPendulumCenterDistance, 0.3);
+    nodeHandler.param("inverted_pendulum_LQR/mass_moment_inertia", massMomentInertia, 0.006);
 
-    double p = massMomentInertia * (cartMass + pendulumMass) +
-               cartMass * pendulumMass * std::pow(cartPendulumCenterDistance, 2);
+    ROS_INFO_STREAM("[robot_sim_cpp] Inverted pendulum parameters are set for controller."
+                    << std::endl
+                    << "cart_mass: " << cartMass << std::endl
+                    << "pendulum_mass: " << pendulumMass << std::endl
+                    << "friction_coefficient: " << frictionCoefficient << std::endl
+                    << "cart_pendulum_center_distance: " << cartPendulumCenterDistance << std::endl
+                    << "massMomentInertia: " << massMomentInertia);
 
-    // Matrix A
-    A.setZero();
-    A(0, 1) = 1;
-    A(1, 1) = -(massMomentInertia + pendulumMass * std::pow(cartPendulumCenterDistance, 2)) *
-              frictionCoefficient / p;
-    A(1, 2) =
-        (std::pow(pendulumMass, 2) * gravitationalAcc * std::pow(cartPendulumCenterDistance, 2)) /
-        p;
-    A(2, 3) = 1;
-    A(3, 1) = -(pendulumMass * cartPendulumCenterDistance * frictionCoefficient) / p;
-    A(3, 2) = pendulumMass * gravitationalAcc * cartPendulumCenterDistance *
-              (cartMass + pendulumMass) / p;
-
-    // Matrix B
-    B.setZero();
-    B(1, 0) = (massMomentInertia + pendulumMass * std::pow(cartPendulumCenterDistance, 2)) / p;
-    B(3, 0) = pendulumMass * cartPendulumCenterDistance / p;
-
-    // Matrix C
-    C.setZero();
-    C(0, 0) = 1;
-    C(1, 2) = 1;
-
-    StateFeedbackLQR LQR(A, B, C);
+    // Set pendulum model
+    InvertedPendulum pendulumModel(0.0, 0.0, cartMass, pendulumMass, frictionCoefficient,
+                                   cartPendulumCenterDistance, massMomentInertia);
 
     // Set Gazebo inverted pendulum LQR control object
-    InvertedPendulumLQR IPLQR("inverted_pendulum", "pendulum_joint", 0.001, LQR,
+    InvertedPendulumLQR IPLQR("inverted_pendulum", "pendulum_joint", 0.001, pendulumModel,
                               "/gazebo/model_states", "/joint_states", "/cart_effort");
 
     // Start control

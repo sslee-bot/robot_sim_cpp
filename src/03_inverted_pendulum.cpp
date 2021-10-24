@@ -15,12 +15,12 @@
 int main(int argc, char* argv[])
 {
     // Set values for simulation
-    double timeStep = 0.01;
     double initPosition = 0.0;
     double initAngle = 0.1;
+    double period = 0.01;
 
     // Initialize pendulum and controller
-    InvertedPendulum pendulum(timeStep, initPosition, initAngle);
+    InvertedPendulum pendulum(initPosition, initAngle);
     StateFeedbackLQR controlLQR(pendulum.getMatrixA(), pendulum.getMatrixB(),
                                 pendulum.getMatrixC());
 
@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
         auto state = pendulum.stateVector();
         auto input = (controlLQR.generateControlInput(state))[0];
 
-        pendulum.timeUpdate(input);
+        pendulum.timeUpdate(input, period);
     }
 
     std::cout << "State after force applied" << std::endl;

@@ -67,7 +67,8 @@ add_library(link_effort src/class/gazebo_sim/LinkEffortPlugin.cc)
 target_link_libraries(link_effort ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 add_dependencies(link_effort ${catkin_EXPORTED_TARGETS})
 
-add_executable(inverted_pendulum_LQR_node src/class/algorithm/CARE_Solver.cpp
+add_executable(inverted_pendulum_LQR_node src/class/model/InvertedPendulum.cpp
+                                        src/class/algorithm/CARE_Solver.cpp
                                         src/class/controller/StateFeedbackLQR.cpp
                                         src/class/gazebo_sim/InvertedPendulumLQR.cpp
                                         src/node/InvertedPendulumLQR_Node.cpp)

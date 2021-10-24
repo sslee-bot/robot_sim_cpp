@@ -17,13 +17,14 @@
 #include <string>
 
 #include "controller/StateFeedbackLQR.h"
+#include "model/InvertedPendulum.h"
 
 class InvertedPendulumLQR
 {
 public:
     InvertedPendulumLQR(const std::string& invertedPendulumName,
                         const std::string& pendulumJointName, double period,
-                        const StateFeedbackLQR& LQR, const std::string& modelStateTopic,
+                        const InvertedPendulum& pendulumModel, const std::string& modelStateTopic,
                         const std::string& jointStateTopic, const std::string& controlTopic);
     virtual ~InvertedPendulumLQR();
     virtual void startControl();
@@ -51,7 +52,9 @@ private:
 
     std::recursive_mutex m_mutex;
 
+    InvertedPendulum m_pendulumModel;
     StateFeedbackLQR m_LQR;
+
     std::string m_modelStateTopic;
     std::string m_jointStateTopic;
     std::string m_controlTopic;

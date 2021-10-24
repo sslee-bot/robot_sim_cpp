@@ -17,27 +17,23 @@
 #include <cmath>
 #include <iostream>
 
-const double gravitationalAcc = 9.8;
+#include "RobotSimCppConstants.h"
 
 class InvertedPendulum
 {
 public:
-    InvertedPendulum(double timeStep, double initPosition = 0.0, double initAngle = 0.0,
-                     double cartMass = 0.5, double pendulumMass = 0.2,
-                     double frictionCoefficient = 0.1, double cartPendulumCenterDistance = 0.3,
-                     double massMomentInertia = 0.006);
+    InvertedPendulum(double initPosition = 0.0, double initAngle = 0.0, double cartMass = 0.5,
+                     double pendulumMass = 0.2, double frictionCoefficient = 0.1,
+                     double cartPendulumCenterDistance = 0.3, double massMomentInertia = 0.006);
     virtual ~InvertedPendulum();
     virtual Eigen::Vector2d outputVector();
     virtual Eigen::Vector4d stateVector();
     virtual Eigen::Matrix<double, 4, 4> getMatrixA();
     virtual Eigen::Matrix<double, 4, 1> getMatrixB();
     virtual Eigen::Matrix<double, 2, 4> getMatrixC();
-    virtual void timeUpdate(double input);
+    virtual void timeUpdate(double input, double timeStep);
 
 private:
-    // Time step
-    double m_timeStep;
-
     // System states
     Eigen::Vector4d m_state;
     double m_cartPosition, m_pendulumAngle;

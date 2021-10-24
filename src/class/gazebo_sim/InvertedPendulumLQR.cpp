@@ -2,7 +2,7 @@
 
 InvertedPendulumLQR::InvertedPendulumLQR(const std::string& invertedPendulumName,
                                          const std::string& pendulumJointName, double period,
-                                         const StateFeedbackLQR& LQR,
+                                         const InvertedPendulum& pendulumModel,
                                          const std::string& modelStateTopic,
                                          const std::string& jointStateTopic,
                                          const std::string& controlTopic)
@@ -18,7 +18,9 @@ InvertedPendulumLQR::InvertedPendulumLQR(const std::string& invertedPendulumName
       m_invertedPendulumName(invertedPendulumName),
       m_pendulumJointName(pendulumJointName),
       m_period(period),
-      m_LQR(LQR),
+      m_pendulumModel(pendulumModel),
+      m_LQR(m_pendulumModel.getMatrixA(), m_pendulumModel.getMatrixB(),
+            m_pendulumModel.getMatrixC()),
       m_modelStateTopic(modelStateTopic),
       m_jointStateTopic(jointStateTopic),
       m_controlTopic(controlTopic),
@@ -152,7 +154,7 @@ void InvertedPendulumLQR::periodicTask(const ros::TimerEvent& timerEvent)
     std::unique_lock<std::recursive_mutex> lock(m_mutex);
 
     // Check model and joint state validities
-    if (m_isModelStateValid == false || m_isJointStateValid == false) {
+    if (!m_isModelStateValid || !m_isJointStateValid) {
         ROS_WARN_STREAM_THROTTLE(5, "[robot_sim_cpp] Model or joint state was not received yet.");
         return;
     }

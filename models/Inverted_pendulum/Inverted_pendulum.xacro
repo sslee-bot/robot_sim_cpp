@@ -1,20 +1,27 @@
 <?xml version="1.0"?>
 <robot name="Inverted_pendulum" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+    <!-- arguments -->
+    <xacro:arg name="cart_mass" default="0.5"/>
+    <xacro:arg name="pendulum_mass" default="0.2"/>
+    <xacro:arg name="friction_coefficient" default="0.1"/>
+    <xacro:arg name="length_to_COM" default="0.3"/>
+    <xacro:arg name="pendulum_mass_moment" default="0.006"/>
+
     <!-- properties -->
     <xacro:property name="PI" value="3.141593"/>
 
-    <xacro:property name="cart_mass" value="0.5"/>
-    <xacro:property name="pendulum_mass" value="0.2"/>
-    <xacro:property name="friction_coefficient" value="0.1"/>
-    <xacro:property name="length_to_COM" value="0.3"/>
-    <xacro:property name="pendulum_mass_moment" value="0.006"/>
+    <xacro:property name="cart_mass" value="$(arg cart_mass)"/>
+    <xacro:property name="pendulum_mass" value="$(arg pendulum_mass)"/>
+    <xacro:property name="friction_coefficient" value="$(arg friction_coefficient)"/>
+    <xacro:property name="length_to_COM" value="$(arg length_to_COM)"/>
+    <xacro:property name="pendulum_mass_moment" value="$(arg pendulum_mass_moment)"/>
 
     <xacro:property name="cart_width" value="0.5"/>
     <xacro:property name="cart_depth" value="1.0"/>
     <xacro:property name="cart_height" value="0.5"/>
 
-    <xacro:property name="pendulum_length" value="0.6"/>
+    <xacro:property name="pendulum_length" value="$(eval length_to_COM * 2)"/>
     <xacro:property name="pendulum_radius" value="0.03"/>
 
     <!-- include -->

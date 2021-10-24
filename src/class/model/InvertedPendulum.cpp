@@ -1,10 +1,9 @@
 #include "model/InvertedPendulum.h"
 
-InvertedPendulum::InvertedPendulum(double timeStep, double initPosition, double initAngle,
-                                   double cartMass, double pendulumMass, double frictionCoefficient,
+InvertedPendulum::InvertedPendulum(double initPosition, double initAngle, double cartMass,
+                                   double pendulumMass, double frictionCoefficient,
                                    double cartPendulumCenterDistance, double massMomentInertia)
-    : m_timeStep(timeStep),
-      m_cartPosition(initAngle),
+    : m_cartPosition(initPosition),
       m_pendulumAngle(initAngle),
       m_cartMass(cartMass),
       m_pendulumMass(pendulumMass),
@@ -23,12 +22,11 @@ InvertedPendulum::InvertedPendulum(double timeStep, double initPosition, double 
     m_A(1, 1) =
         -(m_massMomentInertia + m_pendulumMass * std::pow(m_cartPendulumCenterDistance, 2)) *
         m_frictionCoefficient / p;
-    m_A(1, 2) = (std::pow(m_pendulumMass, 2) * gravitationalAcc *
-                 std::pow(m_cartPendulumCenterDistance, 2)) /
-                p;
+    m_A(1, 2) =
+        (std::pow(m_pendulumMass, 2) * GRAVITY_ACC * std::pow(m_cartPendulumCenterDistance, 2)) / p;
     m_A(2, 3) = 1;
     m_A(3, 1) = -(m_pendulumMass * m_cartPendulumCenterDistance * m_frictionCoefficient) / p;
-    m_A(3, 2) = m_pendulumMass * gravitationalAcc * m_cartPendulumCenterDistance *
+    m_A(3, 2) = m_pendulumMass * GRAVITY_ACC * m_cartPendulumCenterDistance *
                 (m_cartMass + m_pendulumMass) / p;
 
     // Matrix B
@@ -74,12 +72,12 @@ Eigen::Matrix<double, 2, 4> InvertedPendulum::getMatrixC()
     return m_C;
 }
 
-void InvertedPendulum::timeUpdate(double input)
+void InvertedPendulum::timeUpdate(double input, double timeStep)
 {
     m_forceToCart = input;
 
     // Update state
-    m_state += m_timeStep * (m_A * m_state + m_B * m_forceToCart);
+    m_state += timeStep * (m_A * m_state + m_B * m_forceToCart);
 
     m_cartPosition = m_state[0];
     m_cartVelocity = m_state[1];
