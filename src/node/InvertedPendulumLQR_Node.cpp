@@ -23,6 +23,7 @@ int main(int argc, char** argv)
                cartMass * pendulumMass * std::pow(cartPendulumCenterDistance, 2);
 
     // Matrix A
+    A.setZero();
     A(0, 1) = 1;
     A(1, 1) = -(massMomentInertia + pendulumMass * std::pow(cartPendulumCenterDistance, 2)) *
               frictionCoefficient / p;
@@ -35,10 +36,12 @@ int main(int argc, char** argv)
               (cartMass + pendulumMass) / p;
 
     // Matrix B
+    B.setZero();
     B(1, 0) = (massMomentInertia + pendulumMass * std::pow(cartPendulumCenterDistance, 2)) / p;
     B(3, 0) = pendulumMass * cartPendulumCenterDistance / p;
 
     // Matrix C
+    C.setZero();
     C(0, 0) = 1;
     C(1, 2) = 1;
 

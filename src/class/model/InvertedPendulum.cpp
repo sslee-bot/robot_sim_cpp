@@ -18,6 +18,7 @@ InvertedPendulum::InvertedPendulum(double timeStep, double initPosition, double 
                m_cartMass * m_pendulumMass * std::pow(m_cartPendulumCenterDistance, 2);
 
     // Matrix A
+    m_A.setZero();
     m_A(0, 1) = 1;
     m_A(1, 1) =
         -(m_massMomentInertia + m_pendulumMass * std::pow(m_cartPendulumCenterDistance, 2)) *
@@ -31,11 +32,13 @@ InvertedPendulum::InvertedPendulum(double timeStep, double initPosition, double 
                 (m_cartMass + m_pendulumMass) / p;
 
     // Matrix B
+    m_B.setZero();
     m_B(1, 0) =
         (m_massMomentInertia + m_pendulumMass * std::pow(m_cartPendulumCenterDistance, 2)) / p;
     m_B(3, 0) = m_pendulumMass * m_cartPendulumCenterDistance / p;
 
     // Matrix C
+    m_C.setZero();
     m_C(0, 0) = 1;
     m_C(1, 2) = 1;
 }
