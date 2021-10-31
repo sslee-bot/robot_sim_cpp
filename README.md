@@ -9,6 +9,9 @@ sudo apt-get install libeigen3-dev
 sudo apt-get install ros-${ROS_DISTRO}-gazebo-* \
                      ros-${ROS_DISTRO}-velodyne-gazebo-plugins* \
                      ros-${ROS_DISTRO}-hector-gazebo-*
+                     ros-${ROS_DISTRO}-jackal-simulator \
+                     ros-${ROS_DISTRO}-jackal-desktop \
+                     ros-${ROS_DISTRO}-jackal-navigation
 ```
 
 ## 2. Executable binaries
@@ -40,4 +43,10 @@ Simple simulation of inverted pendulum.
 ### 3.1. Inverted pendulum
 ```
 roslaunch robot_sim_cpp 01_Inverted_pendulum.launch
+```
+
+### 3.2. Jackal robot simulation
+* Under development
+```
+roslaunch robot_sim_cpp 02_jackal.launch
 ```
