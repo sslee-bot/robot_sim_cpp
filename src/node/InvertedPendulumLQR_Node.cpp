@@ -30,7 +30,7 @@ int main(int argc, char** argv)
     InvertedPendulum pendulumModel(0.0, 0.0, cartMass, pendulumMass, frictionCoefficient,
                                    cartPendulumCenterDistance, massMomentInertia);
 
-    // Set Gazebo inverted pendulum LQR control object
+    // Set Gazebo inverted pendulum LQR controller object
     InvertedPendulumLQR IPLQR("inverted_pendulum", "pendulum_joint", 0.001, pendulumModel,
                               "/gazebo/model_states", "/joint_states", "/cart_effort");
 

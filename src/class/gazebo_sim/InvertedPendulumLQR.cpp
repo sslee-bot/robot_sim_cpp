@@ -45,7 +45,7 @@ void InvertedPendulumLQR::startControl()
 
     // Check model and joint state validities
     if (!m_isModelStateValid || !m_isJointStateValid) {
-        ROS_ERROR_STREAM("[robot_sim_cpp] Model or joint state was not received yet.");
+        ROS_ERROR_STREAM("[robot_sim_cpp] Model or joint state has not been received yet.");
         return;
     }
 
@@ -155,7 +155,8 @@ void InvertedPendulumLQR::periodicTask(const ros::TimerEvent& timerEvent)
 
     // Check model and joint state validities
     if (!m_isModelStateValid || !m_isJointStateValid) {
-        ROS_WARN_STREAM_THROTTLE(5, "[robot_sim_cpp] Model or joint state was not received yet.");
+        ROS_WARN_STREAM_THROTTLE(5,
+                                 "[robot_sim_cpp] Model or joint state has not been received yet.");
         return;
     }
 

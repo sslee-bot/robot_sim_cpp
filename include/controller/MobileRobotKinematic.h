@@ -17,6 +17,8 @@
 #include <cmath>
 #include <iostream>
 
+#include "RobotSimCppGeneral.h"
+
 class MobileRobotKinematic
 {
 public:

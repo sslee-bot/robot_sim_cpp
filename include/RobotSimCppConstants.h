@@ -1,6 +1,0 @@
-#ifndef ROBOT_SIM_CPP_CONSTANTS_H
-#define ROBOT_SIM_CPP_CONSTANTS_H
-
-const double GRAVITY_ACC = 9.806;
-
-#endif

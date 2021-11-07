@@ -83,3 +83,10 @@ add_executable(inverted_pendulum_LQR_node src/class/model/InvertedPendulum.cpp
                                         src/node/InvertedPendulumLQR_Node.cpp)
 target_link_libraries(inverted_pendulum_LQR_node ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 add_dependencies(inverted_pendulum_LQR_node ${catkin_EXPORTED_TARGETS})
+
+add_executable(wheeled_mobile_robot_pose_control_node
+                src/class/controller/MobileRobotKinematic.cpp
+                src/class/gazebo_sim/WheeledMobileRobotPoseControl.cpp
+                src/node/WheeledMobileRobotPoseControlNode.cpp)
+target_link_libraries(wheeled_mobile_robot_pose_control_node ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+add_dependencies(wheeled_mobile_robot_pose_control_node ${catkin_EXPORTED_TARGETS})                

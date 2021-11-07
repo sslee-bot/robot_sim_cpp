@@ -11,6 +11,8 @@
 #include <ignition/math/Vector3.hh>
 #include <string>
 
+#include "RobotSimCppGeneral.h"
+
 namespace gazebo
 {
 class LinkEffortPlugin : public ModelPlugin

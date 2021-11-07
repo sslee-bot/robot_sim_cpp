@@ -1,28 +1,5 @@
 #include "controller/MobileRobotKinematic.h"
 
-double wrapAngle(double rawAngle)
-{
-    double ret;
-    ret = rawAngle;
-    if (ret >= M_PI) {
-        while (true) {
-            ret = ret - 2 * M_PI;
-            if (ret < M_PI) {
-                break;
-            }
-        }
-    }
-    if (ret < -M_PI) {
-        while (true) {
-            ret = ret + 2 * M_PI;
-            if (ret > -M_PI) {
-                break;
-            }
-        }
-    }
-    return ret;
-}
-
 MobileRobotKinematic::MobileRobotKinematic(double gamma_1, double gamma_2, double h)
     : m_gamma_1(gamma_1), m_gamma_2(gamma_2), m_h(h)
 {

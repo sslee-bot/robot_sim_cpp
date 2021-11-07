@@ -16,6 +16,8 @@
 #include <Eigen/Dense>
 #include <iostream>
 
+#include "RobotSimCppGeneral.h"
+
 class CARE_Solver
 {
 public:
