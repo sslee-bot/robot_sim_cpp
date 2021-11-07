@@ -59,7 +59,15 @@ add_executable(03_inverted_pendulum
     src/class/controller/StateFeedbackLQR.cpp
     src/03_inverted_pendulum.cpp)
 
-set_target_properties(01_matrix_basic 02_CARE 03_inverted_pendulum
+add_executable(04_wheeled_mobile_robot
+    src/class/model/WheeledMobileRobot.cpp
+    src/04_wheeled_mobile_robot.cpp)
+
+set_target_properties(
+    01_matrix_basic
+    02_CARE
+    03_inverted_pendulum
+    04_wheeled_mobile_robot
     PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/bin)
 
 ## Gazebo plugins and nodes
