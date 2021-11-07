@@ -1,7 +1,8 @@
 /**
  * @file WheeledMobileRobot.h
  * @author Sang Su Lee (physism@gmail.com)
- * @brief Wheeled mobile robot
+ * @brief Wheeled mobile robot. See equation (7) in the following material.
+ * https://www.semanticscholar.org/paper/Control-of-a-nonholonomic-mobile-robot-using-neural-Fierro-Lewis/fee564882bef314be31d56d50a1c4dac48926742
  * @version 1.0
  * @date 2021-11-06
  *

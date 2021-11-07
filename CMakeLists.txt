@@ -61,6 +61,7 @@ add_executable(03_inverted_pendulum
 
 add_executable(04_wheeled_mobile_robot
     src/class/model/WheeledMobileRobot.cpp
+    src/class/controller/MobileRobotKinematic.cpp
     src/04_wheeled_mobile_robot.cpp)
 
 set_target_properties(

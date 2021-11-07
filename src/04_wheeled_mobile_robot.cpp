@@ -9,29 +9,33 @@
  *
  */
 
+#include "controller/MobileRobotKinematic.h"
 #include "model/WheeledMobileRobot.h"
 
 int main(int argc, char* argv[])
 {
     // Set values for simulation
-    double initX = 0.0;
-    double initY = 0.0;
-    double initTheta = 0.0;
-    double centerToWheelAxis = 0.0;
-    // double period = 0.01;
+    double period = 0.01;
+    double initX = 0.0, initY = 0.0, initTheta = 0.0, centerToWheelAxis = 0.0;
+    double desiredX = 1.0, desiredY = 1.0, desiredTheta = 0.0;
+    double gamma_1 = 1.5, gamma_2 = 1.0, h = 2.0;
 
-    // Initialize wheeled mobile robot
+    // Construct desired state vector
+    Eigen::Vector3d desiredState;
+    desiredState << desiredX, desiredY, desiredTheta;
+
+    // Initialize wheeled mobile robot and controller
     WheeledMobileRobot robot(initX, initY, initTheta, centerToWheelAxis);
+    MobileRobotKinematic controller(gamma_1, gamma_2, h);
 
     std::cout << "Initial state of the wheeled mobile robot" << std::endl;
     std::cout << robot.stateVector() << std::endl << std::endl;
 
-    for (int i = 0; i < 500; i++) {
-        // TODO: implement controller for robot
-        // auto state = robot.stateVector();
-        // auto input =
+    for (int i = 0; i < 1000; i++) {
+        auto currentState = robot.stateVector();
+        auto input = controller.generateControlInput(currentState, desiredState);
 
-        // robot.timeUpdate(input, period);
+        robot.timeUpdate(input, period);
     }
 
     std::cout << "State after controller applied" << std::endl;
