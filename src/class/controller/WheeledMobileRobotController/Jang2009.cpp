@@ -1,17 +1,17 @@
-#include "controller/MobileRobotKinematic.h"
+#include "controller/WheeledMobileRobotController/Jang2009.h"
 
-MobileRobotKinematic::MobileRobotKinematic(double gamma_1, double gamma_2, double h)
+Jang2009::Jang2009(double gamma_1, double gamma_2, double h)
     : m_gamma_1(gamma_1), m_gamma_2(gamma_2), m_h(h)
 {
     // TODO: Check validities of the controller parameters
 }
 
-MobileRobotKinematic::~MobileRobotKinematic()
+Jang2009::~Jang2009()
 {
 }
 
-Eigen::Vector2d MobileRobotKinematic::generateControlInput(const Eigen::Vector3d& currentState,
-                                                           const Eigen::Vector3d& desiredState)
+Eigen::Vector2d Jang2009::poseControl(const Eigen::Vector3d& currentState,
+                                      const Eigen::Vector3d& desiredState)
 {
     double e, phi, alpha;
 

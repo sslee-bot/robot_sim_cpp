@@ -20,7 +20,7 @@ int main(int argc, char** argv)
                     << "h: " << h);
 
     // Set controller
-    MobileRobotKinematic controller(gamma_1, gamma_2, h);
+    Jang2009 controller(gamma_1, gamma_2, h);
 
     // Set Gazebo robot pose controller object
     WheeledMobileRobotPoseControl robotPoseController(

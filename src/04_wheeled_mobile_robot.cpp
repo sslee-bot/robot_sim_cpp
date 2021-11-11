@@ -9,7 +9,7 @@
  *
  */
 
-#include "controller/MobileRobotKinematic.h"
+#include "controller/WheeledMobileRobotController/Jang2009.h"
 #include "model/WheeledMobileRobot.h"
 
 int main(int argc, char* argv[])
@@ -26,14 +26,14 @@ int main(int argc, char* argv[])
 
     // Initialize wheeled mobile robot and controller
     WheeledMobileRobot robot(initX, initY, initTheta, centerToWheelAxis);
-    MobileRobotKinematic controller(gamma_1, gamma_2, h);
+    Jang2009 controller(gamma_1, gamma_2, h);
 
     std::cout << "Initial state of the wheeled mobile robot" << std::endl;
     std::cout << robot.stateVector() << std::endl << std::endl;
 
     for (int i = 0; i < 1000; i++) {
         auto currentState = robot.stateVector();
-        auto input = controller.generateControlInput(currentState, desiredState);
+        auto input = controller.poseControl(currentState, desiredState);
 
         robot.timeUpdate(input, period);
     }

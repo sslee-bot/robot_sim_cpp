@@ -61,7 +61,7 @@ add_executable(03_inverted_pendulum
 
 add_executable(04_wheeled_mobile_robot
     src/class/model/WheeledMobileRobot.cpp
-    src/class/controller/MobileRobotKinematic.cpp
+    src/class/controller/WheeledMobileRobotController/Jang2009.cpp
     src/04_wheeled_mobile_robot.cpp)
 
 set_target_properties(
@@ -85,7 +85,7 @@ target_link_libraries(inverted_pendulum_LQR_node ${catkin_LIBRARIES} ${GAZEBO_LI
 add_dependencies(inverted_pendulum_LQR_node ${catkin_EXPORTED_TARGETS})
 
 add_executable(wheeled_mobile_robot_pose_control_node
-                src/class/controller/MobileRobotKinematic.cpp
+                src/class/controller/WheeledMobileRobotController/Jang2009.cpp
                 src/class/gazebo_sim/WheeledMobileRobotPoseControl.cpp
                 src/node/WheeledMobileRobotPoseControlNode.cpp)
 target_link_libraries(wheeled_mobile_robot_pose_control_node ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})

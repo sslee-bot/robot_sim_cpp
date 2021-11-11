@@ -17,15 +17,14 @@
 #include <string>
 
 #include "RobotSimCppGeneral.h"
-#include "controller/MobileRobotKinematic.h"
+#include "controller/WheeledMobileRobotController/Jang2009.h"
 #include "model/WheeledMobileRobot.h"
 
 class WheeledMobileRobotPoseControl
 {
 public:
     WheeledMobileRobotPoseControl(const std::string& robotModelName, double period,
-                                  const MobileRobotKinematic& controller,
-                                  const std::string& modelStateTopic,
+                                  const Jang2009& controller, const std::string& modelStateTopic,
                                   const std::string& targetStateTopic,
                                   const std::string& controlTopic);
     virtual ~WheeledMobileRobotPoseControl();
@@ -54,7 +53,7 @@ private:
 
     std::recursive_mutex m_mutex;
 
-    MobileRobotKinematic m_controller;
+    Jang2009 m_controller;
 
     std::string m_modelStateTopic;
     std::string m_targetStateTopic;

@@ -2,7 +2,7 @@
 
 WheeledMobileRobotPoseControl::WheeledMobileRobotPoseControl(const std::string& robotModelName,
                                                              double period,
-                                                             const MobileRobotKinematic& controller,
+                                                             const Jang2009& controller,
                                                              const std::string& modelStateTopic,
                                                              const std::string& targetStateTopic,
                                                              const std::string& controlTopic)
@@ -162,7 +162,7 @@ void WheeledMobileRobotPoseControl::periodicTask(const ros::TimerEvent& timerEve
         }
 
         // Calculate control input
-        auto control = m_controller.generateControlInput(m_currentPose, m_desiredPose);
+        auto control = m_controller.poseControl(m_currentPose, m_desiredPose);
 
         // Publish
         m_controlMsg.linear.x = control[0];

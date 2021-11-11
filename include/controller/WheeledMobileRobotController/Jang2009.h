@@ -1,5 +1,5 @@
 /**
- * @file MobileRobotKinematic.h
+ * @file Jang2009.h
  * @author Sang Su Lee (physism@gmail.com)
  * @brief Kinematic controller for simple mobile robot. See IV. A. in the following material.
  * https://www.researchgate.net/publication/224560616_Neuro-fuzzy_Network_Control_for_a_Mobile_Robot
@@ -10,22 +10,23 @@
  *
  */
 
-#ifndef MOBILE_ROBOT_KINEMATIC_CONTROLLER_H
-#define MOBILE_ROBOT_KINEMATIC_CONTROLLER_H
+#ifndef JANG_2009_H
+#define JANG_2009_H
 
 #include <Eigen/Dense>
 #include <cmath>
 #include <iostream>
 
 #include "RobotSimCppGeneral.h"
+#include "controller/WheeledMobileRobotController.h"
 
-class MobileRobotKinematic
+class Jang2009 : public WheeledMobileRobotController
 {
 public:
-    MobileRobotKinematic(double gamma_1, double gamma_2, double h);
-    virtual ~MobileRobotKinematic();
-    virtual Eigen::Vector2d generateControlInput(const Eigen::Vector3d& currentState,
-                                                 const Eigen::Vector3d& desiredState);
+    Jang2009(double gamma_1, double gamma_2, double h);
+    virtual ~Jang2009();
+    virtual Eigen::Vector2d poseControl(const Eigen::Vector3d& currentState,
+                                        const Eigen::Vector3d& desiredState);
 
 private:
     // Controller parameters
