@@ -1,7 +1,8 @@
 /**
  * @file Jang2009.h
  * @author Sang Su Lee (physism@gmail.com)
- * @brief Kinematic controller for simple mobile robot. See IV. A. in the following material.
+ * @brief Kinematic controller for simple mobile robot.
+ * See IV. A. in the following material.
  * https://www.researchgate.net/publication/224560616_Neuro-fuzzy_Network_Control_for_a_Mobile_Robot
  * @version 0.1
  * @date 2021-11-07

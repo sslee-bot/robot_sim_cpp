@@ -9,7 +9,10 @@
  *
  */
 
+#include <memory>
+
 #include "controller/WheeledMobileRobotController/Jang2009.h"
+#include "controller/WheeledMobileRobotController/Kanayama1990.h"
 #include "model/WheeledMobileRobot.h"
 
 int main(int argc, char* argv[])
@@ -19,6 +22,7 @@ int main(int argc, char* argv[])
     double initX = 0.0, initY = 0.0, initTheta = 0.0, centerToWheelAxis = 0.0;
     double desiredX = 1.0, desiredY = 1.0, desiredTheta = 0.0;
     double gamma_1 = 1.5, gamma_2 = 1.0, h = 2.0;
+    double k1 = 1.0, k2 = 5.0, k3 = 0.3;
 
     // Construct desired state vector
     Eigen::Vector3d desiredState;
@@ -26,14 +30,38 @@ int main(int argc, char* argv[])
 
     // Initialize wheeled mobile robot and controller
     WheeledMobileRobot robot(initX, initY, initTheta, centerToWheelAxis);
-    Jang2009 controller(gamma_1, gamma_2, h);
+    std::shared_ptr<WheeledMobileRobotController> pController;
 
+    while (true) {
+        int controllerCode;
+        std::cout << "Select controller" << std::endl << std::endl;
+
+        std::cout << "1. Jang2009" << std::endl;
+        std::cout << "2. Kanayama1990" << std::endl << std::endl;
+
+        std::cout << "Enter number: ";
+        std::cin >> controllerCode;
+
+        if (controllerCode == 1) {
+            pController = std::make_shared<Jang2009>(gamma_1, gamma_2, h);
+            break;
+        }
+        else if (controllerCode == 2) {
+            pController = std::make_shared<Kanayama1990>(k1, k2, k3);
+            break;
+        }
+        else {
+            std::cout << "Invalid number. Please try again." << std::endl << std::endl;
+        }
+    }
+
+    std::cout << std::endl;
     std::cout << "Initial state of the wheeled mobile robot" << std::endl;
     std::cout << robot.stateVector() << std::endl << std::endl;
 
     for (int i = 0; i < 1000; i++) {
         auto currentState = robot.stateVector();
-        auto input = controller.poseControl(currentState, desiredState);
+        auto input = pController->poseControl(currentState, desiredState);
 
         robot.timeUpdate(input, period);
     }
