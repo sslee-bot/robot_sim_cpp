@@ -152,7 +152,7 @@ void WheeledMobileRobotPoseControl::periodicTask(const ros::TimerEvent& timerEve
         // Check if robot arrived target
         double positionError = (m_currentPose.head(2) - m_desiredPose.head(2)).norm();
         double angleError = wrapAngle(m_currentPose[2] - m_desiredPose[2]);
-        if (positionError < 0.1 && std::abs(angleError) < 0.5) {
+        if (positionError < POSITION_ERROR_UPPER && std::abs(angleError) < ANGLE_ERROR_UPPER) {
             ROS_INFO_STREAM("[robot_sim_cpp] Robot has arrived the target."
                             << std::endl
                             << "Current pose: x: " << m_currentPose[0] << " y: " << m_currentPose[1]

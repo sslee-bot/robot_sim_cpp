@@ -12,17 +12,14 @@ Eigen::Vector2d Kanayama1990::poseControl(const Eigen::Vector3d& currentState,
                                           const Eigen::Vector3d& desiredState)
 {
     double linearVelocityRef = 0.0, angularVelocityRef = 0.0;
-    Eigen::Vector3d error = desiredState - currentState;
+    Eigen::Vector3d stateError = desiredState - currentState;
 
     double currentAngle = currentState[2];
-    double directionAngle = std::atan2(error[1], error[0]);
+    double directionAngle = std::atan2(stateError[1], stateError[0]);
+    double angleDiff = directionAngle - currentAngle;
 
-    linearVelocityRef = error.head(2).norm() / std::cos(directionAngle - currentAngle);
-    linearVelocityRef = std::max(std::min(linearVelocityRef, 1.0), -1.0);
-
-    // angularVelocityRef = wrapAngle(error[2]);
-    angularVelocityRef = wrapAngle(directionAngle - currentAngle);
-    angularVelocityRef = std::max(std::min(angularVelocityRef, 1.0), -1.0);
+    linearVelocityRef = (std::cos(angleDiff) > 0.0) ? 0.5 : -0.5;
+    angularVelocityRef = (std::tan(angleDiff) > 0.0) ? 0.5 : -0.5;
 
     return poseVelocityControl(linearVelocityRef, angularVelocityRef, currentState, desiredState);
 }
@@ -39,6 +36,7 @@ Eigen::Vector2d Kanayama1990::poseVelocityControl(double linearVelocityRef,
         std::cos(currentAngle), 0.0, 0.0, 0.0, 1.0;
 
     Eigen::Vector3d postureError = T * (desiredState - currentState);
+    postureError[2] = wrapAngle(postureError[2]);
 
     double linearVel = 0.0, angularVel = 0.0;
     linearVel = linearVelocityRef * std::cos(postureError[2]) + m_k1 * postureError[0];

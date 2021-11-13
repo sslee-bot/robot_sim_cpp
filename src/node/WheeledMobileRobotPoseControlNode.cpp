@@ -21,6 +21,7 @@ int main(int argc, char** argv)
     std::shared_ptr<WheeledMobileRobotController> pController;
 
     while (true) {
+        // TODO: make it easy to see on terminal
         int controllerCode;
         std::cout << "Select controller" << std::endl << std::endl;
 

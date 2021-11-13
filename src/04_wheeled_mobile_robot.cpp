@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
     double initX = 0.0, initY = 0.0, initTheta = 0.0, centerToWheelAxis = 0.0;
     double desiredX = 1.0, desiredY = 1.0, desiredTheta = 0.0;
     double gamma_1 = 1.5, gamma_2 = 1.0, h = 2.0;
-    double k1 = 1.0, k2 = 5.0, k3 = 0.3;
+    double k1 = 0.2, k2 = 10.0, k3 = 1.0;
 
     // Construct desired state vector
     Eigen::Vector3d desiredState;
@@ -34,8 +34,6 @@ int main(int argc, char* argv[])
 
     while (true) {
         int controllerCode;
-
-        // TODO: make it easy to see on terminal
         std::cout << "Select controller" << std::endl << std::endl;
 
         std::cout << "1. Jang2009" << std::endl;

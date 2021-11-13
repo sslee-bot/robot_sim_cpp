@@ -21,6 +21,9 @@
 #include "controller/WheeledMobileRobotController/Kanayama1990.h"
 #include "model/WheeledMobileRobot.h"
 
+const double POSITION_ERROR_UPPER = 0.3;
+const double ANGLE_ERROR_UPPER = 0.3;
+
 class WheeledMobileRobotPoseControl
 {
 public:

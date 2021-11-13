@@ -6,9 +6,9 @@
     <arg name="gamma_2" default="0.3" />
     <arg name="h" default="1.0" />
     <!-- Kanayama1990 -->
-    <arg name="k1" default="1.0" />
-    <arg name="k2" default="3.0" />
-    <arg name="k3" default="0.3" />
+    <arg name="k1" default="0.0" />
+    <arg name="k2" default="1.0" />
+    <arg name="k3" default="0.0" />
 
     <arg name="gui" default="true" />
     <arg name="world_name" default="$(find gazebo_ros)/worlds/empty.world" />
