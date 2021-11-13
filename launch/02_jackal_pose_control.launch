@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
     <!-- arguments -->
+    <!-- Jang2009 -->
     <arg name="gamma_1" default="0.3" />
     <arg name="gamma_2" default="0.3" />
     <arg name="h" default="1.0" />
+    <!-- Kanayama1990 -->
+    <arg name="k1" default="1.0" />
+    <arg name="k2" default="3.0" />
+    <arg name="k3" default="0.3" />
 
     <arg name="gui" default="true" />
     <arg name="world_name" default="$(find gazebo_ros)/worlds/empty.world" />
@@ -19,8 +24,11 @@
     <!-- run controller -->
     <node pkg="robot_sim_cpp" type="wheeled_mobile_robot_pose_control_node"
             name="wheeled_mobile_robot_pose_control_node" respawn="false" output="screen">
-        <param name="wheeled_mobile_robot_pose_control/gamma_1" type="double" value="$(arg gamma_1)" />
-        <param name="wheeled_mobile_robot_pose_control/gamma_2" type="double" value="$(arg gamma_2)" />
-        <param name="wheeled_mobile_robot_pose_control/h" type="double" value="$(arg h)" />
+        <param name="wheeled_mobile_robot_pose_control/Jang2009/gamma_1" type="double" value="$(arg gamma_1)" />
+        <param name="wheeled_mobile_robot_pose_control/Jang2009/gamma_2" type="double" value="$(arg gamma_2)" />
+        <param name="wheeled_mobile_robot_pose_control/Jang2009/h" type="double" value="$(arg h)" />
+        <param name="wheeled_mobile_robot_pose_control/Kanayama1990/k1" type="double" value="$(arg k1)" />
+        <param name="wheeled_mobile_robot_pose_control/Kanayama1990/k2" type="double" value="$(arg k2)" />
+        <param name="wheeled_mobile_robot_pose_control/Kanayama1990/k3" type="double" value="$(arg k3)" />
     </node>
 </launch>

@@ -1,11 +1,10 @@
 #include "gazebo_sim/WheeledMobileRobotPoseControl.h"
 
-WheeledMobileRobotPoseControl::WheeledMobileRobotPoseControl(const std::string& robotModelName,
-                                                             double period,
-                                                             const Jang2009& controller,
-                                                             const std::string& modelStateTopic,
-                                                             const std::string& targetStateTopic,
-                                                             const std::string& controlTopic)
+WheeledMobileRobotPoseControl::WheeledMobileRobotPoseControl(
+    const std::string& robotModelName, double period,
+    const std::shared_ptr<WheeledMobileRobotController>& pController,
+    const std::string& modelStateTopic, const std::string& targetStateTopic,
+    const std::string& controlTopic)
     : m_nodeHandler(""),
       m_customQueue(),
       m_asyncSpinner(0, &m_customQueue),
@@ -18,40 +17,12 @@ WheeledMobileRobotPoseControl::WheeledMobileRobotPoseControl(const std::string& 
       m_isArrive(true),
       m_robotModelName(robotModelName),
       m_period(period),
-      m_controller(controller),
+      m_mutex(),
+      m_pController(pController),
       m_modelStateTopic(modelStateTopic),
       m_targetStateTopic(targetStateTopic),
       m_controlTopic(controlTopic),
       m_controlMsg()
-{
-    initialization();
-}
-
-WheeledMobileRobotPoseControl::~WheeledMobileRobotPoseControl()
-{
-    m_asyncSpinner.stop();
-    m_timer.stop();
-    m_modelStatesSub.shutdown();
-    m_controlPub.shutdown();
-    m_nodeHandler.shutdown();
-}
-
-void WheeledMobileRobotPoseControl::startControl()
-{
-    std::unique_lock<std::recursive_mutex> lock(m_mutex);
-
-    // Check model state validity
-    if (!m_isModelStateValid || !m_isTargetStateValid) {
-        ROS_ERROR_STREAM("[robot_sim_cpp] Model or target state is not valid.");
-        return;
-    }
-
-    ROS_INFO_STREAM("[robot_sim_cpp] Enable kinematic controller for the mobile robot.");
-
-    m_timer.start();
-}
-
-void WheeledMobileRobotPoseControl::initialization()
 {
     // Custom queue
     m_nodeHandler.setCallbackQueue(&m_customQueue);
@@ -78,6 +49,36 @@ void WheeledMobileRobotPoseControl::initialization()
     m_desiredPose.setZero();
 
     ROS_INFO_STREAM("[robot_sim_cpp] Kinematic controller for mobile robot is initialized.");
+}
+
+WheeledMobileRobotPoseControl::~WheeledMobileRobotPoseControl()
+{
+    m_asyncSpinner.stop();
+    m_timer.stop();
+    m_modelStatesSub.shutdown();
+    m_controlPub.shutdown();
+    m_nodeHandler.shutdown();
+}
+
+void WheeledMobileRobotPoseControl::startControl()
+{
+    std::unique_lock<std::recursive_mutex> lock(m_mutex);
+
+    // Check model state validity
+    if (!m_isModelStateValid || !m_isTargetStateValid) {
+        ROS_ERROR_STREAM("[robot_sim_cpp] Model or target state is not valid.");
+        return;
+    }
+
+    // Check controller validity
+    if (m_pController == nullptr) {
+        ROS_ERROR_STREAM("[robot_sim_cpp] Controller for mobile robot is not set.");
+        return;
+    }
+
+    ROS_INFO_STREAM("[robot_sim_cpp] Enable kinematic controller for the mobile robot.");
+
+    m_timer.start();
 }
 
 void WheeledMobileRobotPoseControl::callbackModelState(const gazebo_msgs::ModelStatesConstPtr& msg)
@@ -162,7 +163,7 @@ void WheeledMobileRobotPoseControl::periodicTask(const ros::TimerEvent& timerEve
         }
 
         // Calculate control input
-        auto control = m_controller.poseControl(m_currentPose, m_desiredPose);
+        auto control = m_pController->poseControl(m_currentPose, m_desiredPose);
 
         // Publish
         m_controlMsg.linear.x = control[0];

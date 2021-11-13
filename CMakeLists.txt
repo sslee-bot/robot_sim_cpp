@@ -87,6 +87,7 @@ add_dependencies(inverted_pendulum_LQR_node ${catkin_EXPORTED_TARGETS})
 
 add_executable(wheeled_mobile_robot_pose_control_node
                 src/class/controller/WheeledMobileRobotController/Jang2009.cpp
+                src/class/controller/WheeledMobileRobotController/Kanayama1990.cpp
                 src/class/gazebo_sim/WheeledMobileRobotPoseControl.cpp
                 src/node/WheeledMobileRobotPoseControlNode.cpp)
 target_link_libraries(wheeled_mobile_robot_pose_control_node ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})

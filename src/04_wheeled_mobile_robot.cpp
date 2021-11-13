@@ -34,6 +34,8 @@ int main(int argc, char* argv[])
 
     while (true) {
         int controllerCode;
+
+        // TODO: make it easy to see on terminal
         std::cout << "Select controller" << std::endl << std::endl;
 
         std::cout << "1. Jang2009" << std::endl;

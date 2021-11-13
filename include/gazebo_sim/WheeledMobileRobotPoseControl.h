@@ -18,20 +18,21 @@
 
 #include "RobotSimCppGeneral.h"
 #include "controller/WheeledMobileRobotController/Jang2009.h"
+#include "controller/WheeledMobileRobotController/Kanayama1990.h"
 #include "model/WheeledMobileRobot.h"
 
 class WheeledMobileRobotPoseControl
 {
 public:
     WheeledMobileRobotPoseControl(const std::string& robotModelName, double period,
-                                  const Jang2009& controller, const std::string& modelStateTopic,
+                                  const std::shared_ptr<WheeledMobileRobotController>& pController,
+                                  const std::string& modelStateTopic,
                                   const std::string& targetStateTopic,
                                   const std::string& controlTopic);
     virtual ~WheeledMobileRobotPoseControl();
     virtual void startControl();
 
 private:
-    virtual void initialization();
     virtual void callbackModelState(const gazebo_msgs::ModelStatesConstPtr& msg);
     virtual void callbackTargetPose(const geometry_msgs::TwistConstPtr& msg);
     virtual void periodicTask(const ros::TimerEvent& timerEvent);
@@ -53,7 +54,7 @@ private:
 
     std::recursive_mutex m_mutex;
 
-    Jang2009 m_controller;
+    std::shared_ptr<WheeledMobileRobotController> m_pController;
 
     std::string m_modelStateTopic;
     std::string m_targetStateTopic;

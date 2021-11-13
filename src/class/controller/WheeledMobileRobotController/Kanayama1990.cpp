@@ -17,10 +17,11 @@ Eigen::Vector2d Kanayama1990::poseControl(const Eigen::Vector3d& currentState,
     double currentAngle = currentState[2];
     double directionAngle = std::atan2(error[1], error[0]);
 
-    linearVelocityRef = error.head(2).norm() / std::cos(currentAngle - directionAngle);
+    linearVelocityRef = error.head(2).norm() / std::cos(directionAngle - currentAngle);
     linearVelocityRef = std::max(std::min(linearVelocityRef, 1.0), -1.0);
 
-    angularVelocityRef = wrapAngle(error[2]);
+    // angularVelocityRef = wrapAngle(error[2]);
+    angularVelocityRef = wrapAngle(directionAngle - currentAngle);
     angularVelocityRef = std::max(std::min(angularVelocityRef, 1.0), -1.0);
 
     return poseVelocityControl(linearVelocityRef, angularVelocityRef, currentState, desiredState);
