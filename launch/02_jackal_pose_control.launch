@@ -3,8 +3,11 @@
     <!-- arguments -->
     <!-- Jang2009 -->
     <arg name="gamma_1" default="0.3" />
-    <arg name="gamma_2" default="0.3" />
+    <arg name="gamma_2" default="3.0" />
     <arg name="h" default="1.0" />
+    <!-- Kim2002_1 -->
+    <arg name="k" default="0.5" />
+    <arg name="mu" default="1.0" />
 
     <arg name="gui" default="true" />
     <arg name="world_name" default="$(find gazebo_ros)/worlds/empty.world" />
@@ -23,5 +26,7 @@
         <param name="wheeled_mobile_robot_pose_control/Jang2009/gamma_1" type="double" value="$(arg gamma_1)" />
         <param name="wheeled_mobile_robot_pose_control/Jang2009/gamma_2" type="double" value="$(arg gamma_2)" />
         <param name="wheeled_mobile_robot_pose_control/Jang2009/h" type="double" value="$(arg h)" />
+        <param name="wheeled_mobile_robot_pose_control/Kim2002_1/k" type="double" value="$(arg k)" />
+        <param name="wheeled_mobile_robot_pose_control/Kim2002_1/mu" type="double" value="$(arg mu)" />
     </node>
 </launch>

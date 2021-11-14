@@ -11,16 +11,17 @@ Kim2002_1::~Kim2002_1()
 Eigen::Vector2d Kim2002_1::poseControl(const Eigen::Vector3d& currentState,
                                        const Eigen::Vector3d& desiredState)
 {
-    Eigen::Matrix3d Transform;
-    double xDesired = desiredState[0], yDesired = desiredState[1], thetaDesired = desiredState[2];
-    Transform << std::cos(thetaDesired), std::sin(thetaDesired), -xDesired, -std::sin(thetaDesired),
-        std::cos(thetaDesired), -yDesired, 0.0, 0.0, 1.0;
+    Eigen::Matrix2d rotationMatrix;
+    rotationMatrix << std::cos(desiredState[2]), std::sin(desiredState[2]),
+        -std::sin(desiredState[2]), std::cos(desiredState[2]);
+    Eigen::Vector3d stateError = currentState - desiredState;
+
+    Eigen::Vector2d rotatedPosition = rotationMatrix * stateError.head(2);
 
     double x, y, theta;
-    Eigen::Vector3d transfromedVector = Transform * currentState;
-    x = transfromedVector[0];
-    y = transfromedVector[1];
-    theta = currentState[2] - desiredState[2];
+    x = rotatedPosition[0];
+    y = rotatedPosition[1];
+    theta = stateError[2];
 
     double x1, x2, x3;
     x1 = x * std::cos(theta) + y * std::sin(theta);

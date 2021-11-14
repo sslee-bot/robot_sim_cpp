@@ -18,6 +18,7 @@
 
 #include "RobotSimCppGeneral.h"
 #include "controller/WheeledMobileRobotController/Jang2009.h"
+#include "controller/WheeledMobileRobotController/Kim2002_1.h"
 #include "model/WheeledMobileRobot.h"
 
 const double POSITION_ERROR_UPPER = 0.3;
