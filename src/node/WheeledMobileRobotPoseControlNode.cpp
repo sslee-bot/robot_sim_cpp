@@ -19,6 +19,8 @@ int main(int argc, char** argv)
     // Set controller
     std::shared_ptr<WheeledMobileRobotController> pController;
 
+    ros::Duration(2.0).sleep();
+
     while (true) {
         // TODO: make it easy to see on terminal
         int controllerCode;
