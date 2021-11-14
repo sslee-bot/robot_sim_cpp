@@ -14,12 +14,31 @@ Eigen::Vector2d Kanayama1990::poseControl(const Eigen::Vector3d& currentState,
     double linearVelocityRef = 0.0, angularVelocityRef = 0.0;
     Eigen::Vector3d stateError = desiredState - currentState;
 
+    double positionError = stateError.head(2).norm();
     double currentAngle = currentState[2];
-    double directionAngle = std::atan2(stateError[1], stateError[0]);
-    double angleDiff = directionAngle - currentAngle;
+    double directionAngle = wrapAngle(std::atan2(stateError[1], stateError[0]) - currentAngle);
+    double angleError = wrapAngle(stateError[2]);
 
-    linearVelocityRef = (std::cos(angleDiff) > 0.0) ? 0.5 : -0.5;
-    angularVelocityRef = (std::tan(angleDiff) > 0.0) ? 0.5 : -0.5;
+    if (positionError > 0.1) {
+        if (std::abs(angleError) > 0.1) {
+            // Rotate to face reference point
+            linearVelocityRef = 0.0;
+            angularVelocityRef = (directionAngle > 0.0) ? -0.1 : 0.1;
+        }
+        else {
+            // Go straight to reference point
+            linearVelocityRef = 0.1;
+            angularVelocityRef = -angleError;
+        }
+    }
+    else {
+        // Rotate to finish
+        linearVelocityRef = 0.0;
+        angularVelocityRef = (angleError > 0.0) ? -0.1 : 0.1;
+    }
+
+    // linearVelocityRef = (std::cos(angleDiff) > 0.0) ? 0.5 : -0.5;
+    // angularVelocityRef = (std::tan(angleDiff) > 0.0) ? 0.5 : -0.5;
 
     return poseVelocityControl(linearVelocityRef, angularVelocityRef, currentState, desiredState);
 }
