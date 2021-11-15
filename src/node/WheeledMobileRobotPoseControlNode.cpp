@@ -15,6 +15,8 @@ int main(int argc, char** argv)
     nodeHandler.param("wheeled_mobile_robot_pose_control/Jang2009/h", h, 1.0);
     nodeHandler.param("wheeled_mobile_robot_pose_control/Kim2002_1/k", k, 0.5);
     nodeHandler.param("wheeled_mobile_robot_pose_control/Kim2002_1/mu", mu, 1.0);
+    nodeHandler.param("wheeled_mobile_robot_pose_control/Kim2002_2/k", k, 0.5);
+    nodeHandler.param("wheeled_mobile_robot_pose_control/Kim2002_2/mu", mu, 1.0);
 
     // Set controller
     std::shared_ptr<WheeledMobileRobotController> pController;
@@ -27,7 +29,8 @@ int main(int argc, char** argv)
         std::cout << "Select controller" << std::endl << std::endl;
 
         std::cout << "1. Jang2009" << std::endl;
-        std::cout << "2. Kim2002_1" << std::endl << std::endl;
+        std::cout << "2. Kim2002_1" << std::endl;
+        std::cout << "3. Kim2002_2" << std::endl;
         std::cout << std::endl;
 
         std::cout << "Enter number: ";
@@ -45,6 +48,15 @@ int main(int argc, char** argv)
         }
         else if (controllerCode == 2) {
             pController = std::make_shared<Kim2002_1>(k, mu);
+
+            ROS_INFO_STREAM("[robot_sim_cpp] Kinematic controller for the robot are set."
+                            << std::endl
+                            << "k: " << k << std::endl
+                            << "mu: " << mu);
+            break;
+        }
+        else if (controllerCode == 3) {
+            pController = std::make_shared<Kim2002_2>(k, mu);
 
             ROS_INFO_STREAM("[robot_sim_cpp] Kinematic controller for the robot are set."
                             << std::endl

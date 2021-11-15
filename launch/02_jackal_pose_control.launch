@@ -5,7 +5,7 @@
     <arg name="gamma_1" default="0.3" />
     <arg name="gamma_2" default="3.0" />
     <arg name="h" default="1.0" />
-    <!-- Kim2002_1 -->
+    <!-- Kim2002_1 and Kim2002_2 -->
     <arg name="k" default="0.5" />
     <arg name="mu" default="1.0" />
 
@@ -28,5 +28,7 @@
         <param name="wheeled_mobile_robot_pose_control/Jang2009/h" type="double" value="$(arg h)" />
         <param name="wheeled_mobile_robot_pose_control/Kim2002_1/k" type="double" value="$(arg k)" />
         <param name="wheeled_mobile_robot_pose_control/Kim2002_1/mu" type="double" value="$(arg mu)" />
+        <param name="wheeled_mobile_robot_pose_control/Kim2002_2/k" type="double" value="$(arg k)" />
+        <param name="wheeled_mobile_robot_pose_control/Kim2002_2/mu" type="double" value="$(arg mu)" />
     </node>
 </launch>

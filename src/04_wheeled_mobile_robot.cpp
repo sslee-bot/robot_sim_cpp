@@ -13,6 +13,7 @@
 
 #include "controller/WheeledMobileRobotController/Jang2009.h"
 #include "controller/WheeledMobileRobotController/Kim2002_1.h"
+#include "controller/WheeledMobileRobotController/Kim2002_2.h"
 #include "model/WheeledMobileRobot.h"
 
 int main(int argc, char* argv[])
@@ -38,6 +39,7 @@ int main(int argc, char* argv[])
 
         std::cout << "1. Jang2009" << std::endl;
         std::cout << "2. Kim2002_1" << std::endl;
+        std::cout << "3. Kim2002_2" << std::endl;
         std::cout << std::endl;
 
         std::cout << "Enter number: ";
@@ -49,6 +51,10 @@ int main(int argc, char* argv[])
         }
         else if (controllerCode == 2) {
             pController = std::make_shared<Kim2002_1>(k, mu);
+            break;
+        }
+        else if (controllerCode == 3) {
+            pController = std::make_shared<Kim2002_2>(k, mu);
             break;
         }
         else {
