@@ -4,7 +4,7 @@
 ```
 sudo apt-get install libeigen3-dev
 ```
-* Packages for Gazebo simulation
+* For Gazebo simulations
 ```
 sudo apt-get install ros-${ROS_DISTRO}-gazebo-* \
                      ros-${ROS_DISTRO}-velodyne-gazebo-plugins* \
@@ -50,6 +50,7 @@ bin/04_wheeled_mobile_robot
 * Select controller by entering code number
     1. [Jang2009](https://www.researchgate.net/publication/224560616_Neuro-fuzzy_Network_Control_for_a_Mobile_Robot)
     2. [Kim2002_1](http://dcsl.gatech.edu/papers/tra02.pdf)
+    3. Kim2002_2 (The same material as ```Kim2002_1``` was refered)
 
 ## 3. Gazebo simulations
 ### 3.1. Inverted pendulum
@@ -64,6 +65,7 @@ roslaunch robot_sim_cpp 02_jackal_pose_control.launch
 * Select controller by entering code number
     1. Jang2009
     2. Kim2002_1
+    3. Kim2002_2 (The same material as ```Kim2002_1``` was refered)
 * Set target pose by publishing reference values
     * Topic: ```/target_pose``` (type: ```geometry_msgs/Twist```)
     * x position: linear/x
