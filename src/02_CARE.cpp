@@ -9,7 +9,7 @@
  *
  */
 
-#include "algorithm/CARE_Solver.h"
+#include "ss_algorithm/solver/CARE_Solver.h"
 
 int main(int argc, char* argv[])
 {

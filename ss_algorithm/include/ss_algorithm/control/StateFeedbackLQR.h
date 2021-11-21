@@ -19,8 +19,8 @@
 #include <cmath>
 #include <iostream>
 
-#include "RobotSimCppGeneral.h"
-#include "algorithm/CARE_Solver.h"
+#include "ss_algorithm/general/RobotSimCppGeneral.h"
+#include "ss_algorithm/solver/CARE_Solver.h"
 
 class StateFeedbackLQR
 {

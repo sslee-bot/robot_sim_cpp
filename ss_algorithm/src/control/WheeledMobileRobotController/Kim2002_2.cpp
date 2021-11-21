@@ -1,4 +1,4 @@
-#include "controller/WheeledMobileRobotController/Kim2002_2.h"
+#include "ss_algorithm/control/WheeledMobileRobotController/Kim2002_2.h"
 
 Kim2002_2::Kim2002_2(double k, double mu) : m_k(k), m_mu(mu)
 {

@@ -9,8 +9,8 @@
  *
  */
 
-#include "controller/StateFeedbackLQR.h"
-#include "model/InvertedPendulum.h"
+#include "ss_algorithm/control/StateFeedbackLQR.h"
+#include "ss_model/inverted_pendulum/InvertedPendulum.h"
 
 int main(int argc, char* argv[])
 {

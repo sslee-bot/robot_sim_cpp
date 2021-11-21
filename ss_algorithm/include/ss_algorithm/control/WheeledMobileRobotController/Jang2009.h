@@ -18,8 +18,8 @@
 #include <cmath>
 #include <iostream>
 
-#include "RobotSimCppGeneral.h"
-#include "controller/WheeledMobileRobotController.h"
+#include "ss_algorithm/control/WheeledMobileRobotController.h"
+#include "ss_algorithm/general/RobotSimCppGeneral.h"
 
 class Jang2009 : public WheeledMobileRobotController
 {

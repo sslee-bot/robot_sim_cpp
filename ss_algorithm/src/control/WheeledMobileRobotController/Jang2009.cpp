@@ -1,4 +1,4 @@
-#include "controller/WheeledMobileRobotController/Jang2009.h"
+#include "ss_algorithm/control/WheeledMobileRobotController/Jang2009.h"
 
 Jang2009::Jang2009(double gamma_1, double gamma_2, double h)
     : m_gamma_1(gamma_1), m_gamma_2(gamma_2), m_h(h)

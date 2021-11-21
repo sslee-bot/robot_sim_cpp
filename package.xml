@@ -2,7 +2,7 @@
 <package format="2">
     <name>robot_sim_cpp</name>
     <version>1.0.0</version>
-    <description>Robot simulations implemented in C++.</description>
+    <description>Robot simulations implemented in C++</description>
     <maintainer email="physism@gmail.com">Sang Su Lee</maintainer>
     <license>TODO</license>
     <url type="website">https://github.com/physism/robot_sim_cpp</url>
@@ -16,25 +16,13 @@
 
     <build_depend>roscpp</build_depend>
     <build_depend>gazebo_ros</build_depend>
-    <build_depend>std_msgs</build_depend>
-    <build_depend>sensor_msgs</build_depend>
-    <build_depend>geometry_msgs</build_depend>
-    <build_depend>controller_manager</build_depend>
-    <build_depend>joint_state_controller</build_depend>
-    <build_depend>robot_state_publisher</build_depend>
+    <build_depend>ss_algorithm</build_depend>
+    <build_depend>ss_description</build_depend>
+    <build_depend>ss_model</build_depend>
 
     <exec_depend>roscpp</exec_depend>
     <exec_depend>gazebo_ros</exec_depend>
-    <exec_depend>gazebo_plugins</exec_depend>
-    <exec_depend>message_runtime</exec_depend>
-    <exec_depend>std_msgs</exec_depend>
-    <exec_depend>sensor_msgs</exec_depend>
-    <exec_depend>geometry_msgs</exec_depend>
-    <exec_depend>controller_manager</exec_depend>
-    <exec_depend>joint_state_controller</exec_depend>
-    <exec_depend>robot_state_publisher</exec_depend>
-
-    <export>
-        <gazebo_ros plugin_path="${prefix}/lib" gazebo_media_path="${prefix}" />
-    </export>
+    <exec_depend>ss_algorithm</exec_depend>
+    <exec_depend>ss_description</exec_depend>
+    <exec_depend>ss_model</exec_depend>
 </package>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+    <name>ss_model</name>
+    <version>1.0.0</version>
+    <description>Models for robot simulations</description>
+    <maintainer email="physism@gmail.com">Sang Su Lee</maintainer>
+    <license>TODO</license>
+    <url type="website">https://github.com/physism/robot_sim_cpp</url>
+    <url type="bugtracker">https://github.com/physism/robot_sim_cpp/issues</url>
+    <author email="physism@gmail.com">Sang Su Lee</author>
+
+    <buildtool_depend>catkin</buildtool_depend>
+
+    <build_depend>eigen</build_depend>
+    <build_depend>boost</build_depend>
+</package>

@@ -15,12 +15,9 @@ add_definitions(-Wall -Werror)
 find_package(catkin REQUIRED COMPONENTS
     roscpp
     gazebo_ros
-    std_msgs
-    sensor_msgs
-    geometry_msgs
-    controller_manager
-    joint_state_controller
-    robot_state_publisher
+    # ss_algorithm
+    # ss_description
+    # ss_model
 )
 find_package(gazebo REQUIRED)
 
@@ -30,8 +27,8 @@ find_package(Boost REQUIRED)
 
 ## catkin specific configuration
 catkin_package(
-    INCLUDE_DIRS include ${EIGEN3_INCLUDE_DIR}
-    CATKIN_DEPENDS roscpp gazebo_ros std_msgs sensor_msgs geometry_msgs message_runtime
+    INCLUDE_DIRS ${EIGEN3_INCLUDE_DIR}
+    CATKIN_DEPENDS roscpp gazebo_ros ss_algorithm ss_description ss_model
 )
 
 link_directories(${GAZEBO_LIBRARY_DIRS})
@@ -46,25 +43,21 @@ include_directories(
 )
 
 ## Declare cpp executables
-add_executable(01_matrix_basic
-    src/01_matrix_basic.cpp)
+add_executable(01_matrix_basic src/01_matrix_basic.cpp)
+target_link_libraries(01_matrix_basic ${catkin_LIBRARIES})
+add_dependencies(01_matrix_basic ${catkin_EXPORTED_TARGETS})
 
-add_executable(02_CARE
-    src/class/algorithm/CARE_Solver.cpp
-    src/02_CARE.cpp)
+add_executable(02_CARE src/02_CARE.cpp)
+target_link_libraries(02_CARE ${catkin_LIBRARIES})
+add_dependencies(02_CARE ${catkin_EXPORTED_TARGETS})
 
-add_executable(03_inverted_pendulum
-    src/class/model/InvertedPendulum.cpp
-    src/class/algorithm/CARE_Solver.cpp
-    src/class/controller/StateFeedbackLQR.cpp
-    src/03_inverted_pendulum.cpp)
+add_executable(03_inverted_pendulum src/03_inverted_pendulum.cpp)
+target_link_libraries(03_inverted_pendulum ${catkin_LIBRARIES})
+add_dependencies(03_inverted_pendulum ${catkin_EXPORTED_TARGETS})
 
-add_executable(04_wheeled_mobile_robot
-    src/class/model/WheeledMobileRobot.cpp
-    src/class/controller/WheeledMobileRobotController/Jang2009.cpp
-    src/class/controller/WheeledMobileRobotController/Kim2002_1.cpp
-    src/class/controller/WheeledMobileRobotController/Kim2002_2.cpp
-    src/04_wheeled_mobile_robot.cpp)
+add_executable(04_wheeled_mobile_robot src/04_wheeled_mobile_robot.cpp)
+target_link_libraries(04_wheeled_mobile_robot ${catkin_LIBRARIES})
+add_dependencies(04_wheeled_mobile_robot ${catkin_EXPORTED_TARGETS})
 
 set_target_properties(
     01_matrix_basic
@@ -72,25 +65,3 @@ set_target_properties(
     03_inverted_pendulum
     04_wheeled_mobile_robot
     PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/bin)
-
-## Gazebo plugins and nodes
-add_library(link_effort src/class/gazebo_sim/LinkEffortPlugin.cc)
-target_link_libraries(link_effort ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
-add_dependencies(link_effort ${catkin_EXPORTED_TARGETS})
-
-add_executable(inverted_pendulum_LQR_node src/class/model/InvertedPendulum.cpp
-                                        src/class/algorithm/CARE_Solver.cpp
-                                        src/class/controller/StateFeedbackLQR.cpp
-                                        src/class/gazebo_sim/InvertedPendulumLQR.cpp
-                                        src/node/InvertedPendulumLQR_Node.cpp)
-target_link_libraries(inverted_pendulum_LQR_node ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
-add_dependencies(inverted_pendulum_LQR_node ${catkin_EXPORTED_TARGETS})
-
-add_executable(wheeled_mobile_robot_pose_control_node
-                src/class/controller/WheeledMobileRobotController/Jang2009.cpp
-                src/class/controller/WheeledMobileRobotController/Kim2002_1.cpp
-                src/class/controller/WheeledMobileRobotController/Kim2002_2.cpp
-                src/class/gazebo_sim/WheeledMobileRobotPoseControl.cpp
-                src/node/WheeledMobileRobotPoseControlNode.cpp)
-target_link_libraries(wheeled_mobile_robot_pose_control_node ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
-add_dependencies(wheeled_mobile_robot_pose_control_node ${catkin_EXPORTED_TARGETS})                

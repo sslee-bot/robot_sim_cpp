@@ -1,4 +1,4 @@
-#include "algorithm/CARE_Solver.h"
+#include "ss_algorithm/solver/CARE_Solver.h"
 
 CARE_Solver::CARE_Solver(const Eigen::MatrixXd& A, const Eigen::MatrixXd& B,
                          const Eigen::MatrixXd& Q, const Eigen::MatrixXd& R)

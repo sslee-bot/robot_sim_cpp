@@ -1,4 +1,4 @@
-#include "model/WheeledMobileRobot.h"
+#include "ss_model/wheeled_mobile_robot/WheeledMobileRobot.h"
 
 WheeledMobileRobot::WheeledMobileRobot(double initX, double initY, double initTheta,
                                        double centerToWheelAxis)

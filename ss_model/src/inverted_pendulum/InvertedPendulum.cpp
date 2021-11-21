@@ -1,4 +1,4 @@
-#include "model/InvertedPendulum.h"
+#include "ss_model/inverted_pendulum/InvertedPendulum.h"
 
 InvertedPendulum::InvertedPendulum(double initPosition, double initAngle, double cartMass,
                                    double pendulumMass, double frictionCoefficient,
