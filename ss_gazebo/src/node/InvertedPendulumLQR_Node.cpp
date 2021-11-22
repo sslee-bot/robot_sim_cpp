@@ -1,5 +1,5 @@
-#include "gazebo_sim/InvertedPendulumLQR.h"
-#include "model/InvertedPendulum.h"
+#include "ss_gazebo/InvertedPendulumLQR.h"
+#include "ss_model/inverted_pendulum/InvertedPendulum.h"
 
 int main(int argc, char** argv)
 {

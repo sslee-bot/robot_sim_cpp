@@ -21,7 +21,7 @@
     </include>
 
     <!-- run controller -->
-    <node pkg="robot_sim_cpp" type="wheeled_mobile_robot_pose_control_node"
+    <node pkg="ss_gazebo" type="wheeled_mobile_robot_pose_control_node"
             name="wheeled_mobile_robot_pose_control_node" respawn="false" output="screen">
         <param name="wheeled_mobile_robot_pose_control/Jang2009/gamma_1" type="double" value="$(arg gamma_1)" />
         <param name="wheeled_mobile_robot_pose_control/Jang2009/gamma_2" type="double" value="$(arg gamma_2)" />

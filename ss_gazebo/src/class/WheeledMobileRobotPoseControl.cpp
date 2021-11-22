@@ -1,4 +1,4 @@
-#include "gazebo_sim/WheeledMobileRobotPoseControl.h"
+#include "ss_gazebo/WheeledMobileRobotPoseControl.h"
 
 WheeledMobileRobotPoseControl::WheeledMobileRobotPoseControl(
     const std::string& robotModelName, double period,

@@ -17,7 +17,7 @@
 #include <cmath>
 #include <iostream>
 
-#include "RobotSimCppGeneral.h"
+#include "ss_algorithm/general/RobotSimCppGeneral.h"
 
 class WheeledMobileRobot
 {

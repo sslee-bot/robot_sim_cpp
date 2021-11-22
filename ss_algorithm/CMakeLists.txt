@@ -16,7 +16,7 @@ find_package(Boost REQUIRED)
 ## catkin specific configuration
 catkin_package(
     INCLUDE_DIRS include ${EIGEN3_INCLUDE_DIR}
-    LIBRARIES care_solver state_feedback_lqr wheeled_mobile_robot_controller
+    LIBRARIES ${PROJECT_NAME}
 )
 
 ## Specify additional locations of header files
@@ -27,26 +27,10 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
 )
 
-## Libraries
-add_library(care_solver src/solver/CARE_Solver.cpp)
-target_link_libraries(care_solver ${catkin_LIBRARIES})
-add_dependencies(care_solver ${catkin_EXPORTED_TARGETS})
-
-add_library(state_feedback_lqr src/control/StateFeedbackLQR.cpp)
-target_link_libraries(state_feedback_lqr ${catkin_LIBRARIES})
-add_dependencies(state_feedback_lqr ${catkin_EXPORTED_TARGETS})
-
-add_library(wheeled_mobile_robot_controller src/control/WheeledMobileRobotController/Jang2009.cpp
-                                            src/control/WheeledMobileRobotController/Kim2002_1.cpp
-                                            src/control/WheeledMobileRobotController/Kim2002_2.cpp)
-target_link_libraries(wheeled_mobile_robot_controller ${catkin_LIBRARIES})
-add_dependencies(wheeled_mobile_robot_controller ${catkin_EXPORTED_TARGETS})
-
-## Install
-install(TARGETS care_solver state_feedback_lqr wheeled_mobile_robot_controller
-        ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-        LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-        RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION})
-
-install(DIRECTORY include/${PROJECT_NAME}/
-        DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
+## Library
+add_library(${PROJECT_NAME} src/solver/CARE_Solver.cpp
+                            src/control/StateFeedbackLQR.cpp
+                            src/control/WheeledMobileRobotController/Jang2009.cpp
+                            src/control/WheeledMobileRobotController/Kim2002_1.cpp
+                            src/control/WheeledMobileRobotController/Kim2002_2.cpp)
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})

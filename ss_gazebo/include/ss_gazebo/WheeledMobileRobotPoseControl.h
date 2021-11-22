@@ -16,11 +16,11 @@
 #include <mutex>
 #include <string>
 
-#include "RobotSimCppGeneral.h"
-#include "controller/WheeledMobileRobotController/Jang2009.h"
-#include "controller/WheeledMobileRobotController/Kim2002_1.h"
-#include "controller/WheeledMobileRobotController/Kim2002_2.h"
-#include "model/WheeledMobileRobot.h"
+#include "ss_algorithm/control/WheeledMobileRobotController/Jang2009.h"
+#include "ss_algorithm/control/WheeledMobileRobotController/Kim2002_1.h"
+#include "ss_algorithm/control/WheeledMobileRobotController/Kim2002_2.h"
+#include "ss_algorithm/general/RobotSimCppGeneral.h"
+#include "ss_model/wheeled_mobile_robot/WheeledMobileRobot.h"
 
 const double POSITION_ERROR_UPPER = 0.3;
 const double ANGLE_ERROR_UPPER = 0.3;

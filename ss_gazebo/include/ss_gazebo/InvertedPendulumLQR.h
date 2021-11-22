@@ -16,9 +16,9 @@
 #include <mutex>
 #include <string>
 
-#include "RobotSimCppGeneral.h"
-#include "controller/StateFeedbackLQR.h"
-#include "model/InvertedPendulum.h"
+#include "ss_algorithm/control/StateFeedbackLQR.h"
+#include "ss_algorithm/general/RobotSimCppGeneral.h"
+#include "ss_model/inverted_pendulum/InvertedPendulum.h"
 
 class InvertedPendulumLQR
 {

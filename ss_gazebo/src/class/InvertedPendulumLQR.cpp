@@ -1,4 +1,4 @@
-#include "gazebo_sim/InvertedPendulumLQR.h"
+#include "ss_gazebo/InvertedPendulumLQR.h"
 
 InvertedPendulumLQR::InvertedPendulumLQR(const std::string& invertedPendulumName,
                                          const std::string& pendulumJointName, double period,

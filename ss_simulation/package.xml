@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-    <name>robot_sim_cpp</name>
+    <name>ss_simulation</name>
     <version>1.0.0</version>
     <description>Robot simulations implemented in C++</description>
     <maintainer email="physism@gmail.com">Sang Su Lee</maintainer>

@@ -19,7 +19,7 @@
 
     <!-- parameters -->
     <param name="robot_description" command="$(find xacro)/xacro
-                                            '$(find robot_sim_cpp)/models/Inverted_pendulum/Inverted_pendulum.xacro'
+                                            '$(find ss_description)/Inverted_pendulum/Inverted_pendulum.xacro'
                                             cart_mass:=$(arg cart_mass) pendulum_mass:=$(arg pendulum_mass)
                                             friction_coefficient:=$(arg friction_coefficient)
                                             length_to_COM:=$(arg cart_pendulum_center_distance)
@@ -30,7 +30,7 @@
             args="-urdf -param robot_description -model inverted_pendulum -x $(arg x)"/>
 
     <!-- run controller -->
-    <node name="inverted_pendulum_LQR_node" pkg="robot_sim_cpp" type="inverted_pendulum_LQR_node" respawn="false" output="screen">
+    <node name="inverted_pendulum_LQR_node" pkg="ss_gazebo" type="inverted_pendulum_LQR_node" respawn="false" output="screen">
         <param name="inverted_pendulum_LQR/cart_mass" type="double" value="$(arg cart_mass)"/>
         <param name="inverted_pendulum_LQR/pendulum_mass" type="double" value="$(arg pendulum_mass)"/>
         <param name="inverted_pendulum_LQR/friction_coefficient" type="double" value="$(arg friction_coefficient)"/>

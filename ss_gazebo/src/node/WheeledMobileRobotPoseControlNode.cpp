@@ -1,4 +1,4 @@
-#include "gazebo_sim/WheeledMobileRobotPoseControl.h"
+#include "ss_gazebo/WheeledMobileRobotPoseControl.h"
 
 int main(int argc, char** argv)
 {

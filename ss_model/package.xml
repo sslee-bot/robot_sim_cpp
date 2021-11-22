@@ -13,4 +13,8 @@
 
     <build_depend>eigen</build_depend>
     <build_depend>boost</build_depend>
+
+    <build_depend>ss_algorithm</build_depend>
+
+    <exec_depend>ss_algorithm</exec_depend>
 </package>

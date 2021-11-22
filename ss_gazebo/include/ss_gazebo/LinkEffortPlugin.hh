@@ -11,7 +11,7 @@
 #include <ignition/math/Vector3.hh>
 #include <string>
 
-#include "RobotSimCppGeneral.h"
+#include "ss_algorithm/general/RobotSimCppGeneral.h"
 
 namespace gazebo
 {

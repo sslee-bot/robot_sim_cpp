@@ -1,4 +1,4 @@
-#include "gazebo_sim/LinkEffortPlugin.hh"
+#include "ss_gazebo/LinkEffortPlugin.hh"
 
 using namespace gazebo;
 GZ_REGISTER_MODEL_PLUGIN(LinkEffortPlugin)

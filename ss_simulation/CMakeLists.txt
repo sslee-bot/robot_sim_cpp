@@ -1,7 +1,7 @@
 ## See ros package practices at https://github.com/leggedrobotics/ros_best_practices
 
 cmake_minimum_required(VERSION 3.0.0)
-project(robot_sim_cpp VERSION 1.0.0)
+project(ss_simulation)
 
 ## Use C++14
 set(CMAKE_CXX_STANDARD 14)
@@ -15,9 +15,9 @@ add_definitions(-Wall -Werror)
 find_package(catkin REQUIRED COMPONENTS
     roscpp
     gazebo_ros
-    # ss_algorithm
-    # ss_description
-    # ss_model
+    ss_algorithm
+    ss_description
+    ss_model
 )
 find_package(gazebo REQUIRED)
 
