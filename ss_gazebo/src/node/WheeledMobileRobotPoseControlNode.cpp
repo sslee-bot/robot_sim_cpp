@@ -36,11 +36,17 @@ int main(int argc, char** argv)
         std::cout << "Enter number: ";
         std::cin >> controllerCode;
 
-        if (controllerCode == 1) {
+        if (std::cin.fail()) {
+            std::cout << "Please enter number (int type)." << std::endl << std::endl;
+            std::cin.clear();
+            std::cin.ignore(1000, '\n');
+        }
+        else if (controllerCode == 1) {
             pController = std::make_shared<Jang2009>(gamma_1, gamma_2, h);
 
             ROS_INFO_STREAM("[robot_sim_cpp] Kinematic controller for the robot are set."
                             << std::endl
+                            << "Controller: Jang2009" << std::endl
                             << "gamma_1: " << gamma_1 << std::endl
                             << "gamma_2: " << gamma_2 << std::endl
                             << "h: " << h);
@@ -51,6 +57,7 @@ int main(int argc, char** argv)
 
             ROS_INFO_STREAM("[robot_sim_cpp] Kinematic controller for the robot are set."
                             << std::endl
+                            << "Controller: Kim2002_1" << std::endl
                             << "k: " << k << std::endl
                             << "mu: " << mu);
             break;
@@ -60,6 +67,7 @@ int main(int argc, char** argv)
 
             ROS_INFO_STREAM("[robot_sim_cpp] Kinematic controller for the robot are set."
                             << std::endl
+                            << "Controller: Kim2002_2" << std::endl
                             << "k: " << k << std::endl
                             << "mu: " << mu);
             break;

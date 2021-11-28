@@ -9,11 +9,10 @@
  *
  */
 
+#include <iostream>
 #include <memory>
 
-#include "ss_algorithm/control/WheeledMobileRobotController/Jang2009.h"
-#include "ss_algorithm/control/WheeledMobileRobotController/Kim2002_1.h"
-#include "ss_algorithm/control/WheeledMobileRobotController/Kim2002_2.h"
+#include "ss_algorithm/control/ControlAPI.h"
 #include "ss_model/wheeled_mobile_robot/WheeledMobileRobot.h"
 
 int main(int argc, char* argv[])
@@ -45,7 +44,12 @@ int main(int argc, char* argv[])
         std::cout << "Enter number: ";
         std::cin >> controllerCode;
 
-        if (controllerCode == 1) {
+        if (std::cin.fail()) {
+            std::cout << "Please enter number (int type)." << std::endl << std::endl;
+            std::cin.clear();
+            std::cin.ignore(1000, '\n');
+        }
+        else if (controllerCode == 1) {
             pController = std::make_shared<Jang2009>(gamma_1, gamma_2, h);
             break;
         }

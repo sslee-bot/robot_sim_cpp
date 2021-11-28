@@ -17,9 +17,7 @@
 #include <string>
 
 #include "ss_algorithm/API/RobotSimCppGeneral.h"
-#include "ss_algorithm/control/WheeledMobileRobotController/Jang2009.h"
-#include "ss_algorithm/control/WheeledMobileRobotController/Kim2002_1.h"
-#include "ss_algorithm/control/WheeledMobileRobotController/Kim2002_2.h"
+#include "ss_algorithm/control/ControlAPI.h"
 #include "ss_model/wheeled_mobile_robot/WheeledMobileRobot.h"
 
 const double POSITION_ERROR_UPPER = 0.3;
