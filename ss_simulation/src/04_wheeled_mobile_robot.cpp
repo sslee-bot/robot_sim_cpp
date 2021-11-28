@@ -9,6 +9,8 @@
  *
  */
 
+#include <Eigen/Dense>
+#include <chrono>
 #include <iostream>
 #include <memory>
 
@@ -23,6 +25,7 @@ int main(int argc, char* argv[])
     double desiredX = 1.0, desiredY = 1.0, desiredTheta = 0.0;
     double gamma_1 = 1.5, gamma_2 = 1.0, h = 2.0;
     double k = 1.0, mu = 3.0;
+    int iterationNum = 1000;
 
     // Construct desired state vector
     Eigen::Vector3d desiredState;
@@ -34,18 +37,22 @@ int main(int argc, char* argv[])
 
     while (true) {
         int controllerCode;
+
+        std::cout << std::endl;
+        std::cout << "=================" << std::endl;
         std::cout << "Select controller" << std::endl << std::endl;
 
         std::cout << "1. Jang2009" << std::endl;
         std::cout << "2. Kim2002_1" << std::endl;
         std::cout << "3. Kim2002_2" << std::endl;
+        std::cout << "=================" << std::endl;
         std::cout << std::endl;
 
         std::cout << "Enter number: ";
         std::cin >> controllerCode;
 
         if (std::cin.fail()) {
-            std::cout << "Please enter number (int type)." << std::endl << std::endl;
+            std::cout << "Please enter number (int type)." << std::endl;
             std::cin.clear();
             std::cin.ignore(1000, '\n');
         }
@@ -62,7 +69,7 @@ int main(int argc, char* argv[])
             break;
         }
         else {
-            std::cout << "Invalid number. Please try again." << std::endl << std::endl;
+            std::cout << "Invalid number. Please try again." << std::endl;
         }
     }
 
@@ -70,15 +77,23 @@ int main(int argc, char* argv[])
     std::cout << "Initial state of the wheeled mobile robot" << std::endl;
     std::cout << robot.stateVector() << std::endl << std::endl;
 
-    for (int i = 0; i < 1000; i++) {
+    // For computation time check
+    auto startTime = std::chrono::system_clock::now();
+
+    // Control
+    for (int i = 0; i < iterationNum; i++) {
         auto currentState = robot.stateVector();
         auto input = pController->poseControl(currentState, desiredState);
 
         robot.timeUpdate(input, period);
     }
 
+    // Computation time
+    std::chrono::duration<double> duration = std::chrono::system_clock::now() - startTime;
+
     std::cout << "State after controller applied" << std::endl;
-    std::cout << robot.stateVector() << std::endl;
+    std::cout << robot.stateVector() << std::endl << std::endl;
+    std::cout << "Average computation time: " << duration.count() / iterationNum << std::endl;
 
     return 0;
 }

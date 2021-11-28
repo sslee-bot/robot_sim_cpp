@@ -18,6 +18,7 @@ int main(int argc, char* argv[])
     Eigen::Matrix2d A;
     A << 1, 2, 3, 4;
 
+    std::cout << std::endl;
     std::cout << "A is" << std::endl << A << std::endl << std::endl;
 
     // Matrix with dynamic size

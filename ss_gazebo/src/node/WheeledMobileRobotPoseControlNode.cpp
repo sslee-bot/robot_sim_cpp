@@ -26,18 +26,22 @@ int main(int argc, char** argv)
     while (true) {
         // TODO: make it easy to see on terminal
         int controllerCode;
+
+        std::cout << std::endl;
+        std::cout << "=================" << std::endl;
         std::cout << "Select controller" << std::endl << std::endl;
 
         std::cout << "1. Jang2009" << std::endl;
         std::cout << "2. Kim2002_1" << std::endl;
         std::cout << "3. Kim2002_2" << std::endl;
+        std::cout << "=================" << std::endl;
         std::cout << std::endl;
 
         std::cout << "Enter number: ";
         std::cin >> controllerCode;
 
         if (std::cin.fail()) {
-            std::cout << "Please enter number (int type)." << std::endl << std::endl;
+            std::cout << "Please enter number (int type)." << std::endl;
             std::cin.clear();
             std::cin.ignore(1000, '\n');
         }
@@ -73,7 +77,7 @@ int main(int argc, char** argv)
             break;
         }
         else {
-            std::cout << "Invalid number. Please try again." << std::endl << std::endl;
+            std::cout << "Invalid number. Please try again." << std::endl;
         }
     }
 

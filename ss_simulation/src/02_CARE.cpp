@@ -9,10 +9,15 @@
  *
  */
 
+#include <Eigen/Dense>
+#include <iostream>
+
 #include "ss_algorithm/solver/CARE_Solver.h"
 
 int main(int argc, char* argv[])
 {
+    std::cout << std::endl;
+
     // Set input matrices
     Eigen::Matrix2d A, B, Q, R;
     A << 0, 1, 1, -1;
@@ -23,6 +28,7 @@ int main(int argc, char* argv[])
     // Set CARE solver
     CARE_Solver solver(A, B, Q, R);
     std::cout << "CARE: A^T*P + P*A - P*B*R^-1*B^T*P + Q = 0" << std::endl
+              << std::endl
               << "Solution of P is" << std::endl
               << solver.solveCARE() << std::endl;
 }
