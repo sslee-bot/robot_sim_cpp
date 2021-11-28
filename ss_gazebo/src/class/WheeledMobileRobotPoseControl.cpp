@@ -102,7 +102,7 @@ void WheeledMobileRobotPoseControl::callbackModelState(const gazebo_msgs::ModelS
     auto robotModelState = msg->pose[index];
     if (std::isnan(robotModelState.position.x)) {
         m_isModelStateValid = false;
-        ROS_WARN_STREAM_THROTTLE(5, "[robot_sim_cpp] robot model state has invalid (nan) value.");
+        ROS_WARN_STREAM_THROTTLE(5, "[robot_sim_cpp] Robot model state has invalid (nan) value.");
         return;
     }
     else {
@@ -122,7 +122,7 @@ void WheeledMobileRobotPoseControl::callbackTargetPose(const geometry_msgs::Twis
     // Update target state validity
     if (std::isnan(msg->linear.x)) {
         m_isTargetStateValid = false;
-        ROS_WARN_STREAM_THROTTLE(5, "[robot_sim_cpp] target state has invalid (nan) value.");
+        ROS_WARN_STREAM_THROTTLE(5, "[robot_sim_cpp] Target state has invalid (nan) value.");
         return;
     }
     else {

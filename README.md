@@ -57,6 +57,9 @@ ss_simulation/bin/04_wheeled_mobile_robot
 ```bash
 roslaunch ss_simulation 01_Inverted_pendulum.launch
 ```
+* Set target position by publishing reference value
+    * Topic: ```/target_position``` (type: ```std_msgs/Float32```)
+    * x position: data
 
 ### 3.2. Jackal robot pose tracking simulation
 ```bash

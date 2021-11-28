@@ -6,6 +6,7 @@
 #include <ros/callback_queue.h>
 #include <ros/ros.h>
 #include <sensor_msgs/JointState.h>
+#include <std_msgs/Float32.h>
 
 #include <Eigen/Dense>
 #include <cmath>
@@ -26,7 +27,8 @@ public:
     InvertedPendulumLQR(const std::string& invertedPendulumName,
                         const std::string& pendulumJointName, double period,
                         const InvertedPendulum& pendulumModel, const std::string& modelStateTopic,
-                        const std::string& jointStateTopic, const std::string& controlTopic);
+                        const std::string& jointStateTopic, const std::string& targetPositionTopic,
+                        const std::string& controlTopic);
     virtual ~InvertedPendulumLQR();
     virtual void startControl();
 
@@ -34,6 +36,7 @@ private:
     virtual void initialization();
     virtual void callbackModelState(const gazebo_msgs::ModelStatesConstPtr& msg);
     virtual void callbackJointState(const sensor_msgs::JointStateConstPtr& msg);
+    virtual void callbackTargetPosition(const std_msgs::Float32ConstPtr& msg);
     virtual void periodicTask(const ros::TimerEvent& timerEvent);
 
     ros::NodeHandle m_nodeHandler;
@@ -41,11 +44,13 @@ private:
     ros::AsyncSpinner m_asyncSpinner;
     ros::Subscriber m_modelStatesSub;
     ros::Subscriber m_jointStateSub;
+    ros::Subscriber m_targetPositionSub;
     ros::Publisher m_controlPub;
     ros::Timer m_timer;
 
     bool m_isModelStateValid;
     bool m_isJointStateValid;
+    bool m_isTargetPositionValid;
 
     std::string m_invertedPendulumName;
     std::string m_pendulumJointName;
@@ -58,7 +63,10 @@ private:
 
     std::string m_modelStateTopic;
     std::string m_jointStateTopic;
+    std::string m_targetPositionTopic;
     std::string m_controlTopic;
+
+    float m_targetPosition = 0.0;
 
     double m_cartPosition = 0.0;
     double m_cartVelocity = 0.0;

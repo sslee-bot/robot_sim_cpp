@@ -32,7 +32,8 @@ int main(int argc, char** argv)
 
     // Set Gazebo inverted pendulum LQR controller object
     InvertedPendulumLQR IPLQR("inverted_pendulum", "pendulum_joint", 0.001, pendulumModel,
-                              "/gazebo/model_states", "/joint_states", "/cart_effort");
+                              "/gazebo/model_states", "/joint_states", "/target_position",
+                              "/cart_effort");
 
     // Start control
     ros::Duration(2.0).sleep();
