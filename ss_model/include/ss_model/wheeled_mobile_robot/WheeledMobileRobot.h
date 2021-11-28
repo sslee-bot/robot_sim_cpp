@@ -10,14 +10,14 @@
  *
  */
 
-#ifndef WHEELED_MOBILE_ROBOT_H
-#define WHEELED_MOBILE_ROBOT_H
+#ifndef SS_MODEL_WHEELED_MOBILE_ROBOT_H
+#define SS_MODEL_WHEELED_MOBILE_ROBOT_H
 
 #include <Eigen/Dense>
 #include <cmath>
 #include <iostream>
 
-#include "ss_algorithm/general/RobotSimCppGeneral.h"
+#include "ss_algorithm/API/RobotSimCppGeneral.h"
 
 class WheeledMobileRobot
 {

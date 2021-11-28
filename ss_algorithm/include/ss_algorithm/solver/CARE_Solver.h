@@ -10,13 +10,13 @@
  *
  */
 
-#ifndef CARE_SOLVER_H
-#define CARE_SOLVER_H
+#ifndef SS_ALGORITHM_CARE_SOLVER_H
+#define SS_ALGORITHM_CARE_SOLVER_H
 
 #include <Eigen/Dense>
 #include <iostream>
 
-#include "ss_algorithm/general/RobotSimCppGeneral.h"
+#include "ss_algorithm/API/RobotSimCppGeneral.h"
 
 class CARE_Solver
 {

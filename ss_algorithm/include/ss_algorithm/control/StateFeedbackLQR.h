@@ -12,15 +12,15 @@
  *
  */
 
-#ifndef OUTPUT_FEEDBACK_LQR_H
-#define OUTPUT_FEEDBACK_LQR_H
+#ifndef SS_ALGORITHM_STATE_FEEDBACK_LQR_H
+#define SS_ALGORITHM_STATE_FEEDBACK_LQR_H
 
 #include <Eigen/Dense>
 #include <cmath>
 #include <iostream>
 
-#include "ss_algorithm/general/RobotSimCppGeneral.h"
-#include "ss_algorithm/solver/CARE_Solver.h"
+#include "ss_algorithm/API/RobotSimCppGeneral.h"
+#include "ss_algorithm/AlgorithmAPI.h"
 
 class StateFeedbackLQR
 {

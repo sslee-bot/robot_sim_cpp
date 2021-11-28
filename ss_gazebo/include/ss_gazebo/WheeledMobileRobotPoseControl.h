@@ -1,5 +1,5 @@
-#ifndef WHEELED_MOBILE_ROBOT_POSE_CONTROL_H
-#define WHEELED_MOBILE_ROBOT_POSE_CONTROL_H
+#ifndef SS_GAZEBO_WHEELED_MOBILE_ROBOT_POSE_CONTROL_H
+#define SS_GAZEBO_WHEELED_MOBILE_ROBOT_POSE_CONTROL_H
 
 #include <gazebo_msgs/ModelStates.h>
 #include <geometry_msgs/Twist.h>
@@ -16,10 +16,10 @@
 #include <mutex>
 #include <string>
 
+#include "ss_algorithm/API/RobotSimCppGeneral.h"
 #include "ss_algorithm/control/WheeledMobileRobotController/Jang2009.h"
 #include "ss_algorithm/control/WheeledMobileRobotController/Kim2002_1.h"
 #include "ss_algorithm/control/WheeledMobileRobotController/Kim2002_2.h"
-#include "ss_algorithm/general/RobotSimCppGeneral.h"
 #include "ss_model/wheeled_mobile_robot/WheeledMobileRobot.h"
 
 const double POSITION_ERROR_UPPER = 0.3;

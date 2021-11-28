@@ -1,5 +1,5 @@
-#ifndef LINK_EFFORT_PLUGIN_HH
-#define LINK_EFFORT_PLUGIN_HH
+#ifndef SS_GAZEBO_LINK_EFFORT_PLUGIN_HH
+#define SS_GAZEBO_LINK_EFFORT_PLUGIN_HH
 
 #include <geometry_msgs/Twist.h>
 #include <ros/ros.h>
@@ -11,7 +11,7 @@
 #include <ignition/math/Vector3.hh>
 #include <string>
 
-#include "ss_algorithm/general/RobotSimCppGeneral.h"
+#include "ss_algorithm/API/RobotSimCppGeneral.h"
 
 namespace gazebo
 {

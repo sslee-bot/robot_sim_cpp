@@ -11,15 +11,15 @@
  *
  */
 
-#ifndef KIM_2002_1_H
-#define KIM_2002_1_H
+#ifndef SS_ALGORITHM_KIM_2002_1_H
+#define SS_ALGORITHM_KIM_2002_1_H
 
 #include <Eigen/Dense>
 #include <cmath>
 #include <iostream>
 
-#include "ss_algorithm/control/WheeledMobileRobotController.h"
-#include "ss_algorithm/general/RobotSimCppGeneral.h"
+#include "ss_algorithm/API/RobotSimCppGeneral.h"
+#include "ss_algorithm/API/WheeledMobileRobotController.h"
 
 class Kim2002_1 : public WheeledMobileRobotController
 {

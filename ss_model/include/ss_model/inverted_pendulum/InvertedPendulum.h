@@ -10,14 +10,14 @@
  *
  */
 
-#ifndef INVERTED_PENDULUM_H
-#define INVERTED_PENDULUM_H
+#ifndef SS_MODEL_INVERTED_PENDULUM_H
+#define SS_MODEL_INVERTED_PENDULUM_H
 
 #include <Eigen/Dense>
 #include <cmath>
 #include <iostream>
 
-#include "ss_algorithm/general/RobotSimCppGeneral.h"
+#include "ss_algorithm/API/RobotSimCppGeneral.h"
 
 class InvertedPendulum
 {

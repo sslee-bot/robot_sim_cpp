@@ -11,15 +11,15 @@
  *
  */
 
-#ifndef JANG_2009_H
-#define JANG_2009_H
+#ifndef SS_ALGORITHM_JANG_2009_H
+#define SS_ALGORITHM_JANG_2009_H
 
 #include <Eigen/Dense>
 #include <cmath>
 #include <iostream>
 
-#include "ss_algorithm/control/WheeledMobileRobotController.h"
-#include "ss_algorithm/general/RobotSimCppGeneral.h"
+#include "ss_algorithm/API/RobotSimCppGeneral.h"
+#include "ss_algorithm/API/WheeledMobileRobotController.h"
 
 class Jang2009 : public WheeledMobileRobotController
 {

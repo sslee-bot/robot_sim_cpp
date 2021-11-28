@@ -1,5 +1,5 @@
-#ifndef INVERTED_PENDULUM_LQR_H
-#define INVERTED_PENDULUM_LQR_H
+#ifndef SS_GAZEBO_INVERTED_PENDULUM_LQR_H
+#define SS_GAZEBO_INVERTED_PENDULUM_LQR_H
 
 #include <gazebo_msgs/ModelStates.h>
 #include <geometry_msgs/Twist.h>
@@ -16,8 +16,8 @@
 #include <mutex>
 #include <string>
 
+#include "ss_algorithm/API/RobotSimCppGeneral.h"
 #include "ss_algorithm/control/StateFeedbackLQR.h"
-#include "ss_algorithm/general/RobotSimCppGeneral.h"
 #include "ss_model/inverted_pendulum/InvertedPendulum.h"
 
 class InvertedPendulumLQR
