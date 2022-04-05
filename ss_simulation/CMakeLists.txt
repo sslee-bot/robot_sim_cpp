@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 ## By adding -Wall and -Werror, the compiler does not ignore warnings anymore,
 ## enforcing cleaner code.
-add_definitions(-Wall -Werror)
+# add_definitions(-Wall -Werror)
 
 ## Find catkin macros and libraries
 find_package(catkin REQUIRED COMPONENTS
@@ -24,6 +24,11 @@ find_package(gazebo REQUIRED)
 ## Find system libraries
 find_package(Eigen3 REQUIRED)
 find_package(Boost REQUIRED)
+
+## OpenCV
+# set(OpenCV_DIR [OpenCV.cmake PATH])
+find_package(OpenCV REQUIRED)
+include_directories(${OpenCV_INCLUDE_DIR})
 
 ## catkin specific configuration
 catkin_package(
@@ -40,6 +45,7 @@ include_directories(
     ${GAZEBO_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
+    cv-plot/CvPlot/inc
 )
 
 ## Declare cpp executables
@@ -59,9 +65,14 @@ add_executable(04_wheeled_mobile_robot src/04_wheeled_mobile_robot.cpp)
 target_link_libraries(04_wheeled_mobile_robot ${catkin_LIBRARIES})
 add_dependencies(04_wheeled_mobile_robot ${catkin_EXPORTED_TARGETS})
 
+add_executable(05_1D_object_tracking src/05_1D_object_tracking.cpp)
+target_link_libraries(05_1D_object_tracking ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(05_1D_object_tracking ${catkin_EXPORTED_TARGETS})
+
 set_target_properties(
     01_matrix_basic
     02_CARE
     03_inverted_pendulum
     04_wheeled_mobile_robot
+    05_1D_object_tracking
     PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/bin)

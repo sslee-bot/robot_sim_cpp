@@ -1,0 +1,3 @@
+[submodule "ss_simulation/cv-plot"]
+	path = ss_simulation/cv-plot
+	url = https://github.com/Profactor/cv-plot.git
