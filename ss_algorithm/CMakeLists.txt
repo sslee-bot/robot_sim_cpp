@@ -32,5 +32,6 @@ add_library(${PROJECT_NAME} src/solver/CARE_Solver.cpp
                             src/control/StateFeedbackLQR.cpp
                             src/control/WheeledMobileRobotController/Jang2009.cpp
                             src/control/WheeledMobileRobotController/Kim2002_1.cpp
-                            src/control/WheeledMobileRobotController/Kim2002_2.cpp)
+                            src/control/WheeledMobileRobotController/Kim2002_2.cpp
+                            src/estimator/DiscreteLinearKF.cpp)
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})

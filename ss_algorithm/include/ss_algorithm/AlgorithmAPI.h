@@ -3,6 +3,7 @@
 
 #include "ss_algorithm/API/RobotSimCppGeneral.h"
 #include "ss_algorithm/control/ControlAPI.h"
+#include "ss_algorithm/estimator/EstimatorAPI.h"
 #include "ss_algorithm/solver/SolverAPI.h"
 
 #endif
