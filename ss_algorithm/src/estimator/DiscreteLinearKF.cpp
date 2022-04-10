@@ -47,3 +47,8 @@ void DiscreteLinearKF::correct(const Eigen::VectorXd& measurement)
     m_state += m_K * (measurement - m_C * m_state);
     m_P = (m_I - m_K * m_C) * m_P;
 }
+
+Eigen::MatrixXd DiscreteLinearKF::getState(void)
+{
+    return m_state;
+}

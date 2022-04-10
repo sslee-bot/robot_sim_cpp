@@ -28,6 +28,7 @@ public:
     virtual void setInitialState(const Eigen::MatrixXd& initialState);
     virtual void predict(const Eigen::VectorXd& controlInput);
     virtual void correct(const Eigen::VectorXd& measurement);
+    virtual Eigen::MatrixXd getState(void);
 
 private:
     // Dimensions
