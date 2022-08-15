@@ -43,12 +43,12 @@
 
     <!-- Other nodes -->
     <!-- <rosparam command="load" file="$(find jackal_control)/config/control.yaml" /> -->
-    <rosparam command="load" file="$(find ss_simulation)/config/jackal_control.yaml" />
+    <rosparam command="load" file="$(find robot_sim_cpp)/config/jackal_control.yaml" />
     <node name="controller_spawner" pkg="controller_manager" type="spawner"
         args="jackal_joint_publisher jackal_velocity_controller" />
     <node pkg="twist_mux" type="twist_mux" name="twist_mux">
         <!-- <rosparam command="load" file="$(find jackal_control)/config/twist_mux.yaml" /> -->
-        <rosparam command="load" file="$(find ss_simulation)/config/jackal_twist_mux.yaml" />
+        <rosparam command="load" file="$(find robot_sim_cpp)/config/jackal_twist_mux.yaml" />
         <remap from="cmd_vel_out" to="jackal_velocity_controller/cmd_vel"/>
     </node>
 </launch>

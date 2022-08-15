@@ -1,7 +1,7 @@
 ## See ros package practices at https://github.com/leggedrobotics/ros_best_practices
 
 cmake_minimum_required(VERSION 3.0.0)
-project(ss_simulation)
+project(robot_sim_cpp)
 
 ## Use C++14
 set(CMAKE_CXX_STANDARD 14)
@@ -49,7 +49,7 @@ include_directories(
     ${GAZEBO_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
-    cv-plot/CvPlot/inc
+    ../cv-plot/CvPlot/inc
 )
 
 ## Declare cpp executables
