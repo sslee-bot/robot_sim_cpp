@@ -1,5 +1,6 @@
 # robot_sim_cpp
-## 1. Dependencies
+## 1. Requirements
+* ROS (Melodic recommended)
 * Eigen3
 ```
 sudo apt-get install libeigen3-dev
@@ -13,6 +14,7 @@ sudo apt-get install ros-${ROS_DISTRO}-gazebo-* \
                      ros-${ROS_DISTRO}-jackal-desktop \
                      ros-${ROS_DISTRO}-jackal-navigation
 ```
+* OpenCV (3.4.5 recommended)
 
 ## 2. Executable binaries
 Executable binaries will be created after building the projects.
@@ -52,6 +54,12 @@ ss_simulation/bin/04_wheeled_mobile_robot
     2. [Kim2002_1](http://dcsl.gatech.edu/papers/tra02.pdf)
     3. Kim2002_2 (The same material as ```Kim2002_1``` was refered)
 
+### 2.5. 1D object tracking
+Simple 1D object tracking simulation using Kalman filter
+```bash
+ss_simulation/bin/05_1D_object_tracking
+```
+
 ## 3. Gazebo simulations
 ### 3.1. Inverted pendulum
 ```bash
@@ -74,3 +82,8 @@ roslaunch ss_simulation 02_jackal_pose_control.launch
     * x position: linear/x
     * y position: linear/y
     * heading angle: angular/z
+
+### 3.3 Jackal robot in office
+```bash
+roslaunch ss_simulation 03_jackal_in_office.launch
+```
