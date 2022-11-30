@@ -49,7 +49,6 @@ include_directories(
     ${GAZEBO_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
-    ../cv-plot/CvPlot/inc
 )
 
 ## Declare cpp executables

@@ -10,23 +10,16 @@
  *
  */
 
-#define CVPLOT_HEADER_ONLY
-
-#include <CvPlot/cvplot.h>
-
 #include <Eigen/Dense>
 #include <chrono>
 #include <cmath>
 #include <iostream>
-#include <opencv2/highgui.hpp>
-#include <opencv2/plot.hpp>
 #include <random>
 #include <vector>
 
 #include "ss_algorithm/estimator/EstimatorAPI.h"
 
 using namespace std;
-using namespace cv;
 
 int main(int argc, char* argv[])
 {
@@ -120,11 +113,11 @@ int main(int argc, char* argv[])
     rmse = std::sqrt(sum / count);
     std::cout << "RMSE: " << rmse << std::endl;
 
-    // Plot result
-    auto axes = CvPlot::makePlotAxes();
-    axes.create<CvPlot::Series>(vPlotX, vPlotY1, "k-");
-    axes.create<CvPlot::Series>(vPlotX, vPlotY2, "o");
-    CvPlot::show("05_1D_object_tracking", axes);
+    // // Plot result
+    // auto axes = CvPlot::makePlotAxes();
+    // axes.create<CvPlot::Series>(vPlotX, vPlotY1, "k-");
+    // axes.create<CvPlot::Series>(vPlotX, vPlotY2, "o");
+    // CvPlot::show("05_1D_object_tracking", axes);
 
     return 0;
 }
