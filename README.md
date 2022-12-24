@@ -14,7 +14,6 @@ sudo apt-get install ros-${ROS_DISTRO}-gazebo-* \
                      ros-${ROS_DISTRO}-jackal-desktop \
                      ros-${ROS_DISTRO}-jackal-navigation
 ```
-* OpenCV (3.4.5 recommended)
 
 ## 2. Executable binaries
 Executable binaries will be created after building the projects.
