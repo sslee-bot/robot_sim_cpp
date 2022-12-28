@@ -95,14 +95,14 @@ install(TARGETS ${executables}
     RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
-# set_target_properties(
-#     01_matrix_basic
-#     02_CARE
-#     03_inverted_pendulum
-#     04_wheeled_mobile_robot
-#     05_1D_object_tracking
-#     PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/bin
-# )
+set_target_properties(
+    01_matrix_basic
+    02_CARE
+    03_inverted_pendulum
+    04_wheeled_mobile_robot
+    05_1D_object_tracking
+    PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/bin
+)
 
 ament_export_include_directories(include)
 ament_export_dependencies(rclcpp)
