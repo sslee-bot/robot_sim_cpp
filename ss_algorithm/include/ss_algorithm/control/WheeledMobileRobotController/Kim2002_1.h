@@ -1,6 +1,6 @@
 /**
  * @file Kim2002_1.h
- * @author Sang Su Lee (physism@gmail.com)
+ * @author Sangsu Lee (physism@gmail.com)
  * @brief Kinematic controller for simple mobile robot.
  * See the equation (5) in the following material.
  * http://dcsl.gatech.edu/papers/tra02.pdf
@@ -26,8 +26,10 @@ class Kim2002_1 : public WheeledMobileRobotController
 public:
     Kim2002_1(double k, double mu);
     virtual ~Kim2002_1();
+    // virtual void setParams(double k, double mu);
+    virtual void setParams(const std::vector<double>& params) override;
     virtual Eigen::Vector2d poseControl(const Eigen::Vector3d& currentState,
-                                        const Eigen::Vector3d& desiredState);
+                                        const Eigen::Vector3d& desiredState) override;
 
 private:
     // Controller parameters

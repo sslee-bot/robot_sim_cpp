@@ -2,26 +2,22 @@
 
 int main(int argc, char** argv)
 {
-    // Init node
-    ros::init(argc, argv, "wheeled_mobile_robot_pose_control_node");
-    ros::NodeHandle nodeHandler("~");
+    // Init rclcpp
+    rclcpp::init(argc, argv);
 
-    // Set controller parameters
-    double gamma_1, gamma_2, h;
-    double k, mu;
+    // Set Gazebo robot pose controller node
+    auto node = std::make_shared<WheeledMobileRobotPoseControl>(
+        "jackal", 0.02, "/gazebo/model_states", "/target_pose", "/cmd_vel");
 
-    nodeHandler.param("wheeled_mobile_robot_pose_control/Jang2009/gamma_1", gamma_1, 0.3);
-    nodeHandler.param("wheeled_mobile_robot_pose_control/Jang2009/gamma_2", gamma_2, 3.0);
-    nodeHandler.param("wheeled_mobile_robot_pose_control/Jang2009/h", h, 1.0);
-    nodeHandler.param("wheeled_mobile_robot_pose_control/Kim2002_1/k", k, 0.5);
-    nodeHandler.param("wheeled_mobile_robot_pose_control/Kim2002_1/mu", mu, 1.0);
-    nodeHandler.param("wheeled_mobile_robot_pose_control/Kim2002_2/k", k, 0.5);
-    nodeHandler.param("wheeled_mobile_robot_pose_control/Kim2002_2/mu", mu, 1.0);
-
-    // Set controller
+    // Controller and its params
     std::shared_ptr<WheeledMobileRobotController> pController;
+    double gamma_1 = node->declare_parameter("gamma_1", 0.3);
+    double gamma_2 = node->declare_parameter("gamma_2", 3.0);
+    double h = node->declare_parameter("h", 1.0);
+    double k = node->declare_parameter("k", 0.5);
+    double mu = node->declare_parameter("mu", 1.0);
 
-    ros::Duration(2.0).sleep();
+    rclcpp::sleep_for(2s);
 
     while (true) {
         // TODO: make it easy to see on terminal
@@ -47,33 +43,30 @@ int main(int argc, char** argv)
         }
         else if (controllerCode == 1) {
             pController = std::make_shared<Jang2009>(gamma_1, gamma_2, h);
+            node->registerController(pController);
 
-            ROS_INFO_STREAM("[robot_sim_cpp] Kinematic controller for the robot are set."
-                            << std::endl
-                            << "Controller: Jang2009" << std::endl
-                            << "gamma_1: " << gamma_1 << std::endl
-                            << "gamma_2: " << gamma_2 << std::endl
-                            << "h: " << h);
+            RCLCPP_INFO_STREAM(node->get_logger(), "Set kinematic controller for the robot.");
+            RCLCPP_INFO_STREAM(node->get_logger(), "Controller: Jang2009");
+            RCLCPP_INFO_STREAM(node->get_logger(),
+                               "gamma_1: " << gamma_1 << ", gamma_2: " << gamma_2 << ", h: " << h);
             break;
         }
         else if (controllerCode == 2) {
             pController = std::make_shared<Kim2002_1>(k, mu);
+            node->registerController(pController);
 
-            ROS_INFO_STREAM("[robot_sim_cpp] Kinematic controller for the robot are set."
-                            << std::endl
-                            << "Controller: Kim2002_1" << std::endl
-                            << "k: " << k << std::endl
-                            << "mu: " << mu);
+            RCLCPP_INFO_STREAM(node->get_logger(), "Set kinematic controller for the robot.");
+            RCLCPP_INFO_STREAM(node->get_logger(), "Controller: Kim2002_1");
+            RCLCPP_INFO_STREAM(node->get_logger(), "k: " << k << ", mu: " << mu);
             break;
         }
         else if (controllerCode == 3) {
             pController = std::make_shared<Kim2002_2>(k, mu);
+            node->registerController(pController);
 
-            ROS_INFO_STREAM("[robot_sim_cpp] Kinematic controller for the robot are set."
-                            << std::endl
-                            << "Controller: Kim2002_2" << std::endl
-                            << "k: " << k << std::endl
-                            << "mu: " << mu);
+            RCLCPP_INFO_STREAM(node->get_logger(), "Set kinematic controller for the robot.");
+            RCLCPP_INFO_STREAM(node->get_logger(), "Controller: Kim2002_2");
+            RCLCPP_INFO_STREAM(node->get_logger(), "k: " << k << ", mu: " << mu);
             break;
         }
         else {
@@ -81,14 +74,9 @@ int main(int argc, char** argv)
         }
     }
 
-    // Set Gazebo robot pose controller object
-    WheeledMobileRobotPoseControl robotPoseController(
-        "jackal", 0.02, pController, "/gazebo/model_states", "/target_pose", "/cmd_vel");
-
     // Start control
-    ros::Duration(2.0).sleep();
-    robotPoseController.startControl();
-
-    ros::waitForShutdown();
-    return 1;
+    node->startControl();
+    rclcpp::spin(node);
+    rclcpp::shutdown();
+    return 0;
 }

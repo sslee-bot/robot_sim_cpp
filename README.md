@@ -1,4 +1,7 @@
 # robot_sim_cpp
+## 0. CAUTION
+This branch is for migration to ROS2. Contents below will be updated after the migration.
+
 ## 1. Requirements
 * ROS (Melodic recommended)
 * Eigen3

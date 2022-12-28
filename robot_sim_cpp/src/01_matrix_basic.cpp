@@ -1,6 +1,6 @@
 /**
  * @file 01_matrix_basic.cpp
- * @author Sang Su Lee (physism@gmail.com)
+ * @author Sangsu Lee (physism@gmail.com)
  * @brief Basic matrix operations.
  * @version 1.0
  * @date 2021-06-10

@@ -1,51 +1,52 @@
 #ifndef SS_GAZEBO_WHEELED_MOBILE_ROBOT_POSE_CONTROL_H
 #define SS_GAZEBO_WHEELED_MOBILE_ROBOT_POSE_CONTROL_H
 
-#include <gazebo_msgs/ModelStates.h>
-#include <geometry_msgs/Twist.h>
-#include <ros/callback_queue.h>
-#include <ros/ros.h>
-#include <tf/transform_datatypes.h>
+// #include <tf2/convert.h>
+#include <tf2/utils.h>
 
 #include <Eigen/Dense>
 #include <cmath>
 #include <functional>
-#include <gazebo/common/common.hh>
-#include <gazebo/gazebo.hh>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+// #include <gazebo/common/common.hh>
+// #include <gazebo/gazebo.hh>
+
 #include <iostream>
 #include <mutex>
+#include <rclcpp/rclcpp.hpp>
 #include <string>
 
+#include "gazebo_msgs/msg/model_states.hpp"
+#include "geometry_msgs/msg/twist.hpp"
 #include "ss_algorithm/API/RobotSimCppGeneral.h"
 #include "ss_algorithm/control/ControlAPI.h"
 #include "ss_model/wheeled_mobile_robot/WheeledMobileRobot.h"
 
+using namespace std::chrono_literals;
+
 const double POSITION_ERROR_UPPER = 0.3;
 const double ANGLE_ERROR_UPPER = 0.3;
 
-class WheeledMobileRobotPoseControl
+class WheeledMobileRobotPoseControl : public rclcpp::Node
 {
 public:
     WheeledMobileRobotPoseControl(const std::string& robotModelName, double period,
-                                  const std::shared_ptr<WheeledMobileRobotController>& pController,
                                   const std::string& modelStateTopic,
                                   const std::string& targetStateTopic,
                                   const std::string& controlTopic);
     virtual ~WheeledMobileRobotPoseControl();
+    virtual void registerController(std::shared_ptr<WheeledMobileRobotController> pController);
     virtual void startControl();
 
 private:
-    virtual void callbackModelState(const gazebo_msgs::ModelStatesConstPtr& msg);
-    virtual void callbackTargetPose(const geometry_msgs::TwistConstPtr& msg);
-    virtual void periodicTask(const ros::TimerEvent& timerEvent);
+    virtual void callbackModelState(const gazebo_msgs::msg::ModelStates::SharedPtr msg);
+    virtual void callbackTargetPose(const geometry_msgs::msg::Twist::SharedPtr msg);
+    virtual void periodicTask();
 
-    ros::NodeHandle m_nodeHandler;
-    ros::CallbackQueue m_customQueue;
-    ros::AsyncSpinner m_asyncSpinner;
-    ros::Subscriber m_modelStatesSub;
-    ros::Subscriber m_targetStateSub;
-    ros::Publisher m_controlPub;
-    ros::Timer m_timer;
+    rclcpp::Subscription<gazebo_msgs::msg::ModelStates>::SharedPtr m_modelStatesSub;
+    rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr m_targetStateSub;
+    rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr m_controlPub;
+    rclcpp::TimerBase::SharedPtr m_timer;
 
     bool m_isModelStateValid;
     bool m_isTargetStateValid;
@@ -62,7 +63,7 @@ private:
     std::string m_targetStateTopic;
     std::string m_controlTopic;
 
-    geometry_msgs::Twist m_controlMsg;
+    geometry_msgs::msg::Twist m_controlMsg;
 
     Eigen::Vector3d m_currentPose;
     Eigen::Vector3d m_desiredPose;

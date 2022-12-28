@@ -12,6 +12,8 @@
         <self_collide>1</self_collide>
     </gazebo>
 
+    <!-- TODO: Replace plugins -->
+
     <gazebo>
         <plugin name="cart_effort" filename="liblink_effort.so">
             <linkName>cart_link</linkName>

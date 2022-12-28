@@ -1,6 +1,6 @@
 /**
  * @file 02_CARE.cpp
- * @author Sang Su Lee (physism@gmail.com)
+ * @author Sangsu Lee (physism@gmail.com)
  * @brief Simple example solving a CARE.
  * @version 1.0
  * @date 2021-06-28

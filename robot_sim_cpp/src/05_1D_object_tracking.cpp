@@ -1,6 +1,6 @@
 /**
  * @file 05_1D_object_tracking.cpp
- * @author Sang Su Lee (physism@gmail.com)
+ * @author Sangsu Lee (physism@gmail.com)
  * @brief C++ version of object tracking example
  * https://machinelearningspace.com/object-tracking-python/
  * @version 1.0

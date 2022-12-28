@@ -1,6 +1,6 @@
 /**
  * @file InvertedPendulum.h
- * @author Sang Su Lee (physism@gmail.com)
+ * @author Sangsu Lee (physism@gmail.com)
  * @brief Inverted pendulum model based on following material.
  * https://ctms.engin.umich.edu/CTMS/index.php?example=InvertedPendulum&section=SystemModeling
  * @version 1.0

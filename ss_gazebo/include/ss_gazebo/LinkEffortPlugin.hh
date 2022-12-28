@@ -1,43 +1,27 @@
 #ifndef SS_GAZEBO_LINK_EFFORT_PLUGIN_HH
 #define SS_GAZEBO_LINK_EFFORT_PLUGIN_HH
 
-#include <geometry_msgs/Twist.h>
-#include <ros/ros.h>
-
-#include <functional>
-#include <gazebo/common/common.hh>
-#include <gazebo/gazebo.hh>
-#include <gazebo/physics/physics.hh>
-#include <ignition/math/Vector3.hh>
-#include <string>
+// #include <boost/shared_ptr.hpp>
+// #include <sdf/sdf.hh>
+#include <gazebo/common/Plugin.hh>
+#include <memory>
 
 #include "ss_algorithm/API/RobotSimCppGeneral.h"
 
-namespace gazebo
+namespace gazebo_plugins
 {
-class LinkEffortPlugin : public ModelPlugin
+class LinkEffortPluginPrivate;
+
+class LinkEffortPlugin : public gazebo::ModelPlugin
 {
 public:
     LinkEffortPlugin();
     virtual ~LinkEffortPlugin();
-    virtual void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf);
+    virtual void Load(gazebo::physics::ModelPtr _model, sdf::ElementPtr _sdf) override;
 
 private:
-    virtual void OnUpdate();
-    virtual void effortMessageCallback(const geometry_msgs::TwistConstPtr& msg);
-
-    physics::ModelPtr m_pModel;
-    physics::LinkPtr m_pLink;
-    event::ConnectionPtr m_pUpdateConnection;
-
-    ros::NodeHandle m_nodeHandler;
-    ros::AsyncSpinner m_asyncSpinner;
-    ros::Subscriber m_effortSub;
-
-    std::string m_linkName;
-    std::string m_topicName;
-    geometry_msgs::Twist m_effortMessage;
+    std::unique_ptr<LinkEffortPluginPrivate> impl_;
 };
-}  // namespace gazebo
+}  // namespace gazebo_plugins
 
 #endif

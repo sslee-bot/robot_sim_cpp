@@ -1,6 +1,6 @@
 /**
  * @file 04_wheeled_mobile_robot.cpp
- * @author Sang Su Lee (physism@gmail.com)
+ * @author Sangsu Lee (physism@gmail.com)
  * @brief
  * @version 1.0
  * @date 2021-11-07

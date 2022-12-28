@@ -1,6 +1,6 @@
 /**
  * @file LinearKF.h
- * @author Sang Su Lee (physism@gmail.com)
+ * @author Sangsu Lee (physism@gmail.com)
  * @brief Discrete-time linear Kalman filter
  * https://en.wikipedia.org/wiki/Kalman_filter
  * @version 1.0

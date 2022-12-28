@@ -1,6 +1,6 @@
 /**
  * @file Jang2009.h
- * @author Sang Su Lee (physism@gmail.com)
+ * @author Sangsu Lee (physism@gmail.com)
  * @brief Kinematic controller for simple mobile robot.
  * See IV. A. in the following material.
  * https://www.researchgate.net/publication/224560616_Neuro-fuzzy_Network_Control_for_a_Mobile_Robot
@@ -26,8 +26,10 @@ class Jang2009 : public WheeledMobileRobotController
 public:
     Jang2009(double gamma_1, double gamma_2, double h);
     virtual ~Jang2009();
+    // virtual void setParams(double gamma_1, double gamma_2, double h);
+    virtual void setParams(const std::vector<double>& params) override;
     virtual Eigen::Vector2d poseControl(const Eigen::Vector3d& currentState,
-                                        const Eigen::Vector3d& desiredState);
+                                        const Eigen::Vector3d& desiredState) override;
 
 private:
     // Controller parameters

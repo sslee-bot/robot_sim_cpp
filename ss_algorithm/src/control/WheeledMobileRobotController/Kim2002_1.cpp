@@ -8,6 +8,17 @@ Kim2002_1::~Kim2002_1()
 {
 }
 
+void Kim2002_1::setParams(const std::vector<double>& params)
+{
+    try {
+        m_k = params.at(0);
+        m_mu = params.at(1);
+    }
+    catch (const std::exception& e) {
+        std::cerr << e.what() << '\n';
+    }
+}
+
 Eigen::Vector2d Kim2002_1::poseControl(const Eigen::Vector3d& currentState,
                                        const Eigen::Vector3d& desiredState)
 {

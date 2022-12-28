@@ -1,15 +1,14 @@
 #include "ss_gazebo/InvertedPendulumLQR.h"
 
+using std::placeholders::_1;
+
 InvertedPendulumLQR::InvertedPendulumLQR(const std::string& invertedPendulumName,
                                          const std::string& pendulumJointName, double period,
-                                         const InvertedPendulum& pendulumModel,
                                          const std::string& modelStateTopic,
                                          const std::string& jointStateTopic,
                                          const std::string& targetPositionTopic,
                                          const std::string& controlTopic)
-    : m_nodeHandler(""),
-      m_customQueue(),
-      m_asyncSpinner(0, &m_customQueue),
+    : Node("inverted_pendulum_lqr_node"),
       m_modelStatesSub(),
       m_jointStateSub(),
       m_targetPositionSub(),
@@ -21,26 +20,72 @@ InvertedPendulumLQR::InvertedPendulumLQR(const std::string& invertedPendulumName
       m_invertedPendulumName(invertedPendulumName),
       m_pendulumJointName(pendulumJointName),
       m_period(period),
-      m_pendulumModel(pendulumModel),
-      m_LQR(m_pendulumModel.getMatrixA(), m_pendulumModel.getMatrixB(),
-            m_pendulumModel.getMatrixC()),
       m_modelStateTopic(modelStateTopic),
       m_jointStateTopic(jointStateTopic),
       m_targetPositionTopic(targetPositionTopic),
       m_controlTopic(controlTopic),
       m_controlMsg()
 {
-    initialization();
+    // Load params
+    double cartMass, pendulumMass, frictionCoefficient, cartPendulumCenterDistance,
+        massMomentInertia;
+
+    cartMass = this->declare_parameter("cart_mass", 0.5);
+    pendulumMass = this->declare_parameter("pendulum_mass", 0.2);
+    frictionCoefficient = this->declare_parameter("friction_coefficient", 0.1);
+    cartPendulumCenterDistance = this->declare_parameter("cart_pendulum_center_distance", 0.3);
+    massMomentInertia = this->declare_parameter("mass_moment_inertia", 0.006);
+
+    RCLCPP_INFO_STREAM(
+        this->get_logger(),
+        "cart_mass: " << cartMass << ", pendulum_mass: " << pendulumMass
+                      << ", friction_coefficient: " << frictionCoefficient
+                      << ", cart_pendulum_center_distance: " << cartPendulumCenterDistance
+                      << ", mass_moment_inertia: " << massMomentInertia);
+
+    // Register pendulum
+    InvertedPendulum pendulumModel(0.0, 0.0, cartMass, pendulumMass, frictionCoefficient,
+                                   cartPendulumCenterDistance, massMomentInertia);
+    this->registerPendulum(pendulumModel);
+
+    // Subscriber
+    m_modelStatesSub = this->create_subscription<gazebo_msgs::msg::ModelStates>(
+        m_modelStateTopic, 10, std::bind(&InvertedPendulumLQR::callbackModelState, this, _1));
+    m_jointStateSub = this->create_subscription<sensor_msgs::msg::JointState>(
+        m_jointStateTopic, 10, std::bind(&InvertedPendulumLQR::callbackJointState, this, _1));
+    m_targetPositionSub = this->create_subscription<std_msgs::msg::Float32>(
+        m_targetPositionTopic, 10,
+        std::bind(&InvertedPendulumLQR::callbackTargetPosition, this, _1));
+
+    // Publisher
+    m_controlPub = this->create_publisher<geometry_msgs::msg::Twist>(m_controlTopic, 10);
+
+    // Timer
+    m_timer =
+        this->create_wall_timer(1s * m_period, std::bind(&InvertedPendulumLQR::periodicTask, this));
+    m_timer->cancel();
+
+    // Target position
+    m_targetPosition = 0.0;
+
+    RCLCPP_INFO_STREAM(this->get_logger(),
+                       "LQR controller for the inverted pendulum is initialized.");
 }
 
 InvertedPendulumLQR::~InvertedPendulumLQR()
 {
-    m_asyncSpinner.stop();
-    m_timer.stop();
-    m_modelStatesSub.shutdown();
-    m_jointStateSub.shutdown();
-    m_controlPub.shutdown();
-    m_nodeHandler.shutdown();
+    m_timer->cancel();
+}
+
+void InvertedPendulumLQR::registerPendulum(const InvertedPendulum& pendulumModel)
+{
+    // Register pendulum
+    m_pPendulumModel = std::make_shared<InvertedPendulum>(pendulumModel);
+
+    // Initialize feedback controller
+    m_pLQR = std::make_shared<StateFeedbackLQR>(m_pPendulumModel->getMatrixA(),
+                                                m_pPendulumModel->getMatrixB(),
+                                                m_pPendulumModel->getMatrixC());
 }
 
 void InvertedPendulumLQR::startControl()
@@ -49,52 +94,28 @@ void InvertedPendulumLQR::startControl()
 
     // Check model and joint state validities
     if (!m_isModelStateValid || !m_isJointStateValid) {
-        ROS_ERROR_STREAM("[robot_sim_cpp] Model or joint state has not been received yet.");
+        RCLCPP_ERROR_STREAM(this->get_logger(), "Model or joint state has not been received yet.");
         return;
     }
 
     // Check target position validity
     if (!m_isTargetPositionValid) {
-        ROS_ERROR_STREAM("[robot_sim_cpp] Target position is not valid.");
+        RCLCPP_ERROR_STREAM(this->get_logger(), "Target position is not valid.");
         return;
     }
 
-    ROS_INFO_STREAM("[robot_sim_cpp] Enable LQR controller for the inverted pendulum.");
+    // Check if pendulum is registered
+    if (!m_pPendulumModel || !m_pLQR) {
+        RCLCPP_ERROR_STREAM(this->get_logger(), "Pendulum has not been registered.");
+        return;
+    }
 
-    m_timer.start();
+    RCLCPP_INFO_STREAM(this->get_logger(), "Enable LQR controller for the inverted pendulum.");
+
+    m_timer->reset();
 }
 
-void InvertedPendulumLQR::initialization()
-{
-    // Custom queue
-    m_nodeHandler.setCallbackQueue(&m_customQueue);
-
-    // Spinner
-    m_asyncSpinner.start();
-
-    // Subscriber
-    m_modelStatesSub = m_nodeHandler.subscribe<gazebo_msgs::ModelStates>(
-        m_modelStateTopic, 10, &InvertedPendulumLQR::callbackModelState, this);
-    m_jointStateSub = m_nodeHandler.subscribe<sensor_msgs::JointState>(
-        m_jointStateTopic, 10, &InvertedPendulumLQR::callbackJointState, this);
-    m_targetPositionSub = m_nodeHandler.subscribe<std_msgs::Float32>(
-        m_targetPositionTopic, 10, &InvertedPendulumLQR::callbackTargetPosition, this);
-
-    // Publisher
-    m_controlPub = m_nodeHandler.advertise<geometry_msgs::Twist>(m_controlTopic, 10);
-
-    // Timer
-    m_timer = m_nodeHandler.createTimer(ros::Duration(m_period), &InvertedPendulumLQR::periodicTask,
-                                        this);
-    m_timer.stop();
-
-    // Target position
-    m_targetPosition = 0.0;
-
-    ROS_INFO_STREAM("[robot_sim_cpp] LQR controller for the inverted pendulum is initialized.");
-}
-
-void InvertedPendulumLQR::callbackModelState(const gazebo_msgs::ModelStatesConstPtr& msg)
+void InvertedPendulumLQR::callbackModelState(const gazebo_msgs::msg::ModelStates::SharedPtr msg)
 {
     std::unique_lock<std::recursive_mutex> lock(m_mutex);
 
@@ -106,9 +127,9 @@ void InvertedPendulumLQR::callbackModelState(const gazebo_msgs::ModelStatesConst
         index = iter - nameVec.begin();
     }
     else {
-        ROS_ERROR_STREAM_THROTTLE(5,
-                                  "[robot_sim_cpp] No model name matched. m_invertedPendulumName: "
-                                      << m_invertedPendulumName);
+        RCLCPP_ERROR_STREAM_THROTTLE(
+            this->get_logger(), *(this->get_clock()), 5,
+            "No model name matched. m_invertedPendulumName: " << m_invertedPendulumName);
         return;
     }
 
@@ -116,7 +137,8 @@ void InvertedPendulumLQR::callbackModelState(const gazebo_msgs::ModelStatesConst
     double cartPosition = msg->pose[index].position.x;
     if (std::isnan(cartPosition)) {
         m_isModelStateValid = false;
-        ROS_WARN_STREAM_THROTTLE(5, "[robot_sim_cpp] Cart position has invalid (nan) value.");
+        RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5,
+                                    "Cart position has invalid (nan) value.");
         return;
     }
     else {
@@ -129,7 +151,7 @@ void InvertedPendulumLQR::callbackModelState(const gazebo_msgs::ModelStatesConst
     m_cartVelocity = (cartPosition - cartPrevPosition) / m_period;
 }
 
-void InvertedPendulumLQR::callbackJointState(const sensor_msgs::JointStateConstPtr& msg)
+void InvertedPendulumLQR::callbackJointState(const sensor_msgs::msg::JointState::SharedPtr msg)
 {
     std::unique_lock<std::recursive_mutex> lock(m_mutex);
 
@@ -141,8 +163,9 @@ void InvertedPendulumLQR::callbackJointState(const sensor_msgs::JointStateConstP
         index = iter - nameVec.begin();
     }
     else {
-        ROS_ERROR_STREAM_THROTTLE(5, "[robot_sim_cpp] No model name matched. m_pendulumJointName: "
-                                         << m_pendulumJointName);
+        RCLCPP_ERROR_STREAM_THROTTLE(
+            this->get_logger(), *(this->get_clock()), 5,
+            "No model name matched. m_pendulumJointName: " << m_pendulumJointName);
         return;
     }
 
@@ -151,8 +174,8 @@ void InvertedPendulumLQR::callbackJointState(const sensor_msgs::JointStateConstP
     double pendulumAngularVelocity = msg->velocity[index];
     if (std::isnan(pendulumAngle) || std::isnan(pendulumAngularVelocity)) {
         m_isJointStateValid = false;
-        ROS_WARN_STREAM_THROTTLE(
-            5, "[robot_sim_cpp] Pendulum angle or angular velocity has invalid (nan) value.");
+        RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5,
+                                    "Pendulum angle or angular velocity has invalid (nan) value.");
         return;
     }
     else {
@@ -164,7 +187,7 @@ void InvertedPendulumLQR::callbackJointState(const sensor_msgs::JointStateConstP
     m_pendulumAngularVelocity = pendulumAngularVelocity;
 }
 
-void InvertedPendulumLQR::callbackTargetPosition(const std_msgs::Float32ConstPtr& msg)
+void InvertedPendulumLQR::callbackTargetPosition(const std_msgs::msg::Float32::SharedPtr msg)
 {
     std::unique_lock<std::recursive_mutex> lock(m_mutex);
 
@@ -173,8 +196,9 @@ void InvertedPendulumLQR::callbackTargetPosition(const std_msgs::Float32ConstPtr
     // Update target position validity
     if (std::isnan(targetPosition)) {
         m_isTargetPositionValid = false;
-        ROS_WARN_STREAM_THROTTLE(
-            5, "[robot_sim_cpp] Target position of the inverted pendulum has invalid (nan) value.");
+        RCLCPP_WARN_STREAM_THROTTLE(
+            this->get_logger(), *(this->get_clock()), 5,
+            "Target position of the inverted pendulum has invalid (nan) value.");
         return;
     }
     else {
@@ -185,14 +209,14 @@ void InvertedPendulumLQR::callbackTargetPosition(const std_msgs::Float32ConstPtr
     m_targetPosition = targetPosition;
 }
 
-void InvertedPendulumLQR::periodicTask(const ros::TimerEvent& timerEvent)
+void InvertedPendulumLQR::periodicTask()
 {
     std::unique_lock<std::recursive_mutex> lock(m_mutex);
 
     // Check model and joint state validities
     if (!m_isModelStateValid || !m_isJointStateValid) {
-        ROS_WARN_STREAM_THROTTLE(5,
-                                 "[robot_sim_cpp] Model or joint state has not been received yet.");
+        RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5,
+                                    "Model or joint state has not been received yet.");
         return;
     }
 
@@ -202,11 +226,11 @@ void InvertedPendulumLQR::periodicTask(const ros::TimerEvent& timerEvent)
         m_pendulumAngularVelocity;
 
     // Calculate control input
-    auto control = (m_LQR.generateControlInput(pendulumState))[0];
+    auto control = (m_pLQR->generateControlInput(pendulumState))[0];
 
     // std::cout << "control input: " << control << std::endl;
 
     // Publish
     m_controlMsg.linear.x = control;
-    m_controlPub.publish(m_controlMsg);
+    m_controlPub->publish(m_controlMsg);
 }

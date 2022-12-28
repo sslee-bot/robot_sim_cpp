@@ -1,44 +1,59 @@
 <?xml version="1.0"?>
-<package format="2">
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd"
+            schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
     <name>ss_gazebo</name>
     <version>1.0.0</version>
     <description>Gazebo nodes for robot simulations</description>
-    <maintainer email="physism@gmail.com">Sang Su Lee</maintainer>
+    <maintainer email="physism@gmail.com">Sangsu Lee</maintainer>
     <license>MIT</license>
     <url type="website">https://github.com/sangsulee-robot/robot_sim_cpp</url>
     <url type="bugtracker">https://github.com/sangsulee-robot/robot_sim_cpp/issues</url>
-    <author email="physism@gmail.com">Sang Su Lee</author>
+    <author email="physism@gmail.com">Sangsu Lee</author>
 
-    <buildtool_depend>catkin</buildtool_depend>
+    <buildtool_depend>ament_cmake</buildtool_depend>
+    <!-- <buildtool_depend>rosidl_default_generators</buildtool_depend> -->
+
+    <depend>rclcpp</depend>
+    <depend>std_msgs</depend>
+    <depend>std_srvs</depend>
+    <depend>gazebo_msgs</depend>
+    <depend>geometry_msgs</depend>
+    <depend>nav_msgs</depend>
+    <depend>sensor_msgs</depend>
+    <depend>trajectory_msgs</depend>
+    <depend>tf2</depend>
+    <depend>tf2_ros</depend>
+    <depend>tf2_geometry_msgs</depend>
 
     <build_depend>eigen</build_depend>
     <build_depend>boost</build_depend>
 
-    <build_depend>roscpp</build_depend>
+    <build_depend>gazebo_dev</build_depend>
     <build_depend>gazebo_ros</build_depend>
-    <build_depend>std_msgs</build_depend>
-    <build_depend>sensor_msgs</build_depend>
-    <build_depend>geometry_msgs</build_depend>
     <build_depend>controller_manager</build_depend>
     <build_depend>joint_state_controller</build_depend>
     <build_depend>robot_state_publisher</build_depend>
+    <!-- <build_depend>builtin_interfaces</build_depend>
+    <build_depend>rosidl_default_generators</build_depend> -->
     <build_depend>ss_algorithm</build_depend>
     <build_depend>ss_model</build_depend>
 
-    <exec_depend>roscpp</exec_depend>
     <exec_depend>gazebo_ros</exec_depend>
     <exec_depend>gazebo_plugins</exec_depend>
-    <exec_depend>message_runtime</exec_depend>
-    <exec_depend>std_msgs</exec_depend>
-    <exec_depend>sensor_msgs</exec_depend>
-    <exec_depend>geometry_msgs</exec_depend>
     <exec_depend>controller_manager</exec_depend>
     <exec_depend>joint_state_controller</exec_depend>
     <exec_depend>robot_state_publisher</exec_depend>
     <exec_depend>ss_algorithm</exec_depend>
     <exec_depend>ss_model</exec_depend>
+    <!-- <exec_depend>builtin_interfaces</exec_depend>
+    <exec_depend>rosidl_default_runtime</exec_depend> -->
+
+    <!-- <member_of_group>rosidl_interface_packages</member_of_group> -->
 
     <export>
+        <build_type>ament_cmake</build_type>
         <gazebo_ros plugin_path="${prefix}/lib" gazebo_media_path="${prefix}" />
+        <!-- <gazebo_ros plugin_path="${prefix}" /> -->
     </export>
 </package>

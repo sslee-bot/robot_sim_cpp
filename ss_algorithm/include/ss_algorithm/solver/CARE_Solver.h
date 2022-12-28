@@ -1,6 +1,6 @@
 /**
  * @file CARE_Solver.h
- * @author Sang Su Lee (physism@gmail.com)
+ * @author Sangsu Lee (physism@gmail.com)
  * @brief Continuous algebraic Riccati equation (CARE) solver implemented based on
  * https://en.wikipedia.org/wiki/Algebraic_Riccati_equation#Solution
  * @version 1.0

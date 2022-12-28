@@ -1,6 +1,6 @@
 /**
  * @file WheeledMobileRobot.h
- * @author Sang Su Lee (physism@gmail.com)
+ * @author Sangsu Lee (physism@gmail.com)
  * @brief Wheeled mobile robot. See equation (7) in the following material.
  * https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=701173
  * @version 1.0

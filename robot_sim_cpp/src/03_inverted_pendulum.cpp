@@ -1,6 +1,6 @@
 /**
  * @file 03_inverted_pendulum.cpp
- * @author Sang Su Lee (physism@gmail.com)
+ * @author Sangsu Lee (physism@gmail.com)
  * @brief Inverted pendulum control example.
  * @version 1.0
  * @date 2021-06-28

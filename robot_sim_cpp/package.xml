@@ -1,28 +1,28 @@
 <?xml version="1.0"?>
-<package format="2">
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd"
+            schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
     <name>robot_sim_cpp</name>
     <version>1.0.0</version>
     <description>Robot simulations implemented in C++</description>
-    <maintainer email="physism@gmail.com">Sang Su Lee</maintainer>
+    <maintainer email="physism@gmail.com">Sangsu Lee</maintainer>
     <license>MIT</license>
     <url type="website">https://github.com/sangsulee-robot/robot_sim_cpp</url>
     <url type="bugtracker">https://github.com/sangsulee-robot/robot_sim_cpp/issues</url>
-    <author email="physism@gmail.com">Sang Su Lee</author>
+    <author email="physism@gmail.com">Sangsu Lee</author>
 
-    <buildtool_depend>catkin</buildtool_depend>
+    <buildtool_depend>ament_cmake</buildtool_depend>
+
+    <depend>rclcpp</depend>
+    <depend>gazebo_ros</depend>
+    <depend>ss_algorithm</depend>
+    <depend>ss_description</depend>
+    <depend>ss_model</depend>
 
     <build_depend>eigen</build_depend>
     <build_depend>boost</build_depend>
 
-    <build_depend>roscpp</build_depend>
-    <build_depend>gazebo_ros</build_depend>
-    <build_depend>ss_algorithm</build_depend>
-    <build_depend>ss_description</build_depend>
-    <build_depend>ss_model</build_depend>
-
-    <exec_depend>roscpp</exec_depend>
-    <exec_depend>gazebo_ros</exec_depend>
-    <exec_depend>ss_algorithm</exec_depend>
-    <exec_depend>ss_description</exec_depend>
-    <exec_depend>ss_model</exec_depend>
+    <export>
+        <build_type>ament_cmake</build_type>
+    </export>
 </package>

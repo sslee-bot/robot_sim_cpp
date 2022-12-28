@@ -10,6 +10,18 @@ Jang2009::~Jang2009()
 {
 }
 
+void Jang2009::setParams(const std::vector<double>& params)
+{
+    try {
+        m_gamma_1 = params.at(0);
+        m_gamma_2 = params.at(1);
+        m_h = params.at(2);
+    }
+    catch (const std::exception& e) {
+        std::cerr << e.what() << '\n';
+    }
+}
+
 Eigen::Vector2d Jang2009::poseControl(const Eigen::Vector3d& currentState,
                                       const Eigen::Vector3d& desiredState)
 {

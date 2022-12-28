@@ -1,13 +1,11 @@
 #include "ss_gazebo/WheeledMobileRobotPoseControl.h"
 
-WheeledMobileRobotPoseControl::WheeledMobileRobotPoseControl(
-    const std::string& robotModelName, double period,
-    const std::shared_ptr<WheeledMobileRobotController>& pController,
-    const std::string& modelStateTopic, const std::string& targetStateTopic,
-    const std::string& controlTopic)
-    : m_nodeHandler(""),
-      m_customQueue(),
-      m_asyncSpinner(0, &m_customQueue),
+WheeledMobileRobotPoseControl::WheeledMobileRobotPoseControl(const std::string& robotModelName,
+                                                             double period,
+                                                             const std::string& modelStateTopic,
+                                                             const std::string& targetStateTopic,
+                                                             const std::string& controlTopic)
+    : Node("wheel_mobile_robot_pose_control_node"),
       m_modelStatesSub(),
       m_targetStateSub(),
       m_controlPub(),
@@ -18,46 +16,45 @@ WheeledMobileRobotPoseControl::WheeledMobileRobotPoseControl(
       m_robotModelName(robotModelName),
       m_period(period),
       m_mutex(),
-      m_pController(pController),
+      m_pController(nullptr),
       m_modelStateTopic(modelStateTopic),
       m_targetStateTopic(targetStateTopic),
       m_controlTopic(controlTopic),
       m_controlMsg()
 {
-    // Custom queue
-    m_nodeHandler.setCallbackQueue(&m_customQueue);
-
-    // Spinner
-    m_asyncSpinner.start();
-
     // Subscriber
-    m_modelStatesSub = m_nodeHandler.subscribe<gazebo_msgs::ModelStates>(
-        m_modelStateTopic, 10, &WheeledMobileRobotPoseControl::callbackModelState, this);
-    m_targetStateSub = m_nodeHandler.subscribe<geometry_msgs::Twist>(
-        m_targetStateTopic, 10, &WheeledMobileRobotPoseControl::callbackTargetPose, this);
+    m_modelStatesSub = this->create_subscription<gazebo_msgs::msg::ModelStates>(
+        m_modelStateTopic, 10,
+        std::bind(&WheeledMobileRobotPoseControl::callbackModelState, this, std::placeholders::_1));
+    m_targetStateSub = this->create_subscription<geometry_msgs::msg::Twist>(
+        m_targetStateTopic, 10,
+        std::bind(&WheeledMobileRobotPoseControl::callbackTargetPose, this, std::placeholders::_1));
 
     // Publisher
-    m_controlPub = m_nodeHandler.advertise<geometry_msgs::Twist>(m_controlTopic, 10);
+    m_controlPub = this->create_publisher<geometry_msgs::msg::Twist>(m_controlTopic, 10);
 
     // Timer
-    m_timer = m_nodeHandler.createTimer(ros::Duration(m_period),
-                                        &WheeledMobileRobotPoseControl::periodicTask, this);
-    m_timer.stop();
+    m_timer = this->create_wall_timer(
+        1s * m_period, std::bind(&WheeledMobileRobotPoseControl::periodicTask, this));
+    m_timer->cancel();
 
     // Pose vectors
     m_currentPose.setZero();
     m_desiredPose.setZero();
 
-    ROS_INFO_STREAM("[robot_sim_cpp] Kinematic controller for mobile robot is initialized.");
+    RCLCPP_INFO_STREAM(this->get_logger(), "Kinematic controller for mobile robot is initialized.");
 }
 
 WheeledMobileRobotPoseControl::~WheeledMobileRobotPoseControl()
 {
-    m_asyncSpinner.stop();
-    m_timer.stop();
-    m_modelStatesSub.shutdown();
-    m_controlPub.shutdown();
-    m_nodeHandler.shutdown();
+    m_timer->cancel();
+}
+
+void WheeledMobileRobotPoseControl::registerController(
+    std::shared_ptr<WheeledMobileRobotController> pController)
+{
+    // m_pController = std::make_shared<WheeledMobileRobotController>(controller);
+    m_pController = pController;
 }
 
 void WheeledMobileRobotPoseControl::startControl()
@@ -66,22 +63,23 @@ void WheeledMobileRobotPoseControl::startControl()
 
     // Check model state validity
     if (!m_isModelStateValid || !m_isTargetStateValid) {
-        ROS_ERROR_STREAM("[robot_sim_cpp] Model or target state is not valid.");
+        RCLCPP_ERROR_STREAM(this->get_logger(), "Model or target state is not valid.");
         return;
     }
 
     // Check controller validity
     if (m_pController == nullptr) {
-        ROS_ERROR_STREAM("[robot_sim_cpp] Controller for mobile robot is not set.");
+        RCLCPP_ERROR_STREAM(this->get_logger(), "Controller for mobile robot is not set.");
         return;
     }
 
-    ROS_INFO_STREAM("[robot_sim_cpp] Enable kinematic controller for the mobile robot.");
+    RCLCPP_INFO_STREAM(this->get_logger(), "Enable kinematic controller for the mobile robot.");
 
-    m_timer.start();
+    m_timer->reset();
 }
 
-void WheeledMobileRobotPoseControl::callbackModelState(const gazebo_msgs::ModelStatesConstPtr& msg)
+void WheeledMobileRobotPoseControl::callbackModelState(
+    const gazebo_msgs::msg::ModelStates::SharedPtr msg)
 {
     std::unique_lock<std::recursive_mutex> lock(m_mutex);
 
@@ -93,8 +91,9 @@ void WheeledMobileRobotPoseControl::callbackModelState(const gazebo_msgs::ModelS
         index = iter - nameVec.begin();
     }
     else {
-        ROS_ERROR_STREAM_THROTTLE(
-            5, "[robot_sim_cpp] No model name matched. m_robotModelName: " << m_robotModelName);
+        RCLCPP_ERROR_STREAM_THROTTLE(
+            this->get_logger(), *(this->get_clock()), 5,
+            "No model name matched. m_robotModelName: " << m_robotModelName);
         return;
     }
 
@@ -102,7 +101,8 @@ void WheeledMobileRobotPoseControl::callbackModelState(const gazebo_msgs::ModelS
     auto robotModelState = msg->pose[index];
     if (std::isnan(robotModelState.position.x)) {
         m_isModelStateValid = false;
-        ROS_WARN_STREAM_THROTTLE(5, "[robot_sim_cpp] Robot model state has invalid (nan) value.");
+        RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5,
+                                    "Robot model state has invalid (nan) value.");
         return;
     }
     else {
@@ -112,17 +112,26 @@ void WheeledMobileRobotPoseControl::callbackModelState(const gazebo_msgs::ModelS
     // Get pose of the robot
     m_currentPose[0] = robotModelState.position.x;
     m_currentPose[1] = robotModelState.position.y;
-    m_currentPose[2] = wrapAngle(tf::getYaw(robotModelState.orientation));
+    m_currentPose[2] = wrapAngle(tf2::getYaw(robotModelState.orientation));
+
+    // tf2::Quaternion quat_tf;
+    // tf2::fromMsg(robotModelState.orientation, quat_tf);
+    // double roll, pitch, yaw;
+    // tf2::Matrix3x3 m(quat_tf);
+    // m.getRPY(roll, pitch, yaw);
+    // m_currentPose[2] = wrapAngle(yaw);
 }
 
-void WheeledMobileRobotPoseControl::callbackTargetPose(const geometry_msgs::TwistConstPtr& msg)
+void WheeledMobileRobotPoseControl::callbackTargetPose(
+    const geometry_msgs::msg::Twist::SharedPtr msg)
 {
     std::unique_lock<std::recursive_mutex> lock(m_mutex);
 
     // Update target state validity
     if (std::isnan(msg->linear.x)) {
         m_isTargetStateValid = false;
-        ROS_WARN_STREAM_THROTTLE(5, "[robot_sim_cpp] Target state has invalid (nan) value.");
+        RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5,
+                                    "Target state has invalid (nan) value.");
         return;
     }
     else {
@@ -138,14 +147,15 @@ void WheeledMobileRobotPoseControl::callbackTargetPose(const geometry_msgs::Twis
     m_isArrive = false;
 }
 
-void WheeledMobileRobotPoseControl::periodicTask(const ros::TimerEvent& timerEvent)
+void WheeledMobileRobotPoseControl::periodicTask()
 {
     std::unique_lock<std::recursive_mutex> lock(m_mutex);
 
     if (!m_isArrive) {
         // Check model and target state validities
         if (!m_isModelStateValid || !m_isTargetStateValid) {
-            ROS_WARN_STREAM_THROTTLE(5, "[robot_sim_cpp] Model or target state is not valid.");
+            RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5,
+                                        "Model or target state is not valid.");
             return;
         }
 
@@ -153,12 +163,15 @@ void WheeledMobileRobotPoseControl::periodicTask(const ros::TimerEvent& timerEve
         double positionError = (m_currentPose.head(2) - m_desiredPose.head(2)).norm();
         double angleError = wrapAngle(m_currentPose[2] - m_desiredPose[2]);
         if (positionError < POSITION_ERROR_UPPER && std::abs(angleError) < ANGLE_ERROR_UPPER) {
-            ROS_INFO_STREAM("[robot_sim_cpp] Robot has arrived the target."
-                            << std::endl
-                            << "Current pose: x: " << m_currentPose[0] << " y: " << m_currentPose[1]
-                            << " theta: " << m_currentPose[2] << std::endl
-                            << "Target pose: x: " << m_desiredPose[0] << " y: " << m_desiredPose[1]
-                            << " theta: " << m_desiredPose[2]);
+            RCLCPP_INFO_STREAM(this->get_logger(), "Robot arrived the target point.");
+            RCLCPP_INFO_STREAM(this->get_logger(),
+                               "Current pose: x: " << m_currentPose[0] << " y: " << m_currentPose[1]
+                                                   << " theta: " << m_currentPose[2]);
+            RCLCPP_INFO_STREAM(this->get_logger(),
+                               "Target pose: x: " << m_desiredPose[0] << " y: " << m_desiredPose[1]
+                                                  << " theta: " << m_desiredPose[2]);
+
+            // Update arrive flag
             m_isArrive = true;
         }
 
@@ -168,6 +181,6 @@ void WheeledMobileRobotPoseControl::periodicTask(const ros::TimerEvent& timerEve
         // Publish
         m_controlMsg.linear.x = control[0];
         m_controlMsg.angular.z = wrapAngle(control[1]);
-        m_controlPub.publish(m_controlMsg);
+        m_controlPub->publish(m_controlMsg);
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="Inverted_pendulum" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="inverted_pendulum" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <!-- arguments -->
     <xacro:arg name="cart_mass" default="0.5"/>
@@ -25,7 +25,7 @@
     <xacro:property name="pendulum_radius" value="0.03"/>
 
     <!-- include -->
-    <xacro:include filename="$(find ss_description)/Inverted_pendulum/Inverted_pendulum.gazebo"/>
+    <xacro:include filename="$(find ss_description)/inverted_pendulum/inverted_pendulum.gazebo.xacro"/>
 
     <!-- links and joints -->
     <link name="cart_link">
