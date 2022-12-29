@@ -14,7 +14,7 @@
 #include <string>
 
 #include "gazebo_msgs/msg/model_states.hpp"
-#include "geometry_msgs/msg/twist.hpp"
+#include "geometry_msgs/msg/wrench.hpp"
 #include "sensor_msgs/msg/joint_state.hpp"
 #include "ss_algorithm/API/RobotSimCppGeneral.h"
 #include "ss_algorithm/control/StateFeedbackLQR.h"
@@ -43,7 +43,7 @@ private:
     rclcpp::Subscription<gazebo_msgs::msg::ModelStates>::SharedPtr m_modelStatesSub;
     rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr m_jointStateSub;
     rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr m_targetPositionSub;
-    rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr m_controlPub;
+    rclcpp::Publisher<geometry_msgs::msg::Wrench>::SharedPtr m_controlPub;
     rclcpp::TimerBase::SharedPtr m_timer;
 
     bool m_isModelStateValid;
@@ -70,7 +70,7 @@ private:
     double m_cartVelocity = 0.0;
     double m_pendulumAngle = 0.0;
     double m_pendulumAngularVelocity = 0.0;
-    geometry_msgs::msg::Twist m_controlMsg;
+    geometry_msgs::msg::Wrench m_controlMsg;
 };
 
 #endif

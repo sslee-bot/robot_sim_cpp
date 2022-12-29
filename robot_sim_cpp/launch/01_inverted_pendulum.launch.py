@@ -21,9 +21,9 @@ def generate_launch_description():
         str(Path(get_package_share_directory('ss_description')).
             parent.resolve())])
 
-    # world_path = PathJoinSubstitution(
-    #     [FindPackageShare('ss_gazebo'), 'worlds', 'office.world']
-    # )
+    world_path = PathJoinSubstitution(
+        [FindPackageShare('ss_gazebo'), 'worlds', 'empty.world']
+    )
 
     # Get urdf via xacro
     robot_description_command = [
@@ -33,6 +33,8 @@ def generate_launch_description():
             [FindPackageShare('ss_description'), 'urdf',
              'inverted_pendulum.urdf.xacro']
         ),
+        # TODO: xacro arguments
+        # ' ', 'cart_mass:='
     ]
 
     robot_description_content = ParameterValue(
@@ -48,6 +50,10 @@ def generate_launch_description():
                                       )
 
     # TODO: Controller node
+    controller_node = Node(package='ss_gazebo',
+                           executable='inverted_pendulum_LQR_node',
+                           # TODO: parameters
+                           )
 
     # Gazebo server
     gzserver = ExecuteProcess(
@@ -55,7 +61,7 @@ def generate_launch_description():
              '-s', 'libgazebo_ros_init.so',
              '-s', 'libgazebo_ros_factory.so',
              '--verbose',
-             #  world_path
+             world_path
              ],
         output='screen',
     )
@@ -80,7 +86,8 @@ def generate_launch_description():
     ld.add_action(gz_resource_path)
     ld.add_action(gzserver)
     ld.add_action(gzclient)
-    ld.add_action(robot_state_publisher_node)
     ld.add_action(spawn_robot)
+    ld.add_action(robot_state_publisher_node)
+    ld.add_action(controller_node)
 
     return ld

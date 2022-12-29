@@ -58,7 +58,7 @@ InvertedPendulumLQR::InvertedPendulumLQR(const std::string& invertedPendulumName
         std::bind(&InvertedPendulumLQR::callbackTargetPosition, this, _1));
 
     // Publisher
-    m_controlPub = this->create_publisher<geometry_msgs::msg::Twist>(m_controlTopic, 10);
+    m_controlPub = this->create_publisher<geometry_msgs::msg::Wrench>(m_controlTopic, 10);
 
     // Timer
     m_timer =
@@ -91,12 +91,6 @@ void InvertedPendulumLQR::registerPendulum(const InvertedPendulum& pendulumModel
 void InvertedPendulumLQR::startControl()
 {
     std::unique_lock<std::recursive_mutex> lock(m_mutex);
-
-    // Check model and joint state validities
-    if (!m_isModelStateValid || !m_isJointStateValid) {
-        RCLCPP_ERROR_STREAM(this->get_logger(), "Model or joint state has not been received yet.");
-        return;
-    }
 
     // Check target position validity
     if (!m_isTargetPositionValid) {
@@ -228,9 +222,20 @@ void InvertedPendulumLQR::periodicTask()
     // Calculate control input
     auto control = (m_pLQR->generateControlInput(pendulumState))[0];
 
+    if (std::isnan(control)) {
+        RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5,
+                                    "NaN control input.");
+        return;
+    }
     // std::cout << "control input: " << control << std::endl;
 
     // Publish
-    m_controlMsg.linear.x = control;
+    m_controlMsg.force.x = control;
+    m_controlMsg.force.y = 0.0;
+    m_controlMsg.force.z = 0.0;
+    m_controlMsg.torque.x = 0.0;
+    m_controlMsg.torque.y = 0.0;
+    m_controlMsg.torque.z = 0.0;
+
     m_controlPub->publish(m_controlMsg);
 }
