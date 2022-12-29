@@ -122,7 +122,7 @@ void InvertedPendulumLQR::callbackModelState(const gazebo_msgs::msg::ModelStates
     }
     else {
         RCLCPP_ERROR_STREAM_THROTTLE(
-            this->get_logger(), *(this->get_clock()), 5,
+            this->get_logger(), *(this->get_clock()), 5000,
             "No model name matched. m_invertedPendulumName: " << m_invertedPendulumName);
         return;
     }
@@ -131,7 +131,7 @@ void InvertedPendulumLQR::callbackModelState(const gazebo_msgs::msg::ModelStates
     double cartPosition = msg->pose[index].position.x;
     if (std::isnan(cartPosition)) {
         m_isModelStateValid = false;
-        RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5,
+        RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5000,
                                     "Cart position has invalid (nan) value.");
         return;
     }
@@ -158,7 +158,7 @@ void InvertedPendulumLQR::callbackJointState(const sensor_msgs::msg::JointState:
     }
     else {
         RCLCPP_ERROR_STREAM_THROTTLE(
-            this->get_logger(), *(this->get_clock()), 5,
+            this->get_logger(), *(this->get_clock()), 5000,
             "No model name matched. m_pendulumJointName: " << m_pendulumJointName);
         return;
     }
@@ -168,7 +168,7 @@ void InvertedPendulumLQR::callbackJointState(const sensor_msgs::msg::JointState:
     double pendulumAngularVelocity = msg->velocity[index];
     if (std::isnan(pendulumAngle) || std::isnan(pendulumAngularVelocity)) {
         m_isJointStateValid = false;
-        RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5,
+        RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5000,
                                     "Pendulum angle or angular velocity has invalid (nan) value.");
         return;
     }
@@ -191,7 +191,7 @@ void InvertedPendulumLQR::callbackTargetPosition(const std_msgs::msg::Float32::S
     if (std::isnan(targetPosition)) {
         m_isTargetPositionValid = false;
         RCLCPP_WARN_STREAM_THROTTLE(
-            this->get_logger(), *(this->get_clock()), 5,
+            this->get_logger(), *(this->get_clock()), 5000,
             "Target position of the inverted pendulum has invalid (nan) value.");
         return;
     }
@@ -209,7 +209,7 @@ void InvertedPendulumLQR::periodicTask()
 
     // Check model and joint state validities
     if (!m_isModelStateValid || !m_isJointStateValid) {
-        RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5,
+        RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5000,
                                     "Model or joint state has not been received yet.");
         return;
     }
@@ -223,7 +223,7 @@ void InvertedPendulumLQR::periodicTask()
     auto control = (m_pLQR->generateControlInput(pendulumState))[0];
 
     if (std::isnan(control)) {
-        RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5,
+        RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5000,
                                     "NaN control input.");
         return;
     }

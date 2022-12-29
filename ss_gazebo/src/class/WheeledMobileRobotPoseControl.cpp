@@ -92,7 +92,7 @@ void WheeledMobileRobotPoseControl::callbackModelState(
     }
     else {
         RCLCPP_ERROR_STREAM_THROTTLE(
-            this->get_logger(), *(this->get_clock()), 5,
+            this->get_logger(), *(this->get_clock()), 5000,
             "No model name matched. m_robotModelName: " << m_robotModelName);
         return;
     }
@@ -101,7 +101,7 @@ void WheeledMobileRobotPoseControl::callbackModelState(
     auto robotModelState = msg->pose[index];
     if (std::isnan(robotModelState.position.x)) {
         m_isModelStateValid = false;
-        RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5,
+        RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5000,
                                     "Robot model state has invalid (nan) value.");
         return;
     }
@@ -130,7 +130,7 @@ void WheeledMobileRobotPoseControl::callbackTargetPose(
     // Update target state validity
     if (std::isnan(msg->linear.x)) {
         m_isTargetStateValid = false;
-        RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5,
+        RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5000,
                                     "Target state has invalid (nan) value.");
         return;
     }
@@ -154,7 +154,7 @@ void WheeledMobileRobotPoseControl::periodicTask()
     if (!m_isArrive) {
         // Check model and target state validities
         if (!m_isModelStateValid || !m_isTargetStateValid) {
-            RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5,
+            RCLCPP_WARN_STREAM_THROTTLE(this->get_logger(), *(this->get_clock()), 5000,
                                         "Model or target state is not valid.");
             return;
         }
