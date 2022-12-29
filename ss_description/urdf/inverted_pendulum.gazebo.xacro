@@ -12,14 +12,24 @@
         <self_collide>1</self_collide>
     </gazebo>
 
-    <!-- TODO: Replace plugins -->
-
     <gazebo>
+        <plugin name="cart_force" filename="libgazebo_ros_force.so">
+            <ros>
+                <!-- <namespace></namespace> -->
+                <remapping>gazebo_ros_force:=cart_effort</remapping>
+            </ros>
+
+            <link_name>cart_link</link_name>
+            <force_frame>world</force_frame>
+        </plugin>
+    </gazebo>
+
+    <!-- <gazebo>
         <plugin name="cart_effort" filename="liblink_effort.so">
             <linkName>cart_link</linkName>
             <topicName>cart_effort</topicName>
         </plugin>
-    </gazebo>
+    </gazebo> -->
 
     <gazebo>
         <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">

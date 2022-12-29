@@ -4,12 +4,8 @@ project(ss_description)
 find_package(ament_cmake REQUIRED)
 find_package(urdf REQUIRED)
 
-set(descriptions
-    "inverted_pendulum"
-)
-
 install(
-    DIRECTORY ${descriptions}
+    DIRECTORY urdf
     DESTINATION share/${PROJECT_NAME}
 )
 

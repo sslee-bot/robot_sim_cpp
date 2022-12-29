@@ -25,7 +25,7 @@
     <xacro:property name="pendulum_radius" value="0.03"/>
 
     <!-- include -->
-    <xacro:include filename="$(find ss_description)/inverted_pendulum/inverted_pendulum.gazebo.xacro"/>
+    <xacro:include filename="$(find ss_description)/urdf/inverted_pendulum.gazebo.xacro"/>
 
     <!-- links and joints -->
     <link name="cart_link">
