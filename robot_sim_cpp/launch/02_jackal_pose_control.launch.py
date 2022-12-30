@@ -23,8 +23,6 @@ ARGUMENTS = [
     DeclareLaunchArgument('world_path', default_value=PathJoinSubstitution(
         [FindPackageShare('ss_gazebo'), 'worlds', 'empty.world']
     ), description='World file path'),
-    DeclareLaunchArgument(
-        'front_laser', default_value='false', choices=['true', 'false'],),
 ]
 
 
@@ -34,8 +32,8 @@ def generate_launch_description():
         EnvironmentVariable('GAZEBO_MODEL_PATH',
                             default_value=''),
         '/usr/share/gazebo-11/models/:',
-        str(Path(get_package_share_directory('ss_description')).
-            parent.resolve())])
+        str(Path(get_package_share_directory('ss_description')).parent.resolve()),
+        ':', str(Path(get_package_share_directory('jackal_description')).parent.resolve())])
 
     gamma_1 = LaunchConfiguration('gamma_1')
     gamma_2 = LaunchConfiguration('gamma_2')
@@ -44,7 +42,9 @@ def generate_launch_description():
     mu = LaunchConfiguration('mu')
     gui = LaunchConfiguration('gui')
     world_path = LaunchConfiguration('world_path')
-    front_laser = LaunchConfiguration('front_laser')
+
+    jackal_config = PathJoinSubstitution(
+        [FindPackageShare('jackal_control'), 'config', 'control.yaml'])
 
     # Get urdf via xacro
     robot_description_command = [
@@ -54,7 +54,8 @@ def generate_launch_description():
             [FindPackageShare('jackal_description'),
              'urdf', 'jackal.urdf.xacro']
         ),
-        ' ', 'front_laser:=', front_laser,
+        ' ', 'is_sim:=true',
+        ' ', 'gazebo_controllers:=', jackal_config
     ]
 
     robot_description_content = ParameterValue(
@@ -79,7 +80,7 @@ def generate_launch_description():
                            }],
                            output='screen',
                            emulate_tty=True,
-                        #    prefix=['gdb -ex=r --args'],
+                           #    prefix=['gdb -ex=r --args'],
                            prefix="xterm -e",
                            )
 
