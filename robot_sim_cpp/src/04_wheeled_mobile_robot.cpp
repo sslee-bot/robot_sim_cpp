@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
         if (std::cin.fail()) {
             std::cout << "Please enter number (int type)." << std::endl;
             std::cin.clear();
-            std::cin.ignore(1000, '\n');
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
         else if (controllerCode == 1) {
             pController = std::make_shared<Jang2009>(gamma_1, gamma_2, h);

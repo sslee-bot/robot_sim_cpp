@@ -42,7 +42,8 @@ WheeledMobileRobotPoseControl::WheeledMobileRobotPoseControl(const std::string& 
     m_currentPose.setZero();
     m_desiredPose.setZero();
 
-    RCLCPP_INFO_STREAM(this->get_logger(), "Kinematic controller for mobile robot is initialized.");
+    RCLCPP_INFO_STREAM(this->get_logger(),
+                       "Kinematic controller node for mobile robot is initialized.");
 }
 
 WheeledMobileRobotPoseControl::~WheeledMobileRobotPoseControl()
@@ -60,12 +61,6 @@ void WheeledMobileRobotPoseControl::registerController(
 void WheeledMobileRobotPoseControl::startControl()
 {
     std::unique_lock<std::recursive_mutex> lock(m_mutex);
-
-    // Check model state validity
-    if (!m_isModelStateValid || !m_isTargetStateValid) {
-        RCLCPP_ERROR_STREAM(this->get_logger(), "Model or target state is not valid.");
-        return;
-    }
 
     // Check controller validity
     if (m_pController == nullptr) {

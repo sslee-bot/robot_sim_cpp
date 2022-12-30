@@ -13,24 +13,18 @@ from pathlib import Path
 from ament_index_python.packages import get_package_share_directory
 
 ARGUMENTS = [
-    DeclareLaunchArgument('cart_mass', default_value='0.5',
-                          description='Mass of cart'),
-    DeclareLaunchArgument('pendulum_mass', default_value='0.2',
-                          description='Mass of pendulum'),
-    DeclareLaunchArgument('friction_coefficient', default_value='0.1',
-                          description='Friction coefficient between cart and ground'),
-    DeclareLaunchArgument('cart_pendulum_center_distance', default_value='0.3',
-                          description='Center distance between cart and pendulum'),
-    DeclareLaunchArgument('mass_moment_inertia', default_value='0.006',
-                          description='Mass moment inertia of pendulum'),
-
-    DeclareLaunchArgument('x', default_value='1.0',
-                          description='Initial x position of cart'),
-    DeclareLaunchArgument('gui', default_value='true', choices=[
-                          'true', 'false'], description='Whether to use gui'),
+    DeclareLaunchArgument('gamma_1', default_value='0.3',),
+    DeclareLaunchArgument('gamma_2', default_value='3.0',),
+    DeclareLaunchArgument('h', default_value='1.0',),
+    DeclareLaunchArgument('k', default_value='0.5',),
+    DeclareLaunchArgument('mu', default_value='1.0',),
+    DeclareLaunchArgument('gui', default_value='true',
+                          choices=['true', 'false'],),
     DeclareLaunchArgument('world_path', default_value=PathJoinSubstitution(
         [FindPackageShare('ss_gazebo'), 'worlds', 'empty.world']
     ), description='World file path'),
+    DeclareLaunchArgument(
+        'front_laser', default_value='false', choices=['true', 'false'],),
 ]
 
 
@@ -43,31 +37,24 @@ def generate_launch_description():
         str(Path(get_package_share_directory('ss_description')).
             parent.resolve())])
 
-    cart_mass = LaunchConfiguration('cart_mass')
-    pendulum_mass = LaunchConfiguration('pendulum_mass')
-    friction_coefficient = LaunchConfiguration('friction_coefficient')
-    cart_pendulum_center_distance = LaunchConfiguration(
-        'cart_pendulum_center_distance')
-    mass_moment_inertia = LaunchConfiguration('mass_moment_inertia')
-    x = LaunchConfiguration('x')
+    gamma_1 = LaunchConfiguration('gamma_1')
+    gamma_2 = LaunchConfiguration('gamma_2')
+    h = LaunchConfiguration('h')
+    k = LaunchConfiguration('k')
+    mu = LaunchConfiguration('mu')
     gui = LaunchConfiguration('gui')
-    # world_path = PathJoinSubstitution(
-    #     [FindPackageShare('ss_gazebo'), 'worlds', 'empty.world']
-    # )
     world_path = LaunchConfiguration('world_path')
+    front_laser = LaunchConfiguration('front_laser')
 
     # Get urdf via xacro
     robot_description_command = [
         PathJoinSubstitution([FindExecutable(name='xacro')]),
         ' ',
         PathJoinSubstitution(
-            [FindPackageShare('ss_description'), 'urdf',
-             'inverted_pendulum.urdf.xacro']
+            [FindPackageShare('jackal_description'),
+             'urdf', 'jackal.urdf.xacro']
         ),
-        ' ', 'cart_mass:=', cart_mass, ' pendulum_mass:=', pendulum_mass,
-        ' friction_coefficient:=', friction_coefficient,
-        ' length_to_COM:=', cart_pendulum_center_distance,
-        ' mass_moment_inertia:=', mass_moment_inertia,
+        ' ', 'front_laser:=', front_laser,
     ]
 
     robot_description_content = ParameterValue(
@@ -82,16 +69,18 @@ def generate_launch_description():
                                       }],
                                       )
 
-    controller_node = Node(package='ss_gazebo',
-                           executable='inverted_pendulum_LQR_node',
+    controller_node = Node(package='ss_gazebo', executable='wheeled_mobile_robot_pose_control_node',
                            parameters=[{
-                               'cart_mass': cart_mass,
-                               'pendulum_mass': pendulum_mass,
-                               'friction_coefficient': friction_coefficient,
-                               'cart_pendulum_center_distance': cart_pendulum_center_distance,
-                               'mass_moment_inertia': mass_moment_inertia,
+                               'gamma_1': gamma_1,
+                               'gamma_2': gamma_2,
+                               'h': h,
+                               'k': k,
+                               'mu': mu,
                            }],
+                           output='screen',
                            emulate_tty=True,
+                        #    prefix=['gdb -ex=r --args'],
+                           prefix="xterm -e",
                            )
 
     # Gazebo server
@@ -117,8 +106,10 @@ def generate_launch_description():
         package='gazebo_ros',
         executable='spawn_entity.py',
         name='spawn_robot',
-        arguments=['-entity', 'inverted_pendulum', '-topic',
-                   'robot_description', '-x', x, '-y' '0'],
+        arguments=['-entity', 'jackal', '-topic',
+                   'robot_description',
+                   # '-x', x, '-y' '0'
+                   ],
         output='screen',
     )
 

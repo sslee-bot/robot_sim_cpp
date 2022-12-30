@@ -121,7 +121,7 @@ void InvertedPendulumLQR::callbackModelState(const gazebo_msgs::msg::ModelStates
         index = iter - nameVec.begin();
     }
     else {
-        RCLCPP_ERROR_STREAM_THROTTLE(
+        RCLCPP_WARN_STREAM_THROTTLE(
             this->get_logger(), *(this->get_clock()), 5000,
             "No model name matched. m_invertedPendulumName: " << m_invertedPendulumName);
         return;
@@ -157,7 +157,7 @@ void InvertedPendulumLQR::callbackJointState(const sensor_msgs::msg::JointState:
         index = iter - nameVec.begin();
     }
     else {
-        RCLCPP_ERROR_STREAM_THROTTLE(
+        RCLCPP_WARN_STREAM_THROTTLE(
             this->get_logger(), *(this->get_clock()), 5000,
             "No model name matched. m_pendulumJointName: " << m_pendulumJointName);
         return;

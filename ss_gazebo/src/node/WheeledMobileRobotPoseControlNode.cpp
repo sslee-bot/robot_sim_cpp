@@ -2,6 +2,9 @@
 
 int main(int argc, char** argv)
 {
+    // Set stdout stream unbuffered
+    // setvbuf(stdout, NULL, _IONBF, BUFSIZ);
+
     // Init rclcpp
     rclcpp::init(argc, argv);
 
@@ -19,7 +22,7 @@ int main(int argc, char** argv)
 
     rclcpp::sleep_for(2s);
 
-    while (true) {
+    while (rclcpp::ok()) {
         // TODO: make it easy to see on terminal
         int controllerCode;
 
