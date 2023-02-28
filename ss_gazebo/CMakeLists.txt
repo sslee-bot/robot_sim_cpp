@@ -47,7 +47,7 @@ include_directories(
 link_directories(${gazebo_dev_LIBRARY_DIRS})
 
 ## Dependencies
-set(dependencies
+set(DEPENDENCIES
   rclcpp
   std_msgs
   geometry_msgs
@@ -62,31 +62,18 @@ set(dependencies
 )
 
 ## Gazebo plugins and nodes
-# add_library(link_effort src/class/LinkEffortPlugin.cc)
-# target_link_libraries(link_effort ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
-# add_dependencies(link_effort ${catkin_EXPORTED_TARGETS})
-
-# add_executable(inverted_pendulum_LQR_node src/class/InvertedPendulumLQR.cpp
-#                                             src/node/InvertedPendulumLQR_Node.cpp)
-# target_link_libraries(inverted_pendulum_LQR_node ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
-# add_dependencies(inverted_pendulum_LQR_node ${catkin_EXPORTED_TARGETS})
 add_executable(inverted_pendulum_LQR_node src/class/InvertedPendulumLQR.cpp
                                           src/node/InvertedPendulumLQR_Node.cpp)
 target_include_directories(inverted_pendulum_LQR_node PUBLIC include)
 target_link_libraries(inverted_pendulum_LQR_node ${GAZEBO_LIBRARIES})
-ament_target_dependencies(inverted_pendulum_LQR_node ${dependencies})
-
-# add_executable(wheeled_mobile_robot_pose_control_node
-#                 src/class/WheeledMobileRobotPoseControl.cpp
-#                 src/node/WheeledMobileRobotPoseControlNode.cpp)
-# target_link_libraries(wheeled_mobile_robot_pose_control_node ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
-# add_dependencies(wheeled_mobile_robot_pose_control_node ${catkin_EXPORTED_TARGETS})                
+ament_target_dependencies(inverted_pendulum_LQR_node ${DEPENDENCIES})
+           
 add_executable(wheeled_mobile_robot_pose_control_node
                 src/class/WheeledMobileRobotPoseControl.cpp
                 src/node/WheeledMobileRobotPoseControlNode.cpp)
 target_include_directories(wheeled_mobile_robot_pose_control_node PUBLIC include)
 target_link_libraries(wheeled_mobile_robot_pose_control_node ${GAZEBO_LIBRARIES})
-ament_target_dependencies(wheeled_mobile_robot_pose_control_node ${dependencies})
+ament_target_dependencies(wheeled_mobile_robot_pose_control_node ${DEPENDENCIES})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

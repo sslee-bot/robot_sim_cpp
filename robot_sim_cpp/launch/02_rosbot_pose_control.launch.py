@@ -1,61 +1,60 @@
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription, SetEnvironmentVariable
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command, EnvironmentVariable, FindExecutable, LaunchConfiguration, PathJoinSubstitution
-from launch.conditions import IfCondition
-
+from launch.actions import DeclareLaunchArgument, GroupAction, ExecuteProcess, SetEnvironmentVariable
+from launch.conditions import UnlessCondition, IfCondition
+from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration, EnvironmentVariable
 from launch_ros.actions import Node
-from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
+from launch_ros.parameter_descriptions import ParameterValue
 
 from pathlib import Path
-
 from ament_index_python.packages import get_package_share_directory
 
 ARGUMENTS = [
+    # For simulation
+    DeclareLaunchArgument('gui', default_value='true',
+                          choices=['true', 'false']),
+    DeclareLaunchArgument('world_path', default_value=PathJoinSubstitution(
+        [FindPackageShare('ss_gazebo'), 'worlds', 'empty.world']
+    ), description='World file path'),
+
+    # For controller
     DeclareLaunchArgument('gamma_1', default_value='0.3',),
     DeclareLaunchArgument('gamma_2', default_value='3.0',),
     DeclareLaunchArgument('h', default_value='1.0',),
     DeclareLaunchArgument('k', default_value='0.5',),
     DeclareLaunchArgument('mu', default_value='1.0',),
-    DeclareLaunchArgument('gui', default_value='true',
-                          choices=['true', 'false'],),
-    DeclareLaunchArgument('world_path', default_value=PathJoinSubstitution(
-        [FindPackageShare('ss_gazebo'), 'worlds', 'empty.world']
-    ), description='World file path'),
 ]
 
 
 def generate_launch_description():
 
-    gz_resource_path = SetEnvironmentVariable(name='GAZEBO_MODEL_PATH', value=[
-        EnvironmentVariable('GAZEBO_MODEL_PATH',
-                            default_value=''),
-        '/usr/share/gazebo-11/models/:',
-        str(Path(get_package_share_directory('ss_description')).parent.resolve()),
-        ':', str(Path(get_package_share_directory('jackal_description')).parent.resolve())])
-
+    # Launch Arguments
+    gui = LaunchConfiguration('gui')
+    world_path = LaunchConfiguration('world_path')
     gamma_1 = LaunchConfiguration('gamma_1')
     gamma_2 = LaunchConfiguration('gamma_2')
     h = LaunchConfiguration('h')
     k = LaunchConfiguration('k')
     mu = LaunchConfiguration('mu')
-    gui = LaunchConfiguration('gui')
-    world_path = LaunchConfiguration('world_path')
 
-    jackal_config = PathJoinSubstitution(
-        [FindPackageShare('jackal_control'), 'config', 'control.yaml'])
+    # Gazebo resources
+    gz_resource_path = SetEnvironmentVariable(name='GAZEBO_MODEL_PATH', value=[
+        EnvironmentVariable('GAZEBO_MODEL_PATH',
+                            default_value=''),
+        '/usr/share/gazebo-11/models/:',
+        str(Path(get_package_share_directory('ss_description')).parent.resolve()),
+        ':', str(Path(get_package_share_directory('rosbot_description')).parent.resolve())])
 
     # Get urdf via xacro
     robot_description_command = [
         PathJoinSubstitution([FindExecutable(name='xacro')]),
-        ' ',
-        PathJoinSubstitution(
-            [FindPackageShare('jackal_description'),
-             'urdf', 'jackal.urdf.xacro']
-        ),
-        ' ', 'is_sim:=true',
-        ' ', 'gazebo_controllers:=', jackal_config
+            ' ',
+            PathJoinSubstitution(
+                [FindPackageShare('rosbot_description'),
+                 'urdf', 'rosbot.urdf.xacro'],
+            ),
+            ' ', 'use_sim:=true',
+            ' ', 'simulation_engine:=gazebo-classic',
     ]
 
     robot_description_content = ParameterValue(
@@ -69,14 +68,15 @@ def generate_launch_description():
                                           'robot_description': robot_description_content,
                                       }],
                                       )
-
+    
+    # Set controller
     controller_node = Node(package='ss_gazebo', executable='wheeled_mobile_robot_pose_control_node',
                            parameters=[{
                                'gamma_1': gamma_1,
                                'gamma_2': gamma_2,
-                               'h': h,
-                               'k': k,
-                               'mu': mu,
+                                   'h': h,
+                                   'k': k,
+                                   'mu': mu,
                            }],
                            output='screen',
                            emulate_tty=True,
@@ -90,7 +90,7 @@ def generate_launch_description():
              '-s', 'libgazebo_ros_init.so',
              '-s', 'libgazebo_ros_factory.so',
              '--verbose',
-             world_path
+              world_path
              ],
         output='screen',
     )

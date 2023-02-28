@@ -173,9 +173,16 @@ void WheeledMobileRobotPoseControl::periodicTask()
         // Calculate control input
         auto control = m_pController->poseControl(m_currentPose, m_desiredPose);
 
-        // Publish
+        // Set velocity
         m_controlMsg.linear.x = control[0];
         m_controlMsg.angular.z = wrapAngle(control[1]);
-        m_controlPub->publish(m_controlMsg);
     }
+    else {
+        // Set zero velocity
+        m_controlMsg.linear.x = 0.0;
+        m_controlMsg.angular.z = 0.0;
+    }
+
+    // Publish
+    m_controlPub->publish(m_controlMsg);
 }
