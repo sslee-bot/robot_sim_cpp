@@ -100,10 +100,6 @@ install(TARGETS inverted_pendulum_LQR_node wheeled_mobile_robot_pose_control_nod
     RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
-install(DIRECTORY map worlds
-    DESTINATION share/${PROJECT_NAME}
-)
-
 ament_export_include_directories(include)
 # ament_export_libraries(${PROJECT_NAME})
 ament_export_dependencies(rclcpp)

@@ -17,7 +17,7 @@ ARGUMENTS = [
     DeclareLaunchArgument('gui', default_value='true', choices=[
                           'true', 'false'], description='Whether to use gui'),
     DeclareLaunchArgument('world_path', default_value=PathJoinSubstitution(
-        [FindPackageShare('ss_gazebo'), 'worlds', 'empty.world']
+        [FindPackageShare('robot_sim_cpp'), 'worlds', 'empty.world']
     ), description='World file path'),
 
     # Inverted pendulum

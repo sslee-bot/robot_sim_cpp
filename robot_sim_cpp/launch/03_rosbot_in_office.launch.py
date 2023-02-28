@@ -14,7 +14,7 @@ ARGUMENTS = [
     DeclareLaunchArgument('gui', default_value='true',
                           choices=['true', 'false']),
     DeclareLaunchArgument('world_path', default_value=PathJoinSubstitution(
-        [FindPackageShare('ss_gazebo'), 'worlds', 'office.world']
+        [FindPackageShare('robot_sim_cpp'), 'worlds', 'office.world']
     ), description='World file path'),
 
     # Robot pose

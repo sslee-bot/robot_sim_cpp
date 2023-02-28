@@ -28,7 +28,7 @@ include_directories(
 )
 
 ## Dependencies
-set(dependencies
+set(DEPENDENCIES
   ss_algorithm
 )
 
@@ -37,7 +37,7 @@ add_library(${PROJECT_NAME} SHARED
     src/wheeled_mobile_robot/WheeledMobileRobot.cpp
 )
 target_include_directories(${PROJECT_NAME} PUBLIC include)
-ament_target_dependencies(${PROJECT_NAME} ${dependencies})
+ament_target_dependencies(${PROJECT_NAME} ${DEPENDENCIES})
 
 install(TARGETS ${PROJECT_NAME}
     ARCHIVE DESTINATION lib

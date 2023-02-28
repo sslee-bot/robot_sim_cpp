@@ -39,7 +39,7 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
 )
 
-set(dependencies
+set(DEPENDENCIES
     rclcpp
     ss_algorithm
     # ss_gazebo
@@ -48,26 +48,26 @@ set(dependencies
 
 ## Declare cpp executables
 add_executable(01_matrix_basic src/01_matrix_basic.cpp)
-ament_target_dependencies(01_matrix_basic ${dependencies})
+ament_target_dependencies(01_matrix_basic ${DEPENDENCIES})
 
 add_executable(02_CARE src/02_CARE.cpp)
-ament_target_dependencies(02_CARE ${dependencies})
+ament_target_dependencies(02_CARE ${DEPENDENCIES})
 
 add_executable(03_inverted_pendulum src/03_inverted_pendulum.cpp)
-ament_target_dependencies(03_inverted_pendulum ${dependencies})
+ament_target_dependencies(03_inverted_pendulum ${DEPENDENCIES})
 
 add_executable(04_wheeled_mobile_robot src/04_wheeled_mobile_robot.cpp)
-ament_target_dependencies(04_wheeled_mobile_robot ${dependencies})
+ament_target_dependencies(04_wheeled_mobile_robot ${DEPENDENCIES})
 
 add_executable(05_1D_object_tracking src/05_1D_object_tracking.cpp)
-ament_target_dependencies(05_1D_object_tracking ${dependencies})
+ament_target_dependencies(05_1D_object_tracking ${DEPENDENCIES})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-install(DIRECTORY launch
+install(DIRECTORY launch maps worlds
     DESTINATION share/${PROJECT_NAME}
 )
 
