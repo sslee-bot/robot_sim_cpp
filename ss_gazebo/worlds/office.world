@@ -1,5 +1,12 @@
 <sdf version='1.6'>
   <world name='default'>
+    <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">
+      <ros>
+        <namespace>/gazebo</namespace>
+      </ros>
+
+      <update_rate>1000.0</update_rate>
+    </plugin>
     <light name='sun' type='directional'>
       <cast_shadows>1</cast_shadows>
       <pose frame=''>0 0 10 0 -0 0</pose>
@@ -2298,34 +2305,8 @@
       </link>
       <static>1</static>
     </model>
-    <model name='checkerboard_plane'>
-      <static>1</static>
-      <link name='link'>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://checkerboard_plane/meshes/checkerboard_plane.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>1.39696 0.744001 0 0 -0 0</pose>
-    </model>
     <state world_name='default'>
       <iterations>2174210</iterations>
-      <model name='checkerboard_plane'>
-        <pose frame=''>0.5 -3.88 1.25 -1.5707 0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose frame=''>0.5 -3.88 1.25 -1.5707 0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
       <model name='ground_plane'>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <scale>1 1 1</scale>
