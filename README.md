@@ -72,7 +72,7 @@ ros2 launch robot_sim_cpp 01_inverted_pendulum.launch.py
     * Topic: ```/target_position``` (type: ```std_msgs/msg/Float32```)
     * x position: data
 
-### 3.2. Jackal robot pose tracking simulation
+### 3.2. Rosbot robot pose tracking simulation
 ```bash
 ros2 launch robot_sim_cpp 02_rosbot_pose_control.launch.py
 ```

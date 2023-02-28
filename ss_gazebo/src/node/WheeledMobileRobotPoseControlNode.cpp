@@ -9,8 +9,7 @@ int main(int argc, char** argv)
     rclcpp::init(argc, argv);
 
     // Set Gazebo robot pose controller node
-    auto node = std::make_shared<WheeledMobileRobotPoseControl>(
-        "jackal", 0.02, "/gazebo/model_states", "/target_pose", "/cmd_vel");
+    auto node = std::make_shared<WheeledMobileRobotPoseControl>();
 
     // Controller and its params
     std::shared_ptr<WheeledMobileRobotController> pController;

@@ -37,7 +37,6 @@ add_library(${PROJECT_NAME} SHARED
     src/wheeled_mobile_robot/WheeledMobileRobot.cpp
 )
 target_include_directories(${PROJECT_NAME} PUBLIC include)
-# target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 ament_target_dependencies(${PROJECT_NAME} ${dependencies})
 
 install(TARGETS ${PROJECT_NAME}

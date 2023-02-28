@@ -2,12 +2,7 @@
 
 using std::placeholders::_1;
 
-InvertedPendulumLQR::InvertedPendulumLQR(const std::string& invertedPendulumName,
-                                         const std::string& pendulumJointName, double period,
-                                         const std::string& modelStateTopic,
-                                         const std::string& jointStateTopic,
-                                         const std::string& targetPositionTopic,
-                                         const std::string& controlTopic)
+InvertedPendulumLQR::InvertedPendulumLQR()
     : Node("inverted_pendulum_lqr_node"),
       m_modelStatesSub(),
       m_jointStateSub(),
@@ -17,16 +12,20 @@ InvertedPendulumLQR::InvertedPendulumLQR(const std::string& invertedPendulumName
       m_isModelStateValid(false),
       m_isJointStateValid(false),
       m_isTargetPositionValid(true),
-      m_invertedPendulumName(invertedPendulumName),
-      m_pendulumJointName(pendulumJointName),
-      m_period(period),
-      m_modelStateTopic(modelStateTopic),
-      m_jointStateTopic(jointStateTopic),
-      m_targetPositionTopic(targetPositionTopic),
-      m_controlTopic(controlTopic),
       m_controlMsg()
 {
     // Load params
+    m_invertedPendulumName =
+        this->declare_parameter("pendulum_name", std::string("inverted_pendulum"));
+    m_pendulumJointName = this->declare_parameter("joint_name", std::string("pendulum_joint"));
+    m_period = this->declare_parameter("period", double(0.001));
+    m_modelStateTopic =
+        this->declare_parameter("model_state_topic", std::string("/gazebo/model_states"));
+    m_jointStateTopic = this->declare_parameter("joint_state_topic", std::string("/joint_states"));
+    m_targetPositionTopic =
+        this->declare_parameter("target_pos_topic", std::string("/target_position"));
+    m_controlTopic = this->declare_parameter("control_topic", std::string("/cart_effort"));
+
     double cartMass, pendulumMass, frictionCoefficient, cartPendulumCenterDistance,
         massMomentInertia;
 

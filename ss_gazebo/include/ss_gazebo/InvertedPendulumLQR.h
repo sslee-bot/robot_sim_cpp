@@ -26,10 +26,7 @@ using namespace std::chrono_literals;
 class InvertedPendulumLQR : public rclcpp::Node
 {
 public:
-    InvertedPendulumLQR(const std::string& invertedPendulumName,
-                        const std::string& pendulumJointName, double period,
-                        const std::string& modelStateTopic, const std::string& jointStateTopic,
-                        const std::string& targetPositionTopic, const std::string& controlTopic);
+    InvertedPendulumLQR();
     virtual ~InvertedPendulumLQR();
     virtual void registerPendulum(const InvertedPendulum& pendulumModel);
     virtual void startControl();

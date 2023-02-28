@@ -7,9 +7,7 @@ int main(int argc, char** argv)
     rclcpp::init(argc, argv);
 
     // Set Gazebo inverted pendulum LQR controller node
-    auto node = std::make_shared<InvertedPendulumLQR>("inverted_pendulum", "pendulum_joint", 0.001,
-                                                      "/gazebo/model_states", "/joint_states",
-                                                      "/target_position", "/cart_effort");
+    auto node = std::make_shared<InvertedPendulumLQR>();
     node->startControl();
     rclcpp::spin(node);
     rclcpp::shutdown();

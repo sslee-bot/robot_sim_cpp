@@ -1,10 +1,6 @@
 #include "ss_gazebo/WheeledMobileRobotPoseControl.h"
 
-WheeledMobileRobotPoseControl::WheeledMobileRobotPoseControl(const std::string& robotModelName,
-                                                             double period,
-                                                             const std::string& modelStateTopic,
-                                                             const std::string& targetStateTopic,
-                                                             const std::string& controlTopic)
+WheeledMobileRobotPoseControl::WheeledMobileRobotPoseControl()
     : Node("wheel_mobile_robot_pose_control_node"),
       m_modelStatesSub(),
       m_targetStateSub(),
@@ -13,15 +9,18 @@ WheeledMobileRobotPoseControl::WheeledMobileRobotPoseControl(const std::string& 
       m_isModelStateValid(false),
       m_isTargetStateValid(true),
       m_isArrive(true),
-      m_robotModelName(robotModelName),
-      m_period(period),
       m_mutex(),
       m_pController(nullptr),
-      m_modelStateTopic(modelStateTopic),
-      m_targetStateTopic(targetStateTopic),
-      m_controlTopic(controlTopic),
       m_controlMsg()
 {
+    // ROS parameters
+    m_robotModelName = this->declare_parameter("robot_model", std::string("rosbot"));
+    m_period = this->declare_parameter("period", double(0.02));
+    m_modelStateTopic =
+        this->declare_parameter("model_state_topic", std::string("/gazebo/model_states"));
+    m_targetStateTopic = this->declare_parameter("target_state_topic", std::string("/target_pose"));
+    m_controlTopic = this->declare_parameter("control_topic", std::string("/cmd_vel"));
+
     // Subscriber
     m_modelStatesSub = this->create_subscription<gazebo_msgs::msg::ModelStates>(
         m_modelStateTopic, 10,

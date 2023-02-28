@@ -30,10 +30,7 @@ const double ANGLE_ERROR_UPPER = 0.3;
 class WheeledMobileRobotPoseControl : public rclcpp::Node
 {
 public:
-    WheeledMobileRobotPoseControl(const std::string& robotModelName, double period,
-                                  const std::string& modelStateTopic,
-                                  const std::string& targetStateTopic,
-                                  const std::string& controlTopic);
+    WheeledMobileRobotPoseControl();
     virtual ~WheeledMobileRobotPoseControl();
     virtual void registerController(std::shared_ptr<WheeledMobileRobotController> pController);
     virtual void startControl();

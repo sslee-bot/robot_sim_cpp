@@ -48,28 +48,18 @@ set(dependencies
 
 ## Declare cpp executables
 add_executable(01_matrix_basic src/01_matrix_basic.cpp)
-# target_link_libraries(01_matrix_basic ${catkin_LIBRARIES})
-# add_dependencies(01_matrix_basic ${catkin_EXPORTED_TARGETS})
 ament_target_dependencies(01_matrix_basic ${dependencies})
 
 add_executable(02_CARE src/02_CARE.cpp)
-# target_link_libraries(02_CARE ${catkin_LIBRARIES})
-# add_dependencies(02_CARE ${catkin_EXPORTED_TARGETS})
 ament_target_dependencies(02_CARE ${dependencies})
 
 add_executable(03_inverted_pendulum src/03_inverted_pendulum.cpp)
-# target_link_libraries(03_inverted_pendulum ${catkin_LIBRARIES})
-# add_dependencies(03_inverted_pendulum ${catkin_EXPORTED_TARGETS})
 ament_target_dependencies(03_inverted_pendulum ${dependencies})
 
 add_executable(04_wheeled_mobile_robot src/04_wheeled_mobile_robot.cpp)
-# target_link_libraries(04_wheeled_mobile_robot ${catkin_LIBRARIES})
-# add_dependencies(04_wheeled_mobile_robot ${catkin_EXPORTED_TARGETS})
 ament_target_dependencies(04_wheeled_mobile_robot ${dependencies})
 
 add_executable(05_1D_object_tracking src/05_1D_object_tracking.cpp)
-# target_link_libraries(05_1D_object_tracking ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-# add_dependencies(05_1D_object_tracking ${catkin_EXPORTED_TARGETS})
 ament_target_dependencies(05_1D_object_tracking ${dependencies})
 
 if(BUILD_TESTING)
@@ -77,7 +67,7 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-install(DIRECTORY config launch
+install(DIRECTORY launch
     DESTINATION share/${PROJECT_NAME}
 )
 

@@ -28,7 +28,7 @@ ARGUMENTS = [
 
 def generate_launch_description():
 
-    # Launch Arguments
+    # Launch arguments
     gui = LaunchConfiguration('gui')
     world_path = LaunchConfiguration('world_path')
     gamma_1 = LaunchConfiguration('gamma_1')
@@ -48,13 +48,13 @@ def generate_launch_description():
     # Get urdf via xacro
     robot_description_command = [
         PathJoinSubstitution([FindExecutable(name='xacro')]),
-            ' ',
-            PathJoinSubstitution(
-                [FindPackageShare('rosbot_description'),
-                 'urdf', 'rosbot.urdf.xacro'],
-            ),
-            ' ', 'use_sim:=true',
-            ' ', 'simulation_engine:=gazebo-classic',
+        ' ',
+        PathJoinSubstitution(
+            [FindPackageShare('rosbot_description'),
+             'urdf', 'rosbot.urdf.xacro'],
+        ),
+        ' ', 'use_sim:=true',
+        ' ', 'simulation_engine:=gazebo-classic',
     ]
 
     robot_description_content = ParameterValue(
@@ -68,10 +68,15 @@ def generate_launch_description():
                                           'robot_description': robot_description_content,
                                       }],
                                       )
-    
+
     # Set controller
     controller_node = Node(package='ss_gazebo', executable='wheeled_mobile_robot_pose_control_node',
                            parameters=[{
+                               'robot_model': 'rosbot',
+                               'period': 0.02,
+                               'model_state_topic': '/gazebo/model_states',
+                               'target_state_topic': '/target_pose',
+                               'control_topic': '/cmd_vel',
                                'gamma_1': gamma_1,
                                'gamma_2': gamma_2,
                                    'h': h,
@@ -90,7 +95,7 @@ def generate_launch_description():
              '-s', 'libgazebo_ros_init.so',
              '-s', 'libgazebo_ros_factory.so',
              '--verbose',
-              world_path
+             world_path
              ],
         output='screen',
     )
@@ -107,7 +112,7 @@ def generate_launch_description():
         package='gazebo_ros',
         executable='spawn_entity.py',
         name='spawn_robot',
-        arguments=['-entity', 'jackal', '-topic',
+        arguments=['-entity', 'rosbot', '-topic',
                    'robot_description',
                    # '-x', x, '-y' '0'
                    ],
