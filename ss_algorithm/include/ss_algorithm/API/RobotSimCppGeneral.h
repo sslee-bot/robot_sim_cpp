@@ -1,6 +1,8 @@
 #ifndef SS_ALGORITHM_ROBOT_SIM_CPP_GENERAL_H
 #define SS_ALGORITHM_ROBOT_SIM_CPP_GENERAL_H
 
+#include <cmath>
+
 const double GRAVITY_ACC = 9.806;
 
 inline double wrapAngle(double rawAngle)

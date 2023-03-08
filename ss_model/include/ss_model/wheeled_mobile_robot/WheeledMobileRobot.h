@@ -2,7 +2,7 @@
  * @file WheeledMobileRobot.h
  * @author Sangsu Lee (physism@gmail.com)
  * @brief Wheeled mobile robot. See equation (7) in the following material.
- * https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=701173
+ * https://citeseerx.ist.psu.edu/viewdoc/download;jsessionid=0A011FEE73C2C71ABF342DB79B27579F?doi=10.1.1.399.4461&rep=rep1&type=pdf
  * @version 1.0
  * @date 2021-11-06
  *
